@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="mode-mix">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lahore Legacy — Old Lahore, made easy</title>
+  <meta name="description" content="24 heritage places of Lahore: short stories, what to look for, visitor info, day plans, a virtual tour and a 60-second quiz. English with Urdu." />
+  <meta name="theme-color" content="#17191B" />
+  <meta property="og:title" content="Lahore Legacy — Old Lahore, made easy" />
+  <meta property="og:description" content="24 heritage places, one minute each. How well do you know Lahore?" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://upload.wikimedia.org" />
+  <link rel="dns-prefetch" href="https://commons.wikimedia.org" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <a class="brand" href="#/" aria-label="Lahore Legacy home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 L24.5 15.5 L37 20 L24.5 24.5 L20 37 L15.5 24.5 L3 20 L15.5 15.5 Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="20" cy="20" r="3" fill="currentColor"/></svg>
+      <span>Lahore <em>Legacy</em></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#/" data-r="home" id="nav-places">Places</a>
+      <a href="#/map" data-r="map" id="nav-map">Map</a>
+      <a href="#/plan" data-r="plan" id="nav-plan">Plan</a>
+      <a href="#/tour" data-r="tour" id="nav-tour">Tour</a>
+      <a href="#/me" data-r="me" id="nav-me">Me</a>
+    </nav>
+    <div class="top__right">
+      <a class="pill" id="progress-pill" href="#/me"></a>
+      <button class="pill pill--lang" id="lang">English only</button>
+    </div>
+  </header>
+
+  <main id="main" class="is-in" tabindex="-1"></main>
+
+  <footer class="foot">
+    <div class="wrap foot__inner">
+      <p><b>Lahore <em>Legacy</em></b><br><span id="footer-text"></span></p>
+      <p class="foot__links"><button class="linkish" id="open-credits">Credits</button> · <a href="archive/v2-full/index.html" id="archive-link">Previous version</a></p>
+    </div>
+  </footer>
+
+  <dialog id="credits" class="dialog">
+    <button class="dialog__close" data-close aria-label="Close">✕</button>
+    <h2>Credits &amp; sources</h2>
+    <div id="credits-body" class="dialog__table"></div>
+    <h3>Videos</h3>
+    <ul id="credits-videos" class="sources"></ul>
+    <h3>Sources</h3>
+    <ul id="credits-sources" class="sources"></ul>
+  </dialog>
+
+  <script src="js/md5.js"></script>
+  <script src="js/config/assets.js"></script>
+  <script src="js/config/local-photos.js"></script>
+  <script src="js/config/videos.js"></script>
+  <script src="js/config/keys.js"></script>
+  <script src="js/data/sites.js"></script>
+  <script src="js/data/guide.js"></script>
+  <script src="js/data/more.js"></script>
+  <script src="js/data/geo.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/commons.js"></script>
+  <script src="js/share.js"></script>
+  <script src="js/viewer.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/lahoremap.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+/* =========================================================================
+   LAHORE LEGACY — MOTION (v2: restrained & cinematic)
+   ========================================================================= */
+
+/* ---------- Intro: photographic, slow, quiet ---------- */
+.intro { position: fixed; inset: 0; z-index: 200; background: #0B0C0D; display: grid; place-items: center; overflow: hidden; transition: opacity 1.2s var(--ease), visibility 1.2s; }
+.intro[hidden] { display: none; }
+.intro.is-leaving { opacity: 0; visibility: hidden; }
+.intro__photo { position: absolute; inset: 0; opacity: 0; animation: introPhoto 2.6s 0.3s var(--ease) forwards; }
+.intro__photo .media { position: absolute; inset: 0; background: #0B0C0D; }
+.intro__photo img { animation: kenburns 30s ease-out both; }
+.intro__shade { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(11, 12, 13, 0.55), rgba(11, 12, 13, 0.92) 75%); }
+.intro__content { position: relative; z-index: 2; text-align: center; padding: 0 24px; transition: transform 1.2s var(--ease), opacity 1.2s; }
+.intro.is-leaving .intro__content { transform: translateY(-20px); opacity: 0; }
+.intro__pre { font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--sand); animation: fadeUp 1.4s 0.6s var(--ease) both; }
+.intro__logo { font-family: var(--f-display); font-weight: 600; margin: 0.3em 0 0.5em; line-height: 1; display: grid; justify-items: center; gap: 0.25em; }
+.intro__word { display: block; font-size: clamp(3.4rem, 12vw, 9rem); letter-spacing: 0.04em; color: var(--white); animation: logoIn 1.8s 1s var(--ease) both; }
+.intro__word--2 { font-style: italic; font-weight: 500; color: var(--gold-2); font-size: clamp(2rem, 6vw, 4.4rem); letter-spacing: 0.1em; animation-delay: 1.5s; }
+.intro__rule { display: block; width: 0; height: 1px; background: var(--gold); animation: rule 1.6s 1.3s var(--ease) forwards; }
+.intro__tagline { font-family: var(--f-serif); font-style: italic; font-size: clamp(1.1rem, 2.2vw, 1.5rem); color: var(--ivory-dim); animation: fadeUp 1.4s 2.1s var(--ease) both; }
+.intro__cta { margin-top: 1.4rem; animation: fadeUp 1.4s 2.6s var(--ease) both; }
+.intro__skyline { position: absolute; left: 0; right: 0; bottom: 0; height: 16vh; opacity: 0.35; animation: fadeIn 3s 1s both; }
+.intro__skyline svg { width: 100%; height: 100%; }
+.intro__skyline path { stroke-dasharray: 3000; stroke-dashoffset: 3000; animation: drawLine 5s 1.2s ease forwards; }
+.intro__skip { position: absolute; z-index: 3; right: 24px; top: 22px; background: none; border: 0; border-bottom: 1px solid var(--line-strong); color: var(--ivory-dim); padding: 0.3rem 0; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.intro__skip:hover { color: var(--ivory); border-color: var(--ivory); }
+.intro__credit { position: absolute; z-index: 3; left: 24px; bottom: 16px; margin: 0; font-size: 0.66rem; color: var(--ivory-faint); max-width: 60%; }
+.intro__credit a { color: var(--ivory-dim); }
+
+/* ---------- Reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- Keyframes ---------- */
+@keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
+@keyframes introPhoto { to { opacity: 1; } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+@keyframes logoIn { from { opacity: 0; letter-spacing: 0.25em; filter: blur(8px); } to { opacity: 1; filter: none; } }
+@keyframes rule { to { width: min(260px, 50vw); } }
+@keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scrollLine { 0% { top: -20px; } 100% { top: 60px; } }
+@keyframes modalIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(12px); } }
+@keyframes noticeIn { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+@keyframes noticeOut { to { opacity: 0; transform: translateY(-12px); } }
+@keyframes ring { from { transform: scale(1); opacity: 0.9; } to { transform: scale(14); opacity: 0; } }
+@keyframes hotPulse { 0% { transform: scale(0.9); opacity: 0.9; } 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+@keyframes pop { 0% { transform: scale(0.96); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes stampIn { 0% { transform: scale(1.8) rotate(-20deg); opacity: 0; } 70% { transform: scale(0.96) rotate(-8deg); opacity: 1; } 100% { transform: scale(1) rotate(-8deg); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+.shake { animation: shake 0.4s; }
+.pop { animation: pop 0.45s var(--ease) both; }
+.stamp-in { animation: stampIn 0.8s var(--ease) both; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+  .intro__skyline path { stroke-dashoffset: 0; }
+  .intro__rule { width: 200px; }
+}

@@ -1,0 +1,89 @@
+/* =========================================================================
+   LAHORE LEGACY — RESPONSIVE LAYOUT
+   Breakpoints: 1200 (laptop) · 980 (tablet) · 720 (large phone) · 460 (phone)
+   ========================================================================= */
+
+@media (max-width: 1200px) {
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .trail { grid-template-columns: repeat(3, 1fr); }
+  .passport { grid-template-columns: 300px 1fr; }
+  .ach-grid { grid-template-columns: repeat(2, 1fr); }
+  .collection { grid-template-columns: repeat(3, 1fr); }
+  .hud__meta { min-width: 90px; }
+}
+
+@media (max-width: 980px) {
+  :root { --header-h: 64px; }
+  .site-header { background: rgba(23, 25, 27, 0.94); }
+  .nav-toggle { display: inline-flex; }
+  .main-nav { position: fixed; top: var(--header-h); left: 0; right: 0; flex-direction: column; gap: 0; padding: 0.4rem 1rem 1.2rem; background: rgba(23, 25, 27, 0.98); border-bottom: 1px solid var(--line); transform: translateY(-120%); transition: transform 0.45s var(--ease); z-index: -1; }
+  .main-nav a { padding: 1rem 0.4rem; font-size: 0.82rem; border-bottom: 1px solid var(--line); }
+  .main-nav a::after { display: none; }
+  body.nav-open .main-nav { transform: translateY(0); }
+  body.nav-open .nav-toggle span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  body.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  body.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+  .band__grid { grid-template-columns: 1fr; }
+  .story-band { grid-template-columns: 1fr; }
+  .story-band__media { min-height: 52vw; }
+  .location-grid, .game-grid { grid-template-columns: repeat(2, 1fr); }
+  .home-split { grid-template-columns: 1fr; }
+  .dossier__grid { grid-template-columns: 1fr; }
+  .pano-layout { grid-template-columns: 1fr; height: auto; min-height: 0; }
+  .pano-stage { height: 64vh; min-height: 400px; }
+  .passport { grid-template-columns: 1fr; }
+  .passport__card { position: static; }
+  .expeditions { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .container { width: min(1240px, 100% - 32px); }
+  .hud__meta { display: none; }
+  .hud__player { padding: 0.2rem; }
+  .brand__text { font-size: 1.1rem; }
+  .hero { padding-left: 20px; padding-right: 20px; }
+  .hero__vignette { background: linear-gradient(to top, rgba(23, 25, 27, 0.96) 10%, rgba(23, 25, 27, 0.45) 60%, rgba(23, 25, 27, 0.3)); }
+  .hero__actions .btn { flex: 1; }
+  .hero__credit { max-width: 90%; font-size: 0.62rem; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .trail { grid-template-columns: repeat(2, 1fr); }
+  .location-grid, .game-grid { grid-template-columns: 1fr; }
+  .stamp-grid { grid-template-columns: repeat(2, 1fr); }
+  .ach-grid { grid-template-columns: 1fr; }
+  .collection { grid-template-columns: repeat(3, 1fr); }
+  .dossier__meta { grid-template-columns: 1fr; }
+  .meta-box + .meta-box { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+  .dossier__media { aspect-ratio: 4 / 3; }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .section-head { margin-top: 4.5rem; }
+  .numbers dd { font-size: 2.4rem; }
+  .pano-stage { height: 56vh; min-height: 360px; }
+  .pano-nav { grid-template-columns: repeat(2, 1fr); }
+  .pano-controls { gap: 0.15rem; }
+  .pano-controls .icon-btn { width: 36px; height: 36px; }
+  .pano-strip { bottom: 64px; }
+  .pano-hint { display: none; }
+  .pano-caption { max-width: 70%; }
+  .toasts { left: 12px; right: 12px; bottom: 12px; }
+  .toast { max-width: none; }
+  .modal { padding: 0; align-items: end; }
+  .modal__panel { max-height: 94vh; border-radius: 12px 12px 0 0; }
+  .lightbox { grid-template-columns: 1fr; padding: 10px; }
+  .lightbox__nav { position: absolute; bottom: 20px; }
+  .lightbox__nav.prev { left: 20px; } .lightbox__nav.next { right: 20px; }
+  .intro__credit { display: none; }
+  .story-band__text { padding: 2rem 20px 3rem; }
+}
+
+@media (max-width: 460px) {
+  .hud__streak { display: none; }
+  .trail { gap: 0.5rem; }
+  .stamp { padding: 0.5rem; }
+  .stamp b { font-size: 0.82rem; }
+  .thumbs { grid-template-columns: repeat(3, 1fr); }
+  .thumbs button:nth-child(4) { display: none; }
+}
+
+@media print {
+  .site-header, .intro, .toasts { display: none !important; }
+}

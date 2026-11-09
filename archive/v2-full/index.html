@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lahore Legacy — Explore the Past. Play the Games. Discover the Heritage.</title>
+  <meta name="description" content="A heritage adventure through Lahore's monuments: Badshahi Mosque, Lahore Fort, Minar-e-Pakistan, Wazir Khan Mosque, Shalimar Gardens, Greater Iqbal Park and the Walled City." />
+  <meta name="theme-color" content="#17191B" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://commons.wikimedia.org" />
+  <link rel="preconnect" href="https://upload.wikimedia.org" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/games.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body class="is-intro">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ CINEMATIC INTRO ============ -->
+  <div id="intro" class="intro" role="dialog" aria-label="Lahore Legacy introduction">
+    <div class="intro__photo" id="intro-photo" aria-hidden="true"></div>
+    <div class="intro__shade" aria-hidden="true"></div>
+    <div class="intro__content">
+      <p class="intro__pre">A Heritage Journey · لاہور</p>
+      <h1 class="intro__logo" aria-label="Lahore Legacy">
+        <span class="intro__word">Lahore</span>
+        <span class="intro__rule" aria-hidden="true"></span>
+        <span class="intro__word intro__word--2">Legacy</span>
+      </h1>
+      <p class="intro__tagline">Explore the Past. Play the Games. Discover the Heritage.</p>
+      <button id="intro-begin" class="btn btn--gold btn--lg intro__cta">Begin Your Adventure</button>
+    </div>
+    <div class="intro__skyline" aria-hidden="true" id="intro-skyline"></div>
+    <button id="intro-skip" class="intro__skip">Skip intro</button>
+    <p class="intro__credit" id="intro-credit"></p>
+  </div>
+
+  <!-- ============ HEADER / HUD ============ -->
+  <header class="site-header" id="site-header">
+    <a href="#home" class="brand" data-nav="home" aria-label="Lahore Legacy home">
+      <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 L24.5 15.5 L37 20 L24.5 24.5 L20 37 L15.5 24.5 L3 20 L15.5 15.5 Z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="20" cy="20" r="3" fill="currentColor"/></svg>
+      <span class="brand__text">Lahore <em>Legacy</em></span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Main">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#explore" data-nav="explore">Explore</a>
+      <a href="#panorama" data-nav="panorama">Views</a>
+      <a href="#games" data-nav="games">Games</a>
+      <a href="#passport" data-nav="passport">Passport</a>
+    </nav>
+
+    <div class="hud" aria-label="Your progress">
+      <button class="hud__streak" id="hud-streak" title="Daily streak" data-nav-to="passport"><span class="hud__flame"></span> <b>0</b></button>
+      <button class="hud__player" id="hud-player" data-nav-to="passport" aria-label="Open passport">
+        <span class="hud__avatar" id="hud-avatar">T</span>
+        <span class="hud__meta"><span class="hud__level" id="hud-level">Explorer</span>
+          <span class="hud__bar"><i id="hud-bar"></i></span>
+          <span class="hud__xp"><b id="hud-xp">0</b> XP</span></span>
+      </button>
+      <div class="sound">
+        <button class="icon-btn" id="sound-toggle" aria-expanded="false" aria-controls="sound-panel" aria-label="Sound settings" title="Sound">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="sound-on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path class="sound-off" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <div class="sound__panel" id="sound-panel" hidden>
+          <p class="eyebrow">Sound</p>
+          <label class="switch"><input type="checkbox" id="snd-sfx"><span>Effects</span></label>
+          <input type="range" id="snd-sfx-vol" min="0" max="100" aria-label="Effects volume">
+          <label class="switch"><input type="checkbox" id="snd-amb"><span>Ambient soundscape</span></label>
+          <input type="range" id="snd-amb-vol" min="0" max="100" aria-label="Ambient volume">
+          <button class="link-btn small" id="snd-mute">Mute all</button>
+        </div>
+      </div>
+      <button class="icon-btn nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="main" class="views">
+    <!-- ============ HOME ============ -->
+    <section class="view view--home is-active" data-view="home" aria-labelledby="home-title">
+      <div class="hero" id="hero">
+        <div class="hero__bg" aria-hidden="true">
+          <div class="hero__art" id="hero-art"></div>
+          <div class="hero__vignette"></div>
+        </div>
+        <div class="hero__content">
+          <p class="eyebrow reveal">Lahore · لاہور · Since antiquity</p>
+          <h1 class="hero__title reveal" id="home-title">Four centuries of empire,<br><em>written in stone, tile and water.</em></h1>
+          <p class="hero__lead reveal">Walk the Mughal capital of the Punjab — its imperial fort, its great mosques and its terraced gardens — then test what you have learned in six heritage adventures.</p>
+          <div class="hero__actions reveal">
+            <a href="#explore" class="btn btn--gold btn--lg" data-nav="explore">Explore Lahore</a>
+            <a href="#games" class="btn btn--ghost btn--lg" data-nav="games">Play the Games</a>
+          </div>
+        </div>
+        <p class="hero__credit" id="hero-credit"></p>
+        <a href="#home-intro" class="scroll-cue" aria-label="Scroll down"><span></span></a>
+      </div>
+
+      <section class="band band--paper" id="home-intro">
+        <div class="container band__grid">
+          <div class="reveal">
+            <p class="eyebrow">The City</p>
+            <h2>A capital of the Mughal world</h2>
+            <p class="lede">Lahore was one of the great cities of the Mughal Empire. Emperors rebuilt its fort, raised its mosques and laid out its gardens; Sikh and British rulers followed; and in 1940 an open ground beside the old city gave its name to the resolution that led to Pakistan.</p>
+            <p>Lahore Legacy brings these places together: real photographs, verified dates, points of interest to study, and games that reward what you discover.</p>
+          </div>
+          <dl class="numbers reveal">
+            <div><dt>Akbar rebuilds the Lahore Fort</dt><dd>1566</dd></div>
+            <div><dt>Badshahi Mosque completed</dt><dd>1673</dd></div>
+            <div><dt>Fountains in the Shalimar Gardens</dt><dd>410</dd></div>
+            <div><dt>Fort &amp; gardens join UNESCO's list</dt><dd>1981</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <div class="container" id="home-features">
+        <header class="section-head reveal">
+          <p class="eyebrow">Your Journey</p>
+          <h2>Four ways to discover</h2>
+        </header>
+        <div class="feature-grid" id="feature-grid">
+          <a href="#explore" data-nav="explore" class="feature-card reveal" data-photo="badshahi-mosque">
+            <div class="feature-card__media"></div>
+            <div class="feature-card__body"><span class="feature-card__num">01</span><h3>Explore the monuments</h3><p>Dossiers with history, architecture, dated timelines, galleries and sources.</p><span class="feature-card__go">Open the dossiers →</span></div></a>
+          <a href="#panorama" data-nav="panorama" class="feature-card reveal" data-photo="lahore-fort" data-photo-start="2">
+            <div class="feature-card__media"></div>
+            <div class="feature-card__body"><span class="feature-card__num">02</span><h3>Look closer</h3><p>Pan and zoom through high-resolution photographs and study each site's points of interest.</p><span class="feature-card__go">Enter the viewer →</span></div></a>
+          <a href="#games" data-nav="games" class="feature-card reveal" data-photo="wazir-khan-mosque" data-photo-start="2">
+            <div class="feature-card__media"></div>
+            <div class="feature-card__body"><span class="feature-card__num">03</span><h3>Six heritage adventures</h3><p>A story, an investigation, an escape room, a restoration puzzle, a treasure hunt and a race against time.</p><span class="feature-card__go">Enter the Games Center →</span></div></a>
+          <a href="#passport" data-nav="passport" class="feature-card reveal" data-photo="shalimar-gardens">
+            <div class="feature-card__media"></div>
+            <div class="feature-card__body"><span class="feature-card__num">04</span><h3>Your heritage passport</h3><p>Stamps, discovery cards, expeditions, ranks and records — all saved on this device.</p><span class="feature-card__go">View your passport →</span></div></a>
+        </div>
+      </div>
+
+      <section class="story-band" id="walled-city">
+        <div class="story-band__media" id="walled-media"></div>
+        <div class="story-band__text reveal">
+          <p class="eyebrow">Inside the Walls</p>
+          <h2>The Walled City</h2>
+          <p>The old city of Lahore was entered through a ring of gates. From Delhi Gate, the Shahi Guzargah — the royal route — winds past the Wazir Khan Mosque, through bazaars and havelis, to the Lahore Fort. Much of this route has been conserved by the Walled City of Lahore Authority.</p>
+          <div class="thumbs" id="walled-thumbs"></div>
+          <p class="hero__credit hero__credit--inline" id="walled-credit"></p>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="home-split">
+          <article class="daily-card panel reveal" id="daily-card" aria-live="polite"></article>
+          <article class="quest-card panel reveal" id="quest-card"></article>
+        </div>
+
+        <header class="section-head reveal">
+          <p class="eyebrow">Destinations</p>
+          <h2>The heritage trail</h2>
+        </header>
+        <div class="trail" id="home-trail"></div>
+      </div>
+    </section>
+
+    <!-- ============ EXPLORE ============ -->
+    <section class="view view--explore" data-view="explore" aria-labelledby="explore-title">
+      <div class="page-hero">
+        <p class="eyebrow">Documented history · Real photography</p>
+        <h1 id="explore-title">Explore Lahore</h1>
+        <p class="page-hero__lead">Open a dossier, reveal its facts, study its points of interest and pass the stamp test to earn a passport stamp.</p>
+        <div class="filter-bar" role="group" aria-label="Filter sites">
+          <button class="chip is-active" data-filter="all">All sites</button>
+          <button class="chip" data-filter="Mughal">Mughal</button>
+          <button class="chip" data-filter="Modern">Modern &amp; civic</button>
+          <button class="chip" data-filter="stamped">Stamped</button>
+          <button class="chip" data-filter="unstamped">Not yet stamped</button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="location-grid" id="location-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============ PANORAMA / VIEWS ============ -->
+    <section class="view view--panorama" data-view="panorama" aria-labelledby="pano-title">
+      <div class="pano-layout">
+        <div class="pano-stage" id="pano-stage">
+          <div class="pano-viewport" id="pano-viewport" tabindex="0" aria-label="Image viewer. Drag or use arrow keys to look around, plus and minus to zoom."></div>
+          <div class="pano-badge" id="pano-badge"></div>
+          <div class="pano-hint" id="pano-hint">Drag to look around · Scroll or pinch to zoom</div>
+          <div class="pano-strip" id="pano-strip" aria-label="Views of this site"></div>
+          <div class="pano-controls" role="toolbar" aria-label="Viewer controls">
+            <button class="icon-btn" data-pano="prev" aria-label="Previous view">‹</button>
+            <button class="icon-btn" data-pano="zoom-out" aria-label="Zoom out">−</button>
+            <button class="icon-btn" data-pano="reset" aria-label="Reset view">⟲</button>
+            <button class="icon-btn" data-pano="zoom-in" aria-label="Zoom in">+</button>
+            <button class="icon-btn" data-pano="next" aria-label="Next view">›</button>
+            <button class="icon-btn" data-pano="fullscreen" aria-label="Fullscreen">⛶</button>
+          </div>
+          <div class="pano-transition" id="pano-transition" aria-hidden="true"></div>
+        </div>
+        <aside class="pano-side panel">
+          <p class="eyebrow">Site Viewer</p>
+          <h1 id="pano-title" class="pano-side__title">—</h1>
+          <p class="pano-side__era" id="pano-era"></p>
+          <div class="seg seg--sm" role="radiogroup" aria-label="View mode" id="pano-mode">
+            <button role="radio" aria-checked="true" data-mode="photo">Photographs</button>
+            <button role="radio" aria-checked="false" data-mode="illustration">Annotated plan</button>
+          </div>
+          <div class="pano-progress"><span id="pano-found">0</span> / <span id="pano-total">0</span> points of interest studied</div>
+          <div class="poi-list" id="poi-list"></div>
+          <div class="pano-info" id="pano-info"><p>Select a point of interest to learn about that part of the monument.</p></div>
+          <a class="btn btn--ghost btn--sm" id="pano-360" target="_blank" rel="noopener" hidden>Open real 360° tour ↗</a>
+          <div class="pano-nav" id="pano-nav" role="tablist" aria-label="Choose location"></div>
+          <p class="pano-credit" id="pano-credit"></p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ GAMES ============ -->
+    <section class="view view--games" data-view="games" aria-labelledby="games-title">
+      <div class="page-hero">
+        <p class="eyebrow">Games Center</p>
+        <h1 id="games-title">Play the Past</h1>
+        <p class="page-hero__lead">Six adventures with levels, scoring and rewards. Stories marked <span class="tag tag--fiction">Fictional story</span> are invented; every fact you are tested on is documented history.</p>
+      </div>
+      <div class="container">
+        <div class="game-grid" id="game-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============ PASSPORT ============ -->
+    <section class="view view--passport" data-view="passport" aria-labelledby="passport-title">
+      <div class="page-hero">
+        <p class="eyebrow">Digital Heritage Passport</p>
+        <h1 id="passport-title">Your Journey</h1>
+      </div>
+      <div class="container passport" id="passport"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p class="brand__text">Lahore <em>Legacy</em></p>
+        <p class="muted">A heritage journey through Lahore. Game stories are fiction; site facts are drawn from documented history. Photographs: Wikimedia Commons contributors.</p>
+      </div>
+      <div class="footer-links">
+        <button class="link-btn" id="open-credits">Image credits &amp; licences</button>
+        <button class="link-btn" id="replay-intro">Replay intro</button>
+        <a href="#passport" data-nav="passport">Passport</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Game stage (games mount here) -->
+  <div class="game-stage" id="game-stage" role="dialog" aria-modal="true" aria-labelledby="game-stage-title" hidden>
+    <div class="game-stage__bar">
+      <button class="btn btn--ghost btn--sm" id="game-exit">← Games Center</button>
+      <h2 id="game-stage-title">Game</h2>
+      <div class="game-stage__meta" id="game-stage-meta"></div>
+    </div>
+    <div class="game-stage__body" id="game-root"></div>
+  </div>
+
+  <!-- Overlays -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="document">
+      <button class="modal__close icon-btn" data-close aria-label="Close">✕</button>
+      <div class="modal__body" id="modal-body"></div>
+    </div>
+  </div>
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+  <div class="celebrate" id="celebrate" aria-live="polite" hidden></div>
+
+  <!-- Data & config -->
+  <script src="js/config/assets.js"></script>
+  <script src="js/data/history.js"></script>
+  <!-- Core -->
+  <script src="js/illustrations.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/commons.js"></script>
+  <script src="js/gamification.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/explore.js"></script>
+  <script src="js/panorama.js"></script>
+  <script src="js/passport.js"></script>
+  <!-- Games -->
+  <script src="js/games/registry.js"></script>
+  <script src="js/games/lost-lahore.js"></script>
+  <script src="js/games/heritage-detective.js"></script>
+  <script src="js/games/mystery-chamber.js"></script>
+  <script src="js/games/rebuild-lahore.js"></script>
+  <script src="js/games/heritage-quest.js"></script>
+  <script src="js/games/history-rush.js"></script>
+  <!-- Boot -->
+  <script src="js/main.js"></script>
+</body>
+</html>
