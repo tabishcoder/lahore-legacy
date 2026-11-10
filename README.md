@@ -168,3 +168,6 @@ The site loads Tag Manager and pushes `virtual_page_view` on every page change, 
 - **Install as an app:** `manifest.webmanifest` + `sw.js` let visitors "Install app" / "Add to Home Screen". It then opens full screen with its own icon. `sw.js` caches nothing, so updates show immediately.
 - **Back button keeps your place:** going back returns to the same scroll position instead of the top.
 - **Arrows on photo rows** for mouse users, and a **back-to-top** button on long pages (`js/ease.js`).
+
+## Link previews
+`index.html` has Open Graph and Twitter tags pointing at `assets/og/lahore-legacy.jpg` (1200×630, Badshahi Mosque from the air, ~150 KB). If the domain changes, update the `https://lahorelegacy.com/` URLs there. WhatsApp and Facebook cache previews: a link shared before the update can keep showing the old preview for a while; use the Facebook Sharing Debugger ("Scrape again") to refresh it.
