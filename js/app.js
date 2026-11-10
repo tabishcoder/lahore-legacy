@@ -203,10 +203,13 @@
     const a = document.createElement("a");
     a.className = "tile";
     a.href = `#/site/${s.id}`;
-    a.appendChild(media(s.id, { width: 500 }));
+    const frame = document.createElement("span");
+    frame.className = "tile__frame";
+    frame.appendChild(media(s.id, { width: 500 }));
     const d = LL.ME && LL.GEO[s.id] ? LL.Game.distance(LL.ME, LL.GEO[s.id]) : null;
+    frame.insertAdjacentHTML("beforeend", `<span class="tile__top">${LL.Game.level(s.id) !== "new" ? statusChip(s.id) : ""}${d != null && d < 40000 ? `<span class="tile__dist">${fmtDist(d)}</span>` : ""}</span>`);
+    a.appendChild(frame);
     a.insertAdjacentHTML("beforeend", `
-      <span class="tile__top">${LL.Game.level(s.id) !== "new" ? statusChip(s.id) : ""}${d != null && d < 40000 ? `<span class="tile__dist">${fmtDist(d)}</span>` : ""}</span>
       <span class="tile__body"><small>${esc(s.era.en)}</small><b>${esc(s.name.en)}</b><span lang="ur">${esc(s.name.ur)}</span></span>`);
     return a;
   }
