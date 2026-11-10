@@ -1,7 +1,7 @@
 /* =========================================================================
    LAHORE LEGACY — REWARD MOMENTS
    Stamp slam, floating points, badge unlock card, rank-up banner and a
-   short burst of gold confetti. Short, skippable (tap anywhere), and
+   short burst of confetti in brick, kashi blue and haldi. Short, skippable (tap anywhere), and
    replaced by a plain message when "reduce motion" is on.
    ========================================================================= */
 
@@ -33,7 +33,7 @@ LL.FX = (function () {
     return o;
   }
 
-  /* gold confetti from a point (defaults to the screen centre) */
+  /* confetti from a point (defaults to the screen centre) */
   function confetti(x = innerWidth / 2, y = innerHeight * 0.4, n = 90) {
     if (reduce()) return;
     const cv = document.createElement("canvas");
@@ -43,7 +43,7 @@ LL.FX = (function () {
     document.body.appendChild(cv);
     const ctx = cv.getContext("2d");
     ctx.scale(dpr, dpr);
-    const cols = ["#D1B27A", "#B28A45", "#F4EFE5", "#632F36", "#E9D29A"];
+    const cols = ["#9A3A1F", "#1F5A78", "#D49A2A", "#F6EEDC", "#4F6B3A", "#C4683A"];
     const ps = Array.from({ length: n }, () => {
       const a = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.1, sp = 6 + Math.random() * 9;
       return { x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 3 + Math.random() * 5, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4, c: cols[(Math.random() * cols.length) | 0], s: Math.random() < 0.5 };
@@ -78,7 +78,7 @@ LL.FX = (function () {
 
   /* the passport stamp lands on the screen */
   function stamp(site, pts) {
-    if (reduce()) return LL.UI.toast(`★ ${LL.I18N.t("stampEarned")} · +${pts}`);
+    if (reduce()) return LL.UI.toast(`${LL.I18N.t("stampEarned")} · +${pts}`);
     run((done) => {
       const d = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
       overlay("fx--stamp", `
@@ -93,7 +93,7 @@ LL.FX = (function () {
 
   /* a badge card flips over */
   function badge(b, icon) {
-    if (reduce()) return LL.UI.toast(`🏅 ${LL.I18N.t("badgeUnlocked")}: ${b.en}`);
+    if (reduce()) return LL.UI.toast(`${LL.I18N.t("badgeUnlocked")}: ${b.en}`);
     run((done) => {
       overlay("fx--badge", `
         <div class="fx-badge">
@@ -109,7 +109,7 @@ LL.FX = (function () {
 
   /* new rank banner */
   function rank(r, icon) {
-    if (reduce()) return LL.UI.toast(`👑 ${LL.I18N.t("rankUp")}: ${r.en}`);
+    if (reduce()) return LL.UI.toast(`${LL.I18N.t("rankUp")}: ${r.en}`);
     run((done) => {
       overlay("fx--rank", `<div class="fx-rank"><span class="fx-rank__icon">${icon}</span><div><small>${LL.I18N.t("rankUp")}</small><b>${esc(r.en)}</b><span lang="ur">${esc(r.ur)}</span></div></div>`, 2600, done);
       setTimeout(() => confetti(innerWidth / 2, 90, 80), 250);
