@@ -1718,3 +1718,7 @@ body.on-map .to-top, body.on-trail .to-top, body.no-scroll .to-top { display: no
   .trail__hint { bottom: 78px; white-space: normal; text-align: center; width: max-content; max-width: calc(100% - 32px); }
   .trail-hot { font-size: 0.9rem; }
 }
+.trail__nav { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.trail__nav .btn { white-space: normal; text-align: center; line-height: 1.2; padding-block: 0.5rem; min-width: 0; }
+.trail__bar { grid-template-columns: auto minmax(0, 1fr) auto; }
+@media (max-width: 380px) { .trail__step--next { font-size: 0.9rem; padding: 0 0.6rem; } }
