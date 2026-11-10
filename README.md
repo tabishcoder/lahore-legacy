@@ -162,3 +162,9 @@ The site loads Tag Manager and pushes `virtual_page_view` on every page change, 
 2. **Triggers → New → Custom event**, name `virtual_page_view`. **Tags → New → Google Analytics: GA4 Event**, event name `page_view`, Measurement ID `G-…`, event parameter `page_location` = `{{Page URL}}`, trigger = that custom event.
 3. (Optional) Same for `open_place`, `quiz_complete`, `trail_stop`, `stamp_earned`, `get_directions`, `share`.
 4. **Submit → Publish.**
+
+## Full screen, install, ease of use
+- **Full screen:** on phones that allow it (Android Chrome and most others), the site goes full screen on the first tap. Browsers never allow full screen without a tap, and iPhone Safari doesn't allow it at all.
+- **Install as an app:** `manifest.webmanifest` + `sw.js` let visitors "Install app" / "Add to Home Screen". It then opens full screen with its own icon. `sw.js` caches nothing, so updates show immediately.
+- **Back button keeps your place:** going back returns to the same scroll position instead of the top.
+- **Arrows on photo rows** for mouse users, and a **back-to-top** button on long pages (`js/ease.js`).

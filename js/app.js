@@ -163,6 +163,7 @@
     main().querySelectorAll(".row__scroll").forEach((row) => {
       row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(tile(s)); });
     });
+    LL.Ease && LL.Ease.rowArrows(main());
     const back = LL.Motion.lastMorph();
     if (back) { const c = main().querySelector(`.tile[href="#/site/${back}"] .media`); if (c) c.style.viewTransitionName = "hero-photo"; }
     LL.Motion.reveal(main(), ".row__head, .band");
@@ -1120,6 +1121,7 @@
     else cleanup = home();
     header();
     window.scrollTo(0, 0);
+    LL.Ease && LL.Ease.afterRender();
   }
 
   function boot() {
