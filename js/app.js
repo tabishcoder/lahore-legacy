@@ -70,8 +70,6 @@
     $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span>`;
     $("#progress-pill").title = `${rk.en} · ${rk.points} points · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
     $("#footer-text").textContent = t("footer");
-    $("#open-credits").textContent = t("credits");
-    $("#archive-link").textContent = t("oldArchive");
     const r = route();
     document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));
   }
@@ -153,7 +151,7 @@
     const show = LL.Motion.slideshow(heroBox, night ? "night" : "day", (g) => { capText.innerHTML = `${esc(g.caption)}`; });
     const vids = LL.Motion.videoLoop(heroBox, LL.Motion.pickClips(LL.VIDEOS.home), (c) => {
       show && show.stop();
-      capText.innerHTML = `▶ ${esc(c.label)} · <a href="${c.page}" target="_blank" rel="noopener">${t("videoBy", esc(c.by))}</a>`;
+      capText.innerHTML = `▶ ${esc(c.label)}`;
       vbtn.hidden = false;
     });
     vbtn.addEventListener("click", () => { const on = vids.toggle(); vbtn.textContent = on ? "❚❚" : "▶"; vbtn.setAttribute("aria-label", on ? "Pause video" : "Play video"); });
@@ -333,19 +331,9 @@
     const heroMedia = media(id, { width: innerWidth > 900 ? 1920 : 960, eager: true });
     LL.Motion.morphTo(heroMedia, id);
     sp.appendChild(heroMedia);
-    LL.Photos.resolve(id, innerWidth > 900 ? 1920 : 960).then((p) => {
-      if (!p || !p.official || !document.body.contains(sp) || sp.parentElement.querySelector(".site__vcap")) return;
-      sp.parentElement.insertAdjacentHTML("beforeend", `<p class="credit site__credit">${LL.UI.credit(p)}</p>`);
-    });
     const vset = LL.VIDEOS.sites[id];
     let siteVid = null;
     if (vset) siteVid = LL.Motion.videoLoop(sp, [LL.Motion.pickClips(vset)], (c) => {
-      const pc = sp.parentElement.querySelector(".site__credit");
-      if (pc) pc.remove();
-      const cv = document.createElement("p");
-      cv.className = "site__vcap";
-      cv.innerHTML = `▶ <a href="${c.page}" target="_blank" rel="noopener">${t("videoBy", esc(c.by))}</a>`;
-      sp.appendChild(cv);
     });
     LL.Motion.parallax(sp);
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
@@ -360,7 +348,7 @@
       b.className = "strip__item";
       b.setAttribute("aria-label", cap(g));
       b.appendChild(media(id, { width: 500, start: i, label: false }));
-      b.insertAdjacentHTML("beforeend", `<span>${fx(cap(g))}</span>${g.official ? `<small class="strip__by">${esc(g.by)}</small>` : ""}`);
+      b.insertAdjacentHTML("beforeend", `<span>${fx(cap(g))}</span>`);
       b.addEventListener("click", () => lightbox(id, i));
       strip.appendChild(b);
     });
@@ -563,7 +551,6 @@
   }
 
   /* ---------- content from official heritage bodies ---------- */
-  const srcLine = (src) => `<p class="hint official__src">${t("fromSource")} <a href="${src.url}" target="_blank" rel="noopener">${esc(src.name)}</a></p>`;
   function officialBlock(id) {
     const O = LL.OFFICIAL;
     if (!O) return "";
@@ -574,7 +561,6 @@
         <p class="lead" ${U()}>${fx(pick(h.lead))}</p>
         <ol class="saga">${h.steps.map((x) => `<li><b class="saga__year">${esc(x.year)}</b><p ${U()}>${fx(pick(x))}</p></li>`).join("")}</ol>
         <div class="story-grid" data-box="story">${(LL.HAMMAM_STORY || []).map((g, i) => `<button class="story-grid__item${i < 4 ? " is-board" : ""}" data-i="${i}"><img src="${g.small}" alt="${esc(cap(g))}" loading="lazy" width="${g.w}" height="${g.h}"><span>${fx(cap(g))}</span></button>`).join("")}</div>
-        ${srcLine(h.source)}
       </section>`;
     }
     if (id === "lahore-museum") {
@@ -584,7 +570,6 @@
         <p class="lead" ${U()}>${fx(pick(m.lead))}</p>
         <div class="collection" data-box="museum">${(LL.MUSEUM_HIGHLIGHTS || []).map((g, i) => `<button class="collection__item" data-i="${i}"><span class="collection__img"><img src="${g.small}" alt="${esc(g.caption)}" loading="lazy"></span><b>${esc(g.caption)}</b><small>${esc(g.note)}</small></button>`).join("")}</div>
         <p><a class="btn btn--ghost btn--sm" href="${m.vr.url}" target="_blank" rel="noopener">${ico("tour")} ${esc(m.vr.label.en)} ↗</a></p>
-        ${srcLine(m.source)}
       </section>`;
     }
     if (id === "lahore-fort" || id === "shalimar-gardens") {
@@ -593,7 +578,6 @@
         <h2>${esc(pick(f.title))}</h2>
         <ul class="official__facts" ${U()}>${f.facts.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul>
         ${f.access ? `<div class="access"><h3>${ico("me")} ${esc(pick(f.access.title))}</h3><ul ${U()}>${f.access.items.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul></div>` : ""}
-        ${srcLine(f.source)}
       </section>`;
     }
     return "";
@@ -1074,30 +1058,6 @@
     return () => clearInterval(timer);
   }
 
-  /* ---------------- credits & sources ---------------- */
-  function creditsDialog() {
-    const d = $("#credits");
-    $("#credits-body").innerHTML = `<p class="hint">…</p>`;
-    LL.Credits.load().then(() => {
-      const rows = [];
-      [...Object.values(LL.ASSETS.locations), ...Object.values(LL.ASSETS.extras)].forEach((s) =>
-        [...(s.gallery || []), ...(s.old || [])].forEach((g) => {
-          const c = LL.Credits.get(g.file) || {};
-          rows.push(`<tr><td>${esc(s.name)}</td><td><a href="${LL.ASSETS.commonsPage(g.file)}" target="_blank" rel="noopener">${esc(g.file)}</a></td><td>${c.missing ? "—" : esc(c.artist || "—")}</td><td>${esc(c.license || "")}</td></tr>`);
-        }));
-      const off = [];
-      Object.entries(LL.OFFICIAL_PHOTOS || {}).forEach(([k, list]) => list.forEach((g) => off.push([k, g])));
-      (LL.HAMMAM_STORY || []).forEach((g) => off.push(["shahi-hammam", g]));
-      (LL.MUSEUM_HIGHLIGHTS || []).forEach((g) => off.push(["lahore-museum", g]));
-      const offRows = off.map(([k, g]) => `<tr><td>${esc((LL.ASSETS.locations[k] || LL.ASSETS.extras[k] || { name: k }).name)}</td><td><a href="${g.orig}" target="_blank" rel="noopener">${esc(g.caption)}</a></td><td><a href="${g.from}" target="_blank" rel="noopener">${esc(g.by)}</a></td><td>Used with permission</td></tr>`);
-      $("#credits-body").innerHTML = `<table><thead><tr><th></th><th>Photo</th><th>Author / source</th><th>Licence</th></tr></thead><tbody>${offRows.join("")}${rows.join("")}</tbody></table>`;
-    });
-    $("#credits-official").innerHTML = (LL.OFFICIAL ? LL.OFFICIAL.sources : []).map((o) => `<li><a href="${o.url}" target="_blank" rel="noopener"><b>${esc(o.name)}</b></a><br><span>${esc(o.used)}</span></li>`).join("");
-    $("#credits-videos").innerHTML = Object.values(LL.VIDEOS.clips).map((c) => `<li>${esc(c.label)} — <a href="${c.page}" target="_blank" rel="noopener">${esc(c.by)} on Pexels</a></li>`).join("");
-    $("#credits-sources").innerHTML = [...LL.HISTORY_SOURCES, ...LL.VISIT_SOURCES].map(([n, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("");
-    d.showModal();
-  }
-
   /* ---------------- router ---------------- */
   function route() {
     const h = (location.hash || "#/").replace(/^#\/?/, "");
@@ -1126,8 +1086,6 @@
 
   function boot() {
     $("#lang").addEventListener("click", () => { LL.I18N.set(LL.I18N.mode === "mix" ? "en" : "mix"); LL.Analytics && LL.Analytics.event("language", { mode: LL.I18N.mode }); });
-    $("#open-credits").addEventListener("click", creditsDialog);
-    $("#credits").addEventListener("click", (e) => { if (e.target.id === "credits" || e.target.closest("[data-close]")) $("#credits").close(); });
     document.addEventListener("ll:lang", render);
     document.addEventListener("ll:progress", () => {
       const before = window.__rank;

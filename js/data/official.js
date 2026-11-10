@@ -58,7 +58,7 @@ LL.OFFICIAL = {
 
   /* ---------- Lahore Fort: from WCLA ---------- */
   fort: {
-    title: { en: "From the Walled City Authority", ur: "والڈ سٹی اتھارٹی کی طرف سے" },
+    title: { en: "Good to know", ur: "جاننے کی باتیں" },
     facts: [
       { en: "The Mughal buildings are grouped into four large quadrangles, with 21 separate structures in all.", ur: "مغل عمارتیں چار بڑے احاطوں میں ہیں، کل 21 الگ عمارتیں۔" },
       { en: "UNESCO added the fort to the World Heritage List in 1981, together with Shalimar Gardens.", ur: "یونیسکو نے 1981 میں شالامار باغ کے ساتھ قلعے کو عالمی ورثے کی فہرست میں شامل کیا۔" },
@@ -77,7 +77,7 @@ LL.OFFICIAL = {
 
   /* ---------- Shalimar Gardens ---------- */
   shalimar: {
-    title: { en: "From the Walled City Authority", ur: "والڈ سٹی اتھارٹی کی طرف سے" },
+    title: { en: "Good to know", ur: "جاننے کی باتیں" },
     facts: [
       { en: "WCLA's conservation work has repaired stonework and brought the water channels and planting back to life.", ur: "والڈ سٹی اتھارٹی نے پتھر کا کام مرمت کیا اور نہروں اور پودوں کو دوبارہ زندہ کیا۔" },
       { en: "On some evenings the garden hosts candle-lit heritage nights with sitar, classical dance and storytelling. Dates are announced on the garden's website.", ur: "کچھ شاموں کو باغ میں موم بتیوں والی ثقافتی راتیں ہوتی ہیں: ستار، کلاسیکی رقص اور داستان گوئی۔ تاریخیں باغ کی ویب سائٹ پر آتی ہیں۔" },
