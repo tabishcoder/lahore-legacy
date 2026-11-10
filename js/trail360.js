@@ -53,7 +53,6 @@ LL.Trail360 = (function () {
             <button class="tool" data-act="gyro" aria-label="${t("motion")}" hidden>${ico("phone")}</button>
             <button class="tool" data-act="full" aria-label="Full screen">${ico("full")}</button>
           </div>
-          <p class="trail__credit">360°: <a href="${T.source.url}" target="_blank" rel="noopener">${esc(T.source.name)}</a></p>
         </div>
         <aside class="trail__panel" id="trail-panel"></aside>
       </section>`;
@@ -77,8 +76,7 @@ LL.Trail360 = (function () {
           ${stops.map((x, i) => `<li><button data-go="${x.id}" ${i === cur ? 'aria-current="true"' : ""}>
             <img src="${thumb(x.id)}" alt="" loading="lazy" width="64" height="64"><span class="n">${i + 1}</span>
             <span class="trail__sname">${esc(x.name.en)}${mix ? `<small lang="ur">${esc(x.name.ur)}</small>` : ""}</span></button></li>`).join("")}
-        </ol>
-        <p class="hint">${t("trailCredit")} <a href="${T.source.url}" target="_blank" rel="noopener">${esc(T.source.name)}</a>.</p>`;
+        </ol>`;
       const curEl = panel.querySelector('[aria-current="true"]');
       if (curEl && innerWidth > 960) curEl.scrollIntoView({ block: "nearest" });
     }

@@ -89,7 +89,7 @@ LL.UI = (function () {
       img.classList.remove("is-ready");
       img.onload = () => img.classList.add("is-ready");
       img.src = it.url; img.alt = cap(it);
-      capEl.innerHTML = `<b>${esc(cap(it))}</b> <span>${i + 1} / ${items.length}</span>${it.official ? `<small class="lightbox__credit">${credit(it)}</small>` : ""}`;
+      capEl.innerHTML = `<b>${esc(cap(it))}</b> <span>${i + 1} / ${items.length}</span>`;
     };
     const go = (d) => { i = (i + d + items.length) % items.length; show(); };
     const close = () => { document.removeEventListener("keydown", onKey); lb.remove(); document.body.style.overflow = ""; };
