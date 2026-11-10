@@ -28,7 +28,9 @@ LL.Trail360 = (function () {
     return loading;
   }
 
-  const faces = (id) => ["f", "r", "b", "l", "u", "d"].map((f) => `assets/pano360/${id}/${f}.webp`);
+  // phones get 1024 px faces (about 0.8 MB a stop), bigger screens 1536 px
+  const lite = Math.min(screen.width, screen.height) < 700;
+  const faces = (id) => ["f", "r", "b", "l", "u", "d"].map((f) => `assets/pano360/${id}/${lite ? "m/" : ""}${f}.webp`);
   const thumb = (id) => `assets/pano360/${id}/thumb.webp`;
 
   /* Mount the page into <main>. Returns a cleanup function. */
@@ -47,6 +49,7 @@ LL.Trail360 = (function () {
           <div class="trail__pano" id="trail-pano" tabindex="0" aria-label="${t("trailAria")}"></div>
           <div class="trail__veil is-on" id="trail-veil"><span class="trail__spinner"></span><span>${t("trailLoading")}</span></div>
           <p class="trail__hint" id="trail-hint">${t("trailHint")}</p>
+          <div class="trail__bar" id="trail-bar"></div>
           <div class="trail__tools">
             <button class="tool" data-act="out" aria-label="Zoom out">${ico("minus")}</button>
             <button class="tool" data-act="in" aria-label="Zoom in">${ico("plus")}</button>
@@ -57,6 +60,7 @@ LL.Trail360 = (function () {
         <aside class="trail__panel" id="trail-panel"></aside>
       </section>`;
 
+    const bar = main.querySelector("#trail-bar");
     const panel = main.querySelector("#trail-panel"), veil = main.querySelector("#trail-veil"), hint = main.querySelector("#trail-hint");
 
     function drawPanel() {
@@ -77,6 +81,11 @@ LL.Trail360 = (function () {
             <img src="${thumb(x.id)}" alt="" loading="lazy" width="64" height="64"><span class="n">${i + 1}</span>
             <span class="trail__sname">${esc(x.name.en)}${mix ? `<small lang="ur">${esc(x.name.ur)}</small>` : ""}</span></button></li>`).join("")}
         </ol>`;
+      bar.innerHTML = `
+        <button class="trail__step" data-go="${prev ? prev.id : ""}" ${prev ? "" : "disabled"} aria-label="${t("prevStop")}">‹</button>
+        <span class="trail__where"><small>${cur + 1} / ${stops.length}</small><b>${esc(s.name.en)}</b></span>
+        ${next ? `<button class="trail__step trail__step--next" data-go="${next.id}">${t("trailNext")} ›</button>`
+               : `<a class="trail__step trail__step--next" href="#/site/wazir-khan-mosque">${t("trailEndShort")} ›</a>`}`;
       const curEl = panel.querySelector('[aria-current="true"]');
       if (curEl && innerWidth > 960) curEl.scrollIntoView({ block: "nearest" });
     }
@@ -89,13 +98,16 @@ LL.Trail360 = (function () {
 
     function scenes() {
       const out = {};
-      stops.forEach((s) => {
+      stops.forEach((s, i) => {
+        // open each stop looking at the way onward, so the next arrow is always in view
+        const nextId = stops[i + 1] && stops[i + 1].id;
+        const fwd = s.links.find((l) => l.to === nextId) || s.links[0];
         out[s.id] = {
-          type: "cubemap", cubeMap: faces(s.id), yaw: 0, pitch: 0, hfov: innerWidth < 700 ? 100 : 90,
+          type: "cubemap", cubeMap: faces(s.id), yaw: fwd ? fwd.yaw : 0, pitch: -4, hfov: innerWidth < 700 ? 100 : 90,
           hotSpots: s.links.map((l) => {
             const to = stops[idx(l.to)];
             const label = l.label ? l.label.en : to.name.en;
-            return { pitch: l.pitch != null ? l.pitch : -6, yaw: l.yaw, type: "scene", sceneId: l.to, cssClass: "trail-hot-wrap", createTooltipFunc: hotspot, createTooltipArgs: { label } };
+            return { pitch: l.pitch != null ? l.pitch : -8, yaw: l.yaw, type: "scene", sceneId: l.to, cssClass: "trail-hot-wrap" + (l === fwd && l.to === nextId ? " is-fwd" : ""), createTooltipFunc: hotspot, createTooltipArgs: { label } };
           }),
         };
       });
@@ -109,9 +121,11 @@ LL.Trail360 = (function () {
       history.replaceState(null, "", `#/trail/${stops[cur].id}`);
       LL.Analytics && LL.Analytics.event("trail_stop", { stop: stops[cur].id });
       drawPanel();
+      veil.style.backgroundImage = `url(${thumb(stops[cur].id)})`;
       if (viewer && !fromViewer) { veil.classList.add("is-on"); viewer.loadScene(stops[cur].id); }
     }
 
+    bar.addEventListener("click", (e) => { const b = e.target.closest("[data-go]"); if (b && b.dataset.go) go(b.dataset.go); });
     panel.addEventListener("click", (e) => {
       const b = e.target.closest("[data-go]");
       if (b && b.dataset.go) { go(b.dataset.go); if (innerWidth <= 960) main.querySelector(".trail__stage").scrollIntoView({ behavior: "smooth" }); }
@@ -132,12 +146,13 @@ LL.Trail360 = (function () {
     });
 
     drawPanel();
+    veil.style.backgroundImage = `url(${thumb(stops[cur].id)})`;
     let hintTimer = setTimeout(() => hint.classList.add("is-hidden"), 6000);
 
     loadLib().then(() => {
       if (!document.body.contains(panel)) return;
       viewer = window.pannellum.viewer("trail-pano", {
-        default: { firstScene: stops[cur].id, sceneFadeDuration: 900, autoLoad: true, showControls: false, compass: false, mouseZoom: true, minHfov: 40, maxHfov: 120, friction: 0.12 },
+        default: { firstScene: stops[cur].id, sceneFadeDuration: 450, autoLoad: true, showControls: false, compass: false, mouseZoom: true, minHfov: 40, maxHfov: 120, friction: 0.12 },
         scenes: scenes(),
       });
       current = viewer;

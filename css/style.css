@@ -1690,3 +1690,31 @@ a, button, .tile, .action, .chips button { touch-action: manipulation; }
 .to-top.is-on { opacity: 1; transform: none; pointer-events: auto; }
 body.on-map .to-top, body.on-trail .to-top, body.no-scroll .to-top { display: none; }
 @media (max-width: 640px) { .to-top { right: 14px; bottom: calc(86px + env(safe-area-inset-bottom)); width: 44px; height: 44px; } }
+
+/* 360° trail: big step buttons on the photo, clearer arrows, quick preview while loading */
+.trail__veil { background: #1B120C center / cover no-repeat; }
+.trail__veil::before { content: ""; position: absolute; inset: 0; background: rgba(27, 18, 12, 0.45); backdrop-filter: blur(10px); }
+.trail__veil > * { position: relative; }
+.trail__bar { position: absolute; z-index: 3; left: 12px; right: 12px; bottom: 12px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.6rem; padding: 0.4rem; border-radius: 4px; background: rgba(27, 18, 12, 0.82); color: #F7EEDC; box-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.7); max-width: 620px; margin: 0 auto; }
+.trail__step { min-width: 52px; min-height: 52px; padding: 0 1rem; border: 1px solid rgba(247, 238, 220, 0.45); border-radius: 3px; background: transparent; color: #F7EEDC; font: 600 1.5rem/1 var(--sans); display: grid; place-items: center; text-decoration: none !important; white-space: nowrap; }
+.trail__step--next { background: #9A3A1F; border-color: #9A3A1F; font-size: 1.1rem; font-variant-caps: small-caps; letter-spacing: 0.04em; box-shadow: inset 0 0 0 3px rgba(255, 248, 234, 0.35); }
+.trail__step:hover:not(:disabled) { background: #7E2C17; border-color: #E9B45A; }
+.trail__step:disabled { opacity: 0.35; cursor: default; }
+.trail__where { min-width: 0; display: grid; text-align: center; line-height: 1.2; }
+.trail__where small { font-size: 0.82rem; color: #E9B45A; font-variant-numeric: lining-nums; }
+.trail__where b { font-family: var(--serif); font-weight: 400; font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trail__hint { bottom: 90px; }
+.trail-hot { padding: 0.45rem 1rem 0.45rem 0.45rem; font-size: 1rem; }
+.trail-hot__arrow { width: 38px; height: 38px; }
+.trail-hot__arrow .ico { width: 22px; height: 22px; }
+.trail-hot-wrap.is-fwd .trail-hot { background: #9A3A1F; border-color: #F3D9A4; }
+.trail-hot-wrap.is-fwd .trail-hot__arrow { width: 46px; height: 46px; }
+.trail-hot-wrap::before { content: ""; position: absolute; left: -40px; top: -40px; width: 80px; height: 80px; border-radius: 50%; }
+@media (max-width: 640px) {
+  .trail__bar { left: 8px; right: 8px; bottom: 8px; gap: 0.4rem; }
+  .trail__step { min-width: 48px; min-height: 48px; padding: 0 0.8rem; }
+  .trail__step--next { font-size: 1rem; }
+  .trail__where b { font-size: 1rem; }
+  .trail__hint { bottom: 78px; white-space: normal; text-align: center; width: max-content; max-width: calc(100% - 32px); }
+  .trail-hot { font-size: 0.9rem; }
+}
