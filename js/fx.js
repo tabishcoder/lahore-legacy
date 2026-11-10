@@ -78,6 +78,7 @@ LL.FX = (function () {
 
   /* the passport stamp lands on the screen */
   function stamp(site, pts) {
+    LL.Analytics && LL.Analytics.event("stamp_earned", { place: site && site.id });
     if (reduce()) return LL.UI.toast(`${LL.I18N.t("stampEarned")} · +${pts}`);
     run((done) => {
       const d = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });

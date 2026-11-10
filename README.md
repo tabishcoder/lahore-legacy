@@ -146,3 +146,11 @@ Photos, 360° views and information from official heritage bodies, used with per
 - **Official photos** (`js/config/official-photos.js`, `assets/official/`): 31 place photos from WCLA, the Lahore Fort, Shahi Hammam and Shalimar sites, the Department of Archaeology and Museums and the Lahore Museum, as WebP at 1600 px and 640 px. They are shown before Wikimedia photos.
 - **New sections** (`js/data/official.js`): how the Shahi Hammam was saved (timeline + before/after boards + award), Lahore Museum collection highlights with a link to the museum's own VR tour, Lahore Fort accessibility information, Shalimar conservation, and WCLA's guided tours on the Plan page.
 - heritage.pakistan.gov.pk and punjab.gov.pk did not respond, and whc.unesco.org blocks automated access, so nothing was taken from them directly.
+
+## Analytics (Google Analytics 4 + Microsoft Clarity)
+Open `js/analytics.js` and paste your IDs at the top:
+```js
+const GA4_ID = "G-XXXXXXXXXX";   // visitors, countries, pages, time on site
+const CLARITY_ID = "xxxxxxxxxx"; // session recordings + heatmaps
+```
+Leave one empty to switch it off. Nothing loads on localhost. Every page change is sent as a page view, plus these events: `open_place`, `stamp_earned`, `quiz_complete`, `trail_stop`, `get_directions`, `share`, `outbound_click`, `language`.

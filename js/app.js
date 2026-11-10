@@ -994,6 +994,7 @@
 
   /* share: native share sheet on phones, WhatsApp link otherwise */
   async function shareText(title, text, url) {
+    LL.Analytics && LL.Analytics.event("share", { what: (location.hash || "#/").slice(2) || "home" });
     if (navigator.share) { try { await navigator.share({ title, text, url }); return; } catch (e) { if (e.name === "AbortError") return; } }
     window.open(`https://wa.me/?text=${encodeURIComponent(text + (url ? "\n" + url : ""))}`, "_blank", "noopener");
   }
@@ -1050,6 +1051,7 @@
       }, 1000);
     };
     const done = (right, answered) => {
+      LL.Analytics && LL.Analytics.event("quiz_complete", { score: right, answered });
       const isBest = LL.Progress.quiz(right);
       main().innerHTML = `<section class="quiz wrap-narrow quiz--done">
         <p class="eyebrow">${t("score")}</p>
@@ -1121,7 +1123,7 @@
   }
 
   function boot() {
-    $("#lang").addEventListener("click", () => LL.I18N.set(LL.I18N.mode === "mix" ? "en" : "mix"));
+    $("#lang").addEventListener("click", () => { LL.I18N.set(LL.I18N.mode === "mix" ? "en" : "mix"); LL.Analytics && LL.Analytics.event("language", { mode: LL.I18N.mode }); });
     $("#open-credits").addEventListener("click", creditsDialog);
     $("#credits").addEventListener("click", (e) => { if (e.target.id === "credits" || e.target.closest("[data-close]")) $("#credits").close(); });
     document.addEventListener("ll:lang", render);

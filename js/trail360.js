@@ -109,6 +109,7 @@ LL.Trail360 = (function () {
       if (i === cur && viewer && fromViewer !== "init") return;
       cur = i;
       history.replaceState(null, "", `#/trail/${stops[cur].id}`);
+      LL.Analytics && LL.Analytics.event("trail_stop", { stop: stops[cur].id });
       drawPanel();
       if (viewer && !fromViewer) { veil.classList.add("is-on"); viewer.loadScene(stops[cur].id); }
     }
