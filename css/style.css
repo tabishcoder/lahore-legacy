@@ -1348,3 +1348,170 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(36, 22,
 /* IM Fell's old-style 1 reads like an I: numbers use Garamond lining figures */
 .stats b, .big, .quiz__top b, .itin__time, .rank__body small, .pill b, .lcluster b, .road__n, .stop__tick, .lpin__num { font-family: var(--sans); font-variant-numeric: lining-nums tabular-nums; font-weight: 500; }
 .toast { width: max-content; max-width: calc(100% - 32px); text-align: center; }
+
+/* =========================================================================
+   RESPONSIVE PASS
+   Checked at 320, 360, 390, 414, 768 and 1024 px wide.
+   ========================================================================= */
+img, video, canvas { max-width: 100%; }
+h1, h2, h3, h4, p, li, dd, b, a { overflow-wrap: break-word; }
+.btn { white-space: nowrap; max-width: 100%; }
+.pill { white-space: nowrap; flex: none; }
+.lpin.no-label .lpin__label { opacity: 0; }
+.lpin.no-label:hover .lpin__label, .lpin.is-active .lpin__label { opacity: 1; }
+.tour__hint, .tool, .tour__chips .chip { color: #F7EEDC; }
+.tool { background: rgba(36, 22, 14, 0.78); border-color: rgba(247, 238, 220, 0.4); }
+.tour__hint { background: rgba(36, 22, 14, 0.8); }
+.tour__hint::before { color: #E9B45A; }
+.choice b, .choice small { grid-column: 1; }
+.plan__bar { flex-wrap: wrap; overflow: visible; }
+
+/* tablets */
+@media (max-width: 960px) {
+  .top { padding-inline: 16px; gap: 0.6rem; }
+  .nav a { padding-inline: 0.55rem; }
+}
+
+/* phones */
+@media (max-width: 640px) {
+  .wrap, .wrap-narrow { width: calc(100% - 32px); }
+  .top { gap: 0.5rem; padding-inline: 14px; }
+  .top__right { gap: 0.35rem; flex: none; }
+  .pill { height: 34px; padding: 0 0.6rem; font-size: 0.9rem; }
+  .brand { min-width: 0; gap: 0.5rem; }
+  .brand span { font-size: 1.22rem; }
+
+  /* bottom nav sits over the page, so the footer runs under it */
+  .foot { margin-bottom: calc(-76px - env(safe-area-inset-bottom)); padding-bottom: calc(2.2rem + 76px + env(safe-area-inset-bottom)); }
+  .foot__inner { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+
+  /* hero */
+  .hero--short { padding-inline: 16px; }
+  .hero--short h1 { font-size: clamp(2.2rem, 10.5vw, 2.9rem); }
+  .hero--short .lead { font-size: 1.12rem; }
+  .search input { height: 50px; font-size: 1.02rem; padding-inline-end: 0.8rem; text-overflow: ellipsis; }
+  .action { padding: 0.8rem; }
+  .action b { font-size: 1.12rem; }
+  .action small { font-size: 0.88rem; }
+  .hero__media-cap { inset-inline-start: 16px; justify-content: flex-end; }
+  .hero__progress { max-width: 100%; flex-wrap: wrap; }
+
+  /* section heads: title, then the line, then the button */
+  .row { margin-top: 2.2rem; }
+  .row__head { flex-direction: column; align-items: flex-start; gap: 0.7rem; }
+  .row__head h2 { font-size: clamp(1.7rem, 8vw, 2.1rem); }
+  .row__head h2 [lang="ur"], .area__head h3 [lang="ur"], .ap__top b [lang="ur"], .me__h [lang="ur"] { display: block; margin: 0.15rem 0 0; font-size: 1.05rem; }
+  .row__head p { font-size: 1rem; }
+  .row__more { min-height: 40px; font-size: 0.95rem; }
+
+  /* arch tiles */
+  .row__scroll { grid-auto-columns: clamp(176px, 54vw, 240px); gap: 0.7rem; padding-inline: 16px; scroll-padding-inline: 16px; }
+  .tile__body { left: 14px; right: 14px; bottom: 16px; }
+  .tile__body b { font-size: clamp(1.15rem, 5.4vw, 1.35rem); line-height: 1.1; }
+  .tile__body small { font-size: 0.82rem !important; line-height: 1.2; }
+  .tile__body [lang="ur"] { font-size: 0.95rem; line-height: 1.6; }
+  .tile__top { top: 26%; }
+  .tile .status { font-size: 0.78rem !important; }
+
+  /* place page */
+  .site__hero { padding-inline: 16px; min-height: 72svh; }
+  .site__title h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .site__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .site__actions .btn { width: 100%; padding-inline: 0.5rem; }
+  .site__credit, .site__vcap { max-width: calc(100% - 32px); }
+  .been__btns { display: grid; grid-template-columns: 1fr; width: 100%; }
+  .been__btns .btn { width: 100%; }
+  .story { font-size: 1.25rem; }
+  .facts li { grid-template-columns: 2rem 1fr; }
+  .next { grid-template-columns: 1fr 92px; padding: 1rem; gap: 0 0.9rem; }
+  .next__name { font-size: 1.3rem; line-height: 1.2; }
+  .compare { border-width: 4px; }
+  .strip__item { flex-basis: 78%; }
+
+  /* plan */
+  .choice { padding: 0.85rem 0.9rem; }
+  .plan__bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; margin: 0; padding: 0.45rem; position: static; }
+  .plan__bar .btn { width: 100%; padding-inline: 0.4rem; font-size: 0.92rem; min-height: 44px; }
+  .plan__bar .btn:first-child { grid-column: 1 / -1; }
+  .plan__bar .btn:nth-child(2) { grid-column: 1 / -1; }
+  .plan__prog { grid-template-columns: auto 1fr; }
+  .plan__prog .linkish { grid-column: 1 / -1; justify-self: start; }
+  .stop { padding: 0.8rem; gap: 0.7rem; }
+  .stop__body b { font-size: 1.25rem; }
+  .stop__acts .btn { flex: 1 1 0; }
+  .tips__grid { grid-template-columns: 1fr; }
+
+  /* me */
+  .me__head h1 { font-size: clamp(2.2rem, 10vw, 2.8rem); }
+  .me__links { display: grid; grid-template-columns: 1fr; }
+  .me__links .btn { width: 100%; white-space: normal; text-align: center; line-height: 1.25; padding-block: 0.55rem; }
+  .rank { padding: 1rem; gap: 0.8rem; }
+  .rank__icon { width: 46px; height: 46px; }
+  .rank__body b { font-size: 1.4rem; }
+  .stats b { font-size: 1.7rem; }
+  .ap__top { align-items: flex-start; }
+  .badges { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .badge { padding: 0.9rem 0.8rem; }
+  .pts table { width: 100%; }
+  .pts td { padding-inline-end: 0.6rem; }
+
+  /* quiz */
+  .quiz { padding-top: calc(var(--top) + 1.6rem); }
+  .q--big { font-size: clamp(1.45rem, 6.5vw, 1.8rem); }
+  .quiz--done .actions, .quiz .actions { grid-template-columns: 1fr; }
+  .big { font-size: clamp(5rem, 26vw, 7rem); }
+
+  /* tour */
+  .tour-intro { padding-inline: 0; }
+  .tour-intro h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .tour-area [lang="ur"] { display: block; margin: 0.1rem 0 0; }
+  .tour-list a { display: grid; grid-template-columns: 30px 1fr; column-gap: 0.7rem; align-items: center; font-size: 1.1rem; line-height: 1.25; padding: 0.6rem 0; }
+  .tour-list a [lang="ur"] { grid-column: 2; margin: 0.1rem 0 0; font-size: 0.92rem; justify-self: start; }
+  .tour-list .seen { grid-column: 2; }
+  .tour__panel { padding: 1.3rem 16px calc(1.5rem + 76px); }
+  .tour__panel h1 { font-size: clamp(1.9rem, 9vw, 2.4rem); }
+  .tour__nav .btn { flex: 1; padding-inline: 0.6rem; }
+  .tool { width: 40px; height: 40px; }
+
+  /* map */
+  .mapview__chips { right: 64px; }
+  .mapview__chips button { min-height: 40px; padding: 0.4rem 0.8rem; font-size: 0.95rem; }
+  .lmap__tools button { width: 42px; height: 42px; }
+  .lpin__label { font-size: 0.78rem; padding: 0.1rem 0.4rem; }
+  .lmap__card { grid-template-columns: 96px 1fr; }
+  .lmap__name { font-size: 1.1rem; }
+  .lmap__acts .btn { flex: 1 1 auto; padding-inline: 0.5rem; }
+  .sheet__head b { font-size: 1.05rem; }
+
+  /* walk mode, dialogs */
+  .walkmode__card { padding-inline: 16px; }
+  .dialog { padding: 1.2rem 1rem; width: calc(100% - 16px); }
+  .dialog table { font-size: 0.78rem; }
+  .lightbox { padding: 8px; }
+}
+
+/* small phones (iPhone SE, older Androids) */
+@media (max-width: 380px) {
+  .brand small { display: none; }
+  .brand svg { width: 26px; height: 26px; }
+  .brand span { font-size: 1.12rem; }
+  .pill { padding: 0 0.5rem; font-size: 0.85rem; }
+  #progress-pill .pill__seal { display: none; }
+  .actions { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .action { padding: 0.7rem; }
+  .action__icon { width: 32px; height: 32px; }
+  .action b { font-size: 1.02rem; }
+  .row__scroll { grid-auto-columns: 62vw; }
+  .site__actions .btn { font-size: 0.88rem; gap: 0.35rem; }
+  .plan__bar .btn { font-size: 0.85rem; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+  .stats div { padding: 0.75rem; }
+  .badge { padding: 0.75rem 0.6rem; }
+  .badge__icon { width: 40px; height: 40px; }
+  .badge b { font-size: 0.92rem; }
+  .badge p { font-size: 0.8rem; }
+  .nav a { font-size: 0.78rem; letter-spacing: 0.01em; }
+  .nav a .ico { width: 20px; height: 20px; }
+  .quick dt { font-size: 0.9rem !important; }
+}
+@media (max-width: 380px) { .me__links .btn { font-size: 0.92rem; } }

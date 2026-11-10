@@ -190,6 +190,18 @@ LL.LahoreMap = function (box, opts = {}) {
         clusters.push(b);
       }
     });
+    // labels: show a name only where it doesn't sit on another name or pin
+    const boxes = placed.map((c) => (c.items.length === 1 ? [c.x - R, c.y - R, c.x + R, c.y + R] : [c.x - 27, c.y - 27, c.x + 27, c.y + 27]));
+    const hit = (a, b) => a[0] < b[2] && a[2] > b[0] && a[1] < b[3] && a[3] > b[1];
+    placed.filter((c) => c.items.length === 1).sort((a, b) => (b.items[0].el.classList.contains("is-active") ? 1 : 0) - (a.items[0].el.classList.contains("is-active") ? 1 : 0)).forEach((c) => {
+      const el = c.items[0].el, lb = el.querySelector(".lpin__label");
+      if (!lb) return;
+      const w = lb._w || (lb._w = lb.offsetWidth || 90), top = c.y + R + 4;
+      const box = [c.x - w / 2, top, c.x + w / 2, top + 24];
+      const free = box[0] > 0 && box[2] < W && box[3] < H && !boxes.some((b) => hit(box, b));
+      el.classList.toggle("no-label", !free);
+      if (free) boxes.push(box);
+    });
     if (me) { const [x, y] = toPx(W0(me)); meEl.hidden = false; meEl.style.transform = `translate(${x - 11}px, ${y - 11}px)`; }
   }
 
