@@ -59,6 +59,7 @@ LL.UI = (function () {
 
   function credit(p) {
     if (!p) return "";
+    if (p.official) return `Photo: <a href="${p.from}" target="_blank" rel="noopener">${esc(p.by)}</a> · used with permission`;
     if (p.local) return p.by ? `Photo: ${esc(p.by)}` : "";
     return LL.Credits.line(p.file);
   }
@@ -66,6 +67,10 @@ LL.UI = (function () {
   /* Full-screen photo viewer with swipe/keys. */
   async function lightbox(key, startIdx = 0) {
     const items = await LL.Photos.gallery(key, innerWidth > 900 ? 1920 : 1280);
+    return openBox(items, startIdx);
+  }
+  /* open the viewer on any list of { url, caption, ur, official, by, from } */
+  function openBox(items, startIdx = 0) {
     if (!items.length) return;
     let i = Math.max(0, Math.min(items.length - 1, startIdx));
     const lb = document.createElement("div");
@@ -84,7 +89,7 @@ LL.UI = (function () {
       img.classList.remove("is-ready");
       img.onload = () => img.classList.add("is-ready");
       img.src = it.url; img.alt = cap(it);
-      capEl.innerHTML = `<b>${esc(cap(it))}</b> <span>${i + 1} / ${items.length}</span>`;
+      capEl.innerHTML = `<b>${esc(cap(it))}</b> <span>${i + 1} / ${items.length}</span>${it.official ? `<small class="lightbox__credit">${credit(it)}</small>` : ""}`;
     };
     const go = (d) => { i = (i + d + items.length) % items.length; show(); };
     const close = () => { document.removeEventListener("keydown", onKey); lb.remove(); document.body.style.overflow = ""; };
@@ -113,7 +118,7 @@ LL.UI = (function () {
 
   function shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-  return { esc, cap, media, credit, lightbox, toast, shuffle };
+  return { esc, cap, media, credit, lightbox, openBox, toast, shuffle };
 })();
 
 /* ---------- Progress (this browser only) ---------- */

@@ -138,3 +138,11 @@ The dark-and-gold theme is gone. The site now looks like an old travel notebook:
 - **Shapes:** place photos sit in pointed Mughal arches (jharokhas), photo heroes end in a row of arches, the footer has a jali pattern, stamps are red ink.
 - **Map** tiles are toned sepia, like a survey sheet. Share cards and the certificate are printed on paper too.
 - All animations are unchanged. The palette lives at the top of `css/style.css`; the look itself is the "HERITAGE LAYER" at the end of it.
+
+## v11 — official sources, 360° Royal Trail
+Photos, 360° views and information from official heritage bodies, used with permission and credited on every photo and in **Credits & sources**.
+
+- **Royal Trail in 360°** (`#/trail`): fifteen 360° panoramas from the Walled City of Lahore Authority's virtual tour, Delhi Gate to Chowk Wazir Khan. Drag to look around, tap the arrows to walk, phone tilt and full screen on mobile. Viewer: Pannellum (loaded from cdnjs only on that page). Data: `js/data/trail360.js`; images: `assets/pano360/<stop>/` (six 1536 px WebP cube faces each).
+- **Official photos** (`js/config/official-photos.js`, `assets/official/`): 31 place photos from WCLA, the Lahore Fort, Shahi Hammam and Shalimar sites, the Department of Archaeology and Museums and the Lahore Museum, as WebP at 1600 px and 640 px. They are shown before Wikimedia photos.
+- **New sections** (`js/data/official.js`): how the Shahi Hammam was saved (timeline + before/after boards + award), Lahore Museum collection highlights with a link to the museum's own VR tour, Lahore Fort accessibility information, Shalimar conservation, and WCLA's guided tours on the Plan page.
+- heritage.pakistan.gov.pk and punjab.gov.pk did not respond, and whc.unesco.org blocks automated access, so nothing was taken from them directly.

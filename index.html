@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://upload.wikimedia.org" />
   <link rel="dns-prefetch" href="https://commons.wikimedia.org" />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -48,6 +49,10 @@
   <dialog id="credits" class="dialog">
     <button class="dialog__close" data-close aria-label="Close">✕</button>
     <h2>Credits &amp; sources</h2>
+    <h3>Official sources</h3>
+    <p class="hint">Photos, 360° views and information from these organisations are used with their permission.</p>
+    <ul id="credits-official" class="sources sources--official"></ul>
+    <h3>Photos</h3>
     <div id="credits-body" class="dialog__table"></div>
     <h3>Videos</h3>
     <ul id="credits-videos" class="sources"></ul>
@@ -58,12 +63,15 @@
   <script src="js/md5.js"></script>
   <script src="js/config/assets.js"></script>
   <script src="js/config/local-photos.js"></script>
+  <script src="js/config/official-photos.js"></script>
   <script src="js/config/videos.js"></script>
   <script src="js/config/keys.js"></script>
   <script src="js/data/sites.js"></script>
   <script src="js/data/guide.js"></script>
   <script src="js/data/more.js"></script>
   <script src="js/data/geo.js"></script>
+  <script src="js/data/trail360.js"></script>
+  <script src="js/data/official.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/commons.js"></script>
@@ -73,6 +81,7 @@
   <script src="js/lahoremap.js"></script>
   <script src="js/motion.js"></script>
   <script src="js/fx.js"></script>
+  <script src="js/trail360.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

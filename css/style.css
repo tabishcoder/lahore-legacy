@@ -1508,3 +1508,161 @@ h1, h2, h3, h4, p, li, dd, b, a { overflow-wrap: break-word; }
 /* card rows start in line with the section headings */
 .row__scroll { padding-inline: max(20px, calc((100% - 1200px) / 2)); scroll-padding-inline: max(20px, calc((100% - 1200px) / 2)); padding-block: 0.4rem 1.4rem; }
 @media (max-width: 640px) { .row__scroll { padding-inline: 16px; scroll-padding-inline: 16px; } }
+
+/* =========================================================================
+   ROYAL TRAIL IN 360°
+   ========================================================================= */
+body.on-trail .foot { display: none; }
+.trail { position: relative; height: 100vh; height: 100svh; padding-top: var(--top); display: grid; grid-template-columns: minmax(0, 1fr) 400px; background: #1B120C; }
+.trail__stage { position: relative; min-height: 0; overflow: hidden; background: #1B120C; color: #F7EEDC; }
+.trail__pano { position: absolute; inset: 0; outline: none; }
+.trail__pano .pnlm-container { background: #1B120C; }
+.trail__pano .pnlm-load-box, .trail__pano .pnlm-about-msg { display: none !important; }
+.trail__veil { position: absolute; inset: 0; z-index: 4; display: grid; place-content: center; justify-items: center; gap: 0.8rem; background: rgba(27, 18, 12, 0.55); color: #F7EEDC; font-style: italic; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease); }
+.trail__veil.is-on { opacity: 1; }
+.trail__spinner { width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(247, 238, 220, 0.25); border-top-color: #E9B45A; animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.trail__hint { position: absolute; z-index: 3; left: 50%; bottom: 56px; transform: translateX(-50%); margin: 0; padding: 0.55rem 1rem; border-radius: 3px; background: rgba(27, 18, 12, 0.82); color: #F7EEDC; font-size: 0.95rem; white-space: nowrap; pointer-events: none; transition: opacity 0.6s; }
+.trail__hint.is-hidden { opacity: 0; }
+.trail__tools { position: absolute; z-index: 3; top: 14px; right: 14px; display: flex; gap: 0.4rem; }
+.trail__credit { position: absolute; z-index: 3; left: 14px; bottom: 12px; margin: 0; font-size: 0.82rem; color: rgba(247, 238, 220, 0.85); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8); }
+.trail__credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* walk arrows inside the panorama */
+.trail-hot-wrap { width: 0; height: 0; cursor: pointer; background: none !important; }
+.trail-hot-wrap .trail-hot { left: 0; top: 0; }
+.trail-hot { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 0.45rem; padding: 0.35rem 0.8rem 0.35rem 0.35rem; border-radius: 999px; background: rgba(27, 18, 12, 0.78); border: 1px solid rgba(233, 180, 90, 0.8); color: #F7EEDC; white-space: nowrap; font: 600 0.92rem var(--sans); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45); transition: background 0.25s, transform 0.25s var(--ease); }
+.trail-hot-wrap:hover .trail-hot { background: #9A3A1F; transform: translate(-50%, -50%) scale(1.06); }
+.trail-hot__arrow { width: 30px; height: 30px; flex: none; border-radius: 50%; display: grid; place-items: center; background: #E9B45A; color: #24160E; animation: hotPulse 2.4s ease-out infinite; }
+.trail-hot__arrow .ico { width: 18px; height: 18px; }
+@keyframes hotPulse { 0% { box-shadow: 0 0 0 0 rgba(233, 180, 90, 0.6); } 70% { box-shadow: 0 0 0 12px rgba(233, 180, 90, 0); } 100% { box-shadow: 0 0 0 0 rgba(233, 180, 90, 0); } }
+
+/* side panel */
+.trail__panel { overflow-y: auto; padding: 1.5rem 1.4rem 2rem; background: var(--charcoal) var(--paper-grain); border-inline-start: 3px double var(--line-2); }
+.trail__panel h1 { font-size: clamp(1.9rem, 3vw, 2.5rem); margin-bottom: 0.6rem; }
+.trail__ur { display: block; font-family: var(--urdu); font-size: 1.15rem; color: var(--sand); margin-top: 0.3rem; line-height: 1.7; }
+.trail__note { font-size: 1.08rem; color: var(--ink); }
+.trail__note[lang="ur"] { line-height: 2; }
+.trail__nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 1.2rem 0 0.8rem; }
+.trail__nav .btn { width: 100%; }
+.trail__nav .btn:disabled { opacity: 0.4; cursor: default; }
+.trail__prog { margin-bottom: 1.2rem; }
+.trail__stops { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.35rem; }
+.trail__stops button { width: 100%; display: grid; grid-template-columns: 52px 26px 1fr; align-items: center; gap: 0.6rem; padding: 0.35rem; border: 1px solid transparent; border-radius: 3px; background: none; text-align: start; color: var(--ink); }
+.trail__stops button:hover { border-color: var(--line-2); background: var(--navy); }
+.trail__stops button[aria-current="true"] { border-color: var(--gold); background: var(--navy); box-shadow: var(--shadow); }
+.trail__stops img { width: 52px; height: 52px; object-fit: cover; border-radius: 2px; }
+.trail__stops .n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); font-size: 0.85rem; font-variant-numeric: lining-nums; }
+.trail__stops button[aria-current="true"] .n { background: var(--gold); border-color: var(--gold); color: #FFF8EA; }
+.trail__sname { font-family: var(--serif); font-size: 1.08rem; line-height: 1.2; }
+.trail__sname small { display: block; font-family: var(--urdu); font-size: 0.85rem; color: var(--sand); line-height: 1.6; }
+
+/* feature band (home + tour intro) */
+.trailband { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; margin: 3.5rem 0 1rem; border-radius: 4px; overflow: hidden; background: #24160E var(--jali); color: #F7EEDC; text-decoration: none !important; box-shadow: inset 0 0 0 1px rgba(233, 180, 90, 0.35), 0 24px 40px -26px rgba(40, 20, 8, 0.8); transition: transform 0.35s var(--ease); }
+.trailband:hover { transform: translateY(-3px); }
+.trailband__strip { display: grid; grid-template-columns: repeat(5, 1fr); min-height: 300px; overflow: hidden; }
+.trailband__strip img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter 0.6s; filter: saturate(0.95); }
+.trailband__strip img:nth-child(odd) { transform: translateY(-14px) scale(1.08); }
+.trailband__strip img:nth-child(even) { transform: translateY(14px) scale(1.08); }
+.trailband:hover .trailband__strip img { transform: scale(1.02); filter: saturate(1.1); }
+.trailband__text { display: grid; align-content: center; justify-items: start; gap: 0.6rem; padding: 2rem 2.2rem; }
+.trailband .eyebrow { color: #E9B45A; margin: 0; }
+.trailband b { font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.05; }
+.trailband__lead { color: rgba(247, 238, 220, 0.85); font-style: italic; font-size: 1.05rem; }
+.trailband .btn { margin-top: 0.4rem; }
+.trailband--intro { margin: 2.4rem 0 1rem; }
+
+@media (max-width: 960px) {
+  .trail { grid-template-columns: 1fr; grid-template-rows: 62svh auto; height: auto; min-height: 100svh; }
+  .trail__panel { border: 0; border-top: 3px double var(--line-2); overflow: visible; }
+  .trail__stops { grid-template-columns: 1fr 1fr; }
+  .trailband { grid-template-columns: 1fr; }
+  .trailband__strip { min-height: 180px; }
+}
+@media (max-width: 640px) {
+  .trail { grid-template-rows: 58svh auto; }
+  .trail__panel { padding: 1.2rem 16px calc(1.5rem + 76px); }
+  .trail__stops { grid-template-columns: 1fr; }
+  .trail__hint { bottom: 44px; font-size: 0.85rem; }
+  .trail__tools { top: 10px; right: 10px; }
+  .trail__credit { font-size: 0.75rem; }
+  .trail-hot { font-size: 0.82rem; padding-inline-end: 0.6rem; }
+  .trailband__strip { min-height: 140px; }
+  .trailband__text { padding: 1.4rem 1.2rem 1.6rem; }
+  .trailband .btn { width: 100%; white-space: normal; }
+}
+/* credits for photos from official sources */
+.site__credit { z-index: 3; color: rgba(247, 238, 220, 0.82); bottom: 26px; }
+.site__credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.strip__by { display: block; font-size: 0.78rem; color: var(--faint); font-style: italic; margin-top: 0.1rem; }
+.lightbox__credit { display: block; font-size: 0.8rem; color: var(--faint); margin-top: 0.3rem; }
+.lightbox__credit a { color: var(--sand); }
+
+/* =========================================================================
+   CONTENT FROM OFFICIAL SOURCES
+   ========================================================================= */
+.official .lead { font-size: 1.15rem; margin-bottom: 1.4rem; }
+.official__src { margin-top: 1rem; font-style: italic; }
+
+/* Shahi Hammam: a timeline drawn like a ledger */
+.saga { list-style: none; margin: 0 0 1.8rem; padding: 0; position: relative; }
+.saga::before { content: ""; position: absolute; top: 0.6rem; bottom: 0.6rem; inset-inline-start: 6.2rem; width: 1px; background: var(--line-2); }
+.saga li { position: relative; display: grid; grid-template-columns: 5.6rem minmax(0, 1fr); gap: 1.4rem; padding: 0.6rem 0; }
+.saga li::before { content: ""; position: absolute; inset-inline-start: calc(6.2rem - 5px); top: 1.05rem; width: 11px; height: 11px; background: var(--haldi); transform: rotate(45deg); box-shadow: 0 0 0 3px var(--charcoal); }
+.saga__year { font-family: var(--serif); font-weight: 400; font-size: 1.15rem; color: var(--gold); text-align: end; line-height: 1.3; padding-top: 0.15rem; font-variant-numeric: lining-nums; }
+.saga p { margin: 0; color: var(--ink); }
+.saga p[lang="ur"] { line-height: 1.95; }
+
+.story-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; }
+.story-grid__item { padding: 6px 6px 0; border: 1px solid var(--line-2); border-radius: 3px; background: #FFFBF1; box-shadow: var(--shadow); text-align: start; transition: transform 0.3s var(--ease); }
+.story-grid__item:hover { transform: translateY(-3px) rotate(-0.4deg); }
+.story-grid__item img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 1px; }
+.story-grid__item.is-board img { aspect-ratio: 2 / 3; object-fit: contain; background: #F4EEDF; }
+.story-grid__item span { display: block; padding: 0.4rem 0.2rem 0.55rem; font-size: 0.92rem; font-style: italic; line-height: 1.35; color: var(--dim); }
+
+/* Lahore Museum: a cabinet of pieces */
+.collection { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
+.collection__item { display: grid; gap: 0.2rem; align-content: start; padding: 8px 8px 10px; border: 1px solid var(--line-2); border-radius: 3px; background: var(--navy); box-shadow: var(--shadow); text-align: center; transition: transform 0.3s var(--ease), border-color 0.3s; }
+.collection__item:hover { transform: translateY(-3px); border-color: var(--gold); }
+.collection__img { display: grid; place-items: center; aspect-ratio: 1; background: #F7F1E3; border-radius: 2px; overflow: hidden; margin-bottom: 0.35rem; }
+.collection__img img { max-width: 92%; max-height: 92%; object-fit: contain; transition: transform 0.8s var(--ease); }
+.collection__item:hover .collection__img img { transform: scale(1.06); }
+.collection__item b { font-family: var(--serif); font-weight: 400; font-size: 1.08rem; line-height: 1.15; }
+.collection__item small { font-size: 0.85rem; color: var(--faint); font-style: italic; line-height: 1.3; }
+
+/* fort + garden facts, accessibility */
+.official__facts { margin: 0 0 1.2rem; padding-inline-start: 1.2rem; }
+.official__facts li { margin-bottom: 0.5rem; }
+.official__facts li::marker { color: var(--gold); }
+.access { padding: 1.1rem 1.2rem; border: 1px solid var(--line-2); border-inline-start: 4px solid var(--kashi); border-radius: 3px; background: var(--navy); box-shadow: var(--shadow); }
+.access h3 { display: flex; align-items: center; gap: 0.5rem; font-size: 1.35rem; margin-bottom: 0.6rem; color: var(--kashi); }
+.access h3 .ico { width: 22px; height: 22px; }
+.access ul { margin: 0; padding-inline-start: 1.1rem; }
+.access li { margin-bottom: 0.35rem; }
+
+/* plan page: WCLA guided tours */
+.wcla-tours { margin-top: 2.4rem; padding: 1.4rem 1.4rem 1.2rem; border: 1px solid var(--line-2); border-radius: 4px; background: var(--navy); box-shadow: var(--shadow); outline: 1px solid var(--line); outline-offset: -6px; }
+.wcla-tours h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); }
+.wcla-tours ul { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.4rem 1rem; }
+.wcla-tours a { display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0; border-bottom: 1px dotted var(--line-2); color: var(--ink); font-size: 1.05rem; }
+.wcla-tours a .ico { width: 18px; height: 18px; color: var(--gold); flex: none; }
+.wcla-tours a span { margin-inline-start: auto; color: var(--faint); }
+.wcla-tours a:hover { color: var(--gold); text-decoration: none; }
+
+/* credits dialog */
+.sources--official { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.7rem; }
+.sources--official li { padding: 0.7rem 0.8rem; border: 1px solid var(--line-2); border-radius: 3px; background: var(--navy); font-size: 0.9rem; line-height: 1.4; }
+.sources--official span { color: var(--dim); }
+.dialog h3 { margin-top: 1.4rem; }
+
+@media (max-width: 640px) {
+  .saga::before { inset-inline-start: 4.4rem; }
+  .saga li { grid-template-columns: 3.8rem 1fr; gap: 1.2rem; }
+  .saga li::before { inset-inline-start: calc(4.4rem - 5px); }
+  .saga__year { font-size: 0.98rem; }
+  .story-grid { grid-template-columns: repeat(2, 1fr); }
+  .collection { grid-template-columns: repeat(2, 1fr); gap: 0.55rem; }
+  .collection__item b { font-size: 0.98rem; }
+  .collection__item small { font-size: 0.78rem; }
+  .wcla-tours { padding: 1.1rem 1rem; }
+}

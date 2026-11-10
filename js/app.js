@@ -73,7 +73,7 @@
     $("#open-credits").textContent = t("credits");
     $("#archive-link").textContent = t("oldArchive");
     const r = route();
-    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page)));
+    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));
   }
 
   /* ---------------- home ---------------- */
@@ -120,6 +120,8 @@
         <header class="row__head wrap"><div><h2>${t("sitesTitle")}</h2><p>${t("sitesLead")}</p></div></header>
         <div class="row__scroll" data-ids="${LL.SITES.filter((s) => s.top).map((s) => s.id).join(",")}"></div>
       </section>
+
+      <section class="wrap">${trailBand()}</section>
 
       ${LL.AREAS.map((a) => `
       <section class="row">
@@ -308,6 +310,8 @@
             <div class="strip" id="strip"></div>
           </section>
 
+          ${officialBlock(id)}
+
           <section class="block visit">
             <h2>${t("visit")}</h2>
             <dl ${U()}>${pick(s.visit).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
@@ -328,9 +332,15 @@
     const heroMedia = media(id, { width: innerWidth > 900 ? 1920 : 960, eager: true });
     LL.Motion.morphTo(heroMedia, id);
     sp.appendChild(heroMedia);
+    LL.Photos.resolve(id, innerWidth > 900 ? 1920 : 960).then((p) => {
+      if (!p || !p.official || !document.body.contains(sp) || sp.parentElement.querySelector(".site__vcap")) return;
+      sp.parentElement.insertAdjacentHTML("beforeend", `<p class="credit site__credit">${LL.UI.credit(p)}</p>`);
+    });
     const vset = LL.VIDEOS.sites[id];
     let siteVid = null;
     if (vset) siteVid = LL.Motion.videoLoop(sp, [LL.Motion.pickClips(vset)], (c) => {
+      const pc = sp.parentElement.querySelector(".site__credit");
+      if (pc) pc.remove();
       const cv = document.createElement("p");
       cv.className = "site__vcap";
       cv.innerHTML = `▶ <a href="${c.page}" target="_blank" rel="noopener">${t("videoBy", esc(c.by))}</a>`;
@@ -341,13 +351,15 @@
     LL.Motion.reveal(main(), ".quick > div, .been, .story, .block > h2, .facts li, .look li, .strip, .visit dl > div, .next");
     $("#next-media").appendChild(media(next.id, { width: 500 }));
 
+    wireOfficial(main());
     const strip = $("#strip");
-    (cfg.gallery || []).forEach((g, i) => {
+    // every photo we have for this place: official sources first, then Wikimedia Commons
+    LL.Photos.candidates(id, 500).forEach((g, i) => {
       const b = document.createElement("button");
       b.className = "strip__item";
       b.setAttribute("aria-label", cap(g));
-      b.appendChild(media(id, { width: 500, start: i + (cfg.photo && cfg.photo.src ? 1 : 0), label: false }));
-      b.insertAdjacentHTML("beforeend", `<span>${fx(cap(g))}</span>`);
+      b.appendChild(media(id, { width: 500, start: i, label: false }));
+      b.insertAdjacentHTML("beforeend", `<span>${fx(cap(g))}</span>${g.official ? `<small class="strip__by">${esc(g.by)}</small>` : ""}`);
       b.addEventListener("click", () => lightbox(id, i));
       strip.appendChild(b);
     });
@@ -549,6 +561,73 @@
     return () => { viewer && viewer.destroy(); document.body.classList.remove("on-tour"); };
   }
 
+  /* ---------- content from official heritage bodies ---------- */
+  const srcLine = (src) => `<p class="hint official__src">${t("fromSource")} <a href="${src.url}" target="_blank" rel="noopener">${esc(src.name)}</a></p>`;
+  function officialBlock(id) {
+    const O = LL.OFFICIAL;
+    if (!O) return "";
+    if (id === "shahi-hammam") {
+      const h = O.hammam;
+      return `<section class="block official">
+        <h2>${esc(pick(h.title))}</h2>
+        <p class="lead" ${U()}>${fx(pick(h.lead))}</p>
+        <ol class="saga">${h.steps.map((x) => `<li><b class="saga__year">${esc(x.year)}</b><p ${U()}>${fx(pick(x))}</p></li>`).join("")}</ol>
+        <div class="story-grid" data-box="story">${(LL.HAMMAM_STORY || []).map((g, i) => `<button class="story-grid__item${i < 4 ? " is-board" : ""}" data-i="${i}"><img src="${g.small}" alt="${esc(cap(g))}" loading="lazy" width="${g.w}" height="${g.h}"><span>${fx(cap(g))}</span></button>`).join("")}</div>
+        ${srcLine(h.source)}
+      </section>`;
+    }
+    if (id === "lahore-museum") {
+      const m = O.museum;
+      return `<section class="block official">
+        <h2>${esc(pick(m.title))}</h2>
+        <p class="lead" ${U()}>${fx(pick(m.lead))}</p>
+        <div class="collection" data-box="museum">${(LL.MUSEUM_HIGHLIGHTS || []).map((g, i) => `<button class="collection__item" data-i="${i}"><span class="collection__img"><img src="${g.small}" alt="${esc(g.caption)}" loading="lazy"></span><b>${esc(g.caption)}</b><small>${esc(g.note)}</small></button>`).join("")}</div>
+        <p><a class="btn btn--ghost btn--sm" href="${m.vr.url}" target="_blank" rel="noopener">${ico("tour")} ${esc(m.vr.label.en)} ↗</a></p>
+        ${srcLine(m.source)}
+      </section>`;
+    }
+    if (id === "lahore-fort" || id === "shalimar-gardens") {
+      const f = id === "lahore-fort" ? O.fort : O.shalimar;
+      return `<section class="block official">
+        <h2>${esc(pick(f.title))}</h2>
+        <ul class="official__facts" ${U()}>${f.facts.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul>
+        ${f.access ? `<div class="access"><h3>${ico("me")} ${esc(pick(f.access.title))}</h3><ul ${U()}>${f.access.items.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul></div>` : ""}
+        ${srcLine(f.source)}
+      </section>`;
+    }
+    return "";
+  }
+  /* photo grids inside official blocks open in the full-screen viewer */
+  function wireOfficial(root) {
+    root.querySelectorAll("[data-box]").forEach((box) => {
+      const list = box.dataset.box === "story" ? LL.HAMMAM_STORY : LL.MUSEUM_HIGHLIGHTS;
+      const items = list.map((g) => ({ ...g, url: g.src, official: true, caption: g.note ? `${g.caption} · ${g.note}` : g.caption }));
+      box.addEventListener("click", (e) => { const b = e.target.closest("[data-i]"); if (b) LL.UI.openBox(items, +b.dataset.i); });
+    });
+  }
+  function toursBlock() {
+    const T = LL.OFFICIAL && LL.OFFICIAL.tours;
+    if (!T) return "";
+    return `<section class="wcla-tours">
+      <h2>${esc(pick(T.title))}</h2>
+      <p ${U()}>${fx(pick(T.lead))}</p>
+      <ul>${T.list.map(([n, slug]) => `<li><a href="${T.base}${slug}/" target="_blank" rel="noopener">${ico("flag")} ${esc(n)} <span aria-hidden="true">↗</span></a></li>`).join("")}</ul>
+    </section>`;
+  }
+
+  /* the 360° Royal Trail, as a feature band */
+  function trailBand(cls = "") {
+    const st = LL.TRAIL360.stops, pick5 = [0, 3, 5, 10, 14].map((i) => st[i]);
+    return `<a class="trailband ${cls}" href="#/trail">
+      <span class="trailband__strip">${pick5.map((s) => `<img src="${LL.Trail360.thumb(s.id)}" alt="" loading="lazy">`).join("")}</span>
+      <span class="trailband__text">
+        <span class="eyebrow">${t("trailNew")} · 360°</span>
+        <b>${t("trailTitle")}</b>
+        <span class="trailband__lead">${t("trailLead")}</span>
+        <span class="btn btn--gold">${ico("tour")} ${t("trailCta")}</span>
+      </span></a>`;
+  }
+
   function tourIntro(done) {
     main().innerHTML = `
       <section class="tour-intro">
@@ -561,6 +640,7 @@
             ${done ? `<a class="btn btn--gold" href="#/quiz">${t("quizCta")}</a><a class="btn btn--ghost" href="#/plan">${t("planTitle")}</a>`
                    : `<a class="btn btn--gold" href="#/tour/${LL.SITES[0].id}">${t("tourStart")} →</a>`}
           </div>
+          ${done ? "" : trailBand("trailband--intro")}
           ${LL.AREAS.map((a) => `<h3 class="tour-area">${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span></h3>
           <ol class="tour-list">${LL.SITES.map((s, i) => (s.area !== a.id ? "" : `<li><a href="#/tour/${s.id}"><span class="n">${i + 1}</span>${esc(s.name.en)} <span lang="ur">${esc(s.name.ur)}</span>${LL.Progress.state.seen[s.id] ? '<span class="seen">✓</span>' : ""}</a></li>`)).join("")}</ol>`).join("")}
         </div>
@@ -776,6 +856,7 @@
           <div class="tips__grid">${LL.TIPS.map((x) => `<div class="tip"><span class="tip__icon">${ico(x.icon)}</span><div><b>${esc(x.title)}</b><p ${U()}>${fx(pick(x.text))}</p></div></div>`).join("")}</div>
           <p class="hint">${t("visitNote")}</p>
         </details>
+        ${toursBlock()}
       </section>`;
     const body = $("#plan-body");
 
@@ -1001,8 +1082,14 @@
           const c = LL.Credits.get(g.file) || {};
           rows.push(`<tr><td>${esc(s.name)}</td><td><a href="${LL.ASSETS.commonsPage(g.file)}" target="_blank" rel="noopener">${esc(g.file)}</a></td><td>${c.missing ? "—" : esc(c.artist || "—")}</td><td>${esc(c.license || "")}</td></tr>`);
         }));
-      $("#credits-body").innerHTML = `<table><thead><tr><th></th><th>File</th><th>Author</th><th>Licence</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
+      const off = [];
+      Object.entries(LL.OFFICIAL_PHOTOS || {}).forEach(([k, list]) => list.forEach((g) => off.push([k, g])));
+      (LL.HAMMAM_STORY || []).forEach((g) => off.push(["shahi-hammam", g]));
+      (LL.MUSEUM_HIGHLIGHTS || []).forEach((g) => off.push(["lahore-museum", g]));
+      const offRows = off.map(([k, g]) => `<tr><td>${esc((LL.ASSETS.locations[k] || LL.ASSETS.extras[k] || { name: k }).name)}</td><td><a href="${g.orig}" target="_blank" rel="noopener">${esc(g.caption)}</a></td><td><a href="${g.from}" target="_blank" rel="noopener">${esc(g.by)}</a></td><td>Used with permission</td></tr>`);
+      $("#credits-body").innerHTML = `<table><thead><tr><th></th><th>Photo</th><th>Author / source</th><th>Licence</th></tr></thead><tbody>${offRows.join("")}${rows.join("")}</tbody></table>`;
     });
+    $("#credits-official").innerHTML = (LL.OFFICIAL ? LL.OFFICIAL.sources : []).map((o) => `<li><a href="${o.url}" target="_blank" rel="noopener"><b>${esc(o.name)}</b></a><br><span>${esc(o.used)}</span></li>`).join("");
     $("#credits-videos").innerHTML = Object.values(LL.VIDEOS.clips).map((c) => `<li>${esc(c.label)} — <a href="${c.page}" target="_blank" rel="noopener">${esc(c.by)} on Pexels</a></li>`).join("");
     $("#credits-sources").innerHTML = [...LL.HISTORY_SOURCES, ...LL.VISIT_SOURCES].map(([n, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("");
     d.showModal();
@@ -1027,6 +1114,7 @@
     else if (r.page === "plan") cleanup = planPage(r.param);
     else if (r.page === "map") cleanup = mapPage(r.param);
     else if (r.page === "quiz") cleanup = quizPage();
+    else if (r.page === "trail") cleanup = LL.Trail360.page(main(), r.param, { esc, t, pick, attrs: U, ico });
     else cleanup = home();
     header();
     window.scrollTo(0, 0);
