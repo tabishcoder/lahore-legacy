@@ -1,6 +1,10 @@
 /* =========================================================================
    LAHORE LEGACY — ANALYTICS
    Paste your IDs below. Leave one empty to switch that tool off.
+     GTM_ID      Google Tag Manager container ID (looks like "GTM-ABC1234").
+                 Every page view and event is pushed to the dataLayer; set up
+                 the Google Analytics tag inside Tag Manager (see README).
+                 Use GTM_ID or GA4_ID, not both, or visits count twice.
      GA4_ID      Google Analytics 4 → Admin → Data streams → Measurement ID
                  (looks like "G-ABC123XYZ")
      CLARITY_ID  Microsoft Clarity → Settings → Overview → Project ID
@@ -23,12 +27,24 @@
 window.LL = window.LL || {};
 
 LL.Analytics = (function () {
+  const GTM_ID = "GTM-TKZC42C9";
   const GA4_ID = "";
   const CLARITY_ID = "";
 
   const local = /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === "file:";
+  const gtmOn = !!GTM_ID && !local;
   const gaOn = !!GA4_ID && !local;
   const clarityOn = !!CLARITY_ID && !local;
+
+  window.dataLayer = window.dataLayer || [];
+  if (gtmOn) {
+    // standard Google Tag Manager loader
+    dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`;
+    document.head.appendChild(s);
+  }
 
   if (gaOn) {
     window.dataLayer = window.dataLayer || [];
@@ -52,6 +68,7 @@ LL.Analytics = (function () {
 
   function event(name, params = {}) {
     if (gaOn) gtag("event", name, params);
+    if (gtmOn) dataLayer.push({ event: name, ...params });
     if (clarityOn && window.clarity) window.clarity("event", name);
   }
 
@@ -61,6 +78,7 @@ LL.Analytics = (function () {
     if (path === lastPath) return;
     lastPath = path;
     if (gaOn) gtag("event", "page_view", { page_title: document.title, page_location: location.href, page_path: path });
+    if (gtmOn) dataLayer.push({ event: "virtual_page_view", page_title: document.title, page_location: location.href, page_path: path });
     if (clarityOn && window.clarity) window.clarity("set", "page", path);
     const m = path.match(/^\/site\/([\w-]+)/);
     if (m) event("open_place", { place: m[1] });
@@ -82,5 +100,5 @@ LL.Analytics = (function () {
   window.addEventListener("hashchange", page);
   document.addEventListener("DOMContentLoaded", page);
 
-  return { event, page, get on() { return gaOn || clarityOn; } };
+  return { event, page, get on() { return gtmOn || gaOn || clarityOn; } };
 })();
