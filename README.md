@@ -128,7 +128,8 @@ LL.KEYS = { carto: "your-key-here" };
 ```
 
 Free for non-commercial sites up to 5 million tile requests a month (1 million if commercial). In the CARTO dashboard, restrict the key to your domain so nobody else can use it. Keep the "© OpenStreetMap · © CARTO" credit visible. Without a key the map still works, but shows a simple outline instead of streets.
-#   l a h o r e - l e g a c y  
+#   l a h o r e - l e g a c y 
+ 
  
 ## v10 — heritage look
 The dark-and-gold theme is gone. The site now looks like an old travel notebook:
@@ -154,3 +155,10 @@ const GA4_ID = "G-XXXXXXXXXX";   // visitors, countries, pages, time on site
 const CLARITY_ID = "xxxxxxxxxx"; // session recordings + heatmaps
 ```
 Leave one empty to switch it off. Nothing loads on localhost. Every page change is sent as a page view, plus these events: `open_place`, `stamp_earned`, `quiz_complete`, `trail_stop`, `get_directions`, `share`, `outbound_click`, `language`.
+
+### Google Tag Manager (in use: GTM-TKZC42C9)
+The site loads Tag Manager and pushes `virtual_page_view` on every page change, plus the events listed above. To get them into Google Analytics, in Tag Manager:
+1. **Tags → New → Google tag**, Tag ID = your GA4 Measurement ID (`G-…`), trigger **Initialization – All Pages**.
+2. **Triggers → New → Custom event**, name `virtual_page_view`. **Tags → New → Google Analytics: GA4 Event**, event name `page_view`, Measurement ID `G-…`, event parameter `page_location` = `{{Page URL}}`, trigger = that custom event.
+3. (Optional) Same for `open_place`, `quiz_complete`, `trail_stop`, `stamp_earned`, `get_directions`, `share`.
+4. **Submit → Publish.**
