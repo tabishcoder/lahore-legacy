@@ -1,0 +1,77 @@
+/* =========================================================================
+   LAHORE LEGACY — ROYAL TRAIL IN 360°
+   Fifteen 360° panoramas along the Shahi Guzargah (Royal Trail), from
+   Delhi Gate to Chowk Wazir Khan. Photography: Walled City of Lahore
+   Authority (virtual-tour.walledcitylahore.gop.pk), used with permission.
+   Each stop is a cube map in assets/pano360/<id>/ (f r b l u d .webp).
+   Links come from the WCLA tour: yaw is where the arrow sits (degrees,
+   clockwise from the starting view), pitch is up/down.
+   ========================================================================= */
+
+window.LL = window.LL || {};
+
+LL.TRAIL360 = {
+  source: { name: "Walled City of Lahore Authority", url: "https://virtual-tour.walledcitylahore.gop.pk/" },
+  stops: [
+    { id: "node1", name: { en: "Delhi Gate, from the road", ur: "دہلی دروازہ، سڑک کی طرف سے" },
+      note: { en: "This is where the Royal Trail begins. The gate faced the road to Delhi, which gave it its name. Turn right to see the arch, then tap the arrow to walk through.",
+              ur: "شاہی گزرگاہ یہیں سے شروع ہوتی ہے۔ یہ دروازہ دہلی جانے والی سڑک کی طرف کھلتا تھا، اسی لیے اس کا نام دہلی دروازہ پڑا۔ دائیں مڑ کر محراب دیکھیں، پھر تیر پر ٹیپ کر کے اندر چلیں۔" },
+      links: [{ to: "node3", yaw: 117, pitch: 7 }] },
+    { id: "node3", name: { en: "Inside Delhi Gate", ur: "دہلی دروازے کے اندر" },
+      note: { en: "The gate is a building, not just a doorway: brick rooms with arched openings line the passage. Look at the wooden windows high up on the walls.",
+              ur: "دروازہ صرف ایک راستہ نہیں، پوری عمارت ہے: گزرگاہ کے دونوں طرف محراب دار کمرے ہیں۔ اوپر دیواروں میں لکڑی کی کھڑکیاں دیکھیں۔" },
+      links: [{ to: "node1", yaw: 95 }, { to: "node4", yaw: -81 }] },
+    { id: "node4", name: { en: "The bazaar begins", ur: "بازار شروع ہوتا ہے" },
+      note: { en: "Step through the gate and you are straight into the bazaar. Look up: carved wooden balconies (jharokhas) hang over the shopfronts. A side lane leads to Sabeel Wali Gali.",
+              ur: "دروازے سے نکلتے ہی بازار شروع ہو جاتا ہے۔ اوپر دیکھیں: دکانوں کے اوپر لکڑی کے نقش دار جھروکے لٹکے ہوئے ہیں۔ ایک گلی سبیل والی گلی کی طرف جاتی ہے۔" },
+      links: [{ to: "node3", yaw: 58 }, { to: "node2", yaw: 35, label: { en: "Sabeel Wali Gali", ur: "سبیل والی گلی" } }, { to: "node6", yaw: -152 }] },
+    { id: "node2", name: { en: "Sabeel Wali Gali", ur: "سبیل والی گلی" },
+      note: { en: "A sabeel is a free drinking-water point for travellers, and this lane is named after one. The tiled front and old tree make it one of the trail's quieter corners.",
+              ur: "سبیل مسافروں کے لیے مفت پانی کی جگہ کو کہتے ہیں، اور یہ گلی اسی کے نام پر ہے۔ ٹائلوں والی دیوار اور پرانا درخت اسے گزرگاہ کا ایک پرسکون کونا بناتے ہیں۔" },
+      links: [{ to: "node4", yaw: -75 }, { to: "node5", yaw: 146 }] },
+    { id: "node5", name: { en: "Deeper into the lane", ur: "گلی کے اور اندر" },
+      note: { en: "Homes open straight onto the street here, with steps and painted doors. This is the Walled City as people live in it, a few metres from the busy bazaar.",
+              ur: "یہاں گھروں کے دروازے سیدھے گلی میں کھلتے ہیں، سیڑھیاں اور رنگے ہوئے دروازے۔ یہ اندرون شہر کی روزمرہ زندگی ہے، مصروف بازار سے چند قدم دور۔" },
+      links: [{ to: "node2", yaw: -102 }] },
+    { id: "node6", name: { en: "Beside the Shahi Hammam", ur: "شاہی حمام کے ساتھ" },
+      note: { en: "The plain brick wall is the Shahi Hammam, a bath house built around 1634 by Wazir Khan, Governor of Lahore. Inside are 21 connected rooms and some of the best Mughal frescoes in the city.",
+              ur: "یہ سادہ اینٹوں والی دیوار شاہی حمام کی ہے، جو تقریباً 1634 میں لاہور کے گورنر وزیر خان نے بنوایا۔ اندر 21 جڑے ہوئے کمرے اور شہر کے بہترین مغل فریسکو ہیں۔" },
+      links: [{ to: "node4", yaw: -108 }, { to: "node7", yaw: 87 }], site: "shahi-hammam" },
+    { id: "node7", name: { en: "Gur Mandi Chowk", ur: "گڑ منڈی چوک" },
+      note: { en: "Gur is jaggery, the brown sugar made from cane juice, and this square was its market. You can see the next gate-like arch down the street.",
+              ur: "گڑ گنے کے رس سے بنی شکر کو کہتے ہیں، اور یہ چوک اس کی منڈی تھا۔ گلی کے آخر میں اگلی محراب نظر آتی ہے۔" },
+      links: [{ to: "node4", yaw: 26 }, { to: "node8", yaw: -142 }] },
+    { id: "node8", name: { en: "Shair Marka Masala corner", ur: "شیر مارکہ مصالحہ والا موڑ" },
+      note: { en: "Locals give directions by shops, and this spice seller is one of the trail's landmarks. Cloth, shoes and spices spill out onto the street.",
+              ur: "یہاں لوگ دکانوں سے راستہ بتاتے ہیں، اور یہ مصالحے کی دکان گزرگاہ کی ایک پہچان ہے۔ کپڑا، جوتے اور مصالحے گلی تک پھیلے ہوئے ہیں۔" },
+      links: [{ to: "node7", yaw: 172 }, { to: "node9", yaw: -2 }] },
+    { id: "node9", name: { en: "Muhammadi Mohalla", ur: "محمدی محلہ" },
+      note: { en: "A mohalla is a neighbourhood, and the Walled City is a patchwork of them. Notice how the upper floors lean out over the street to make more room.",
+              ur: "محلہ یعنی بستی، اور اندرون شہر بہت سے محلوں سے مل کر بنا ہے۔ دیکھیں کہ اوپر کی منزلیں کیسے گلی کی طرف آگے نکلی ہوئی ہیں۔" },
+      links: [{ to: "node8", yaw: 173 }, { to: "node10", yaw: -3 }] },
+    { id: "node10", name: { en: "Rehman Jewellers", ur: "رحمان جیولرز" },
+      note: { en: "Jewellers and cloth shops line this stretch. Above them, look for the wooden panels and small arched windows of the old houses.",
+              ur: "اس حصے میں زیور اور کپڑے کی دکانیں ہیں۔ ان کے اوپر پرانے گھروں کے لکڑی کے تختے اور چھوٹی محراب دار کھڑکیاں دیکھیں۔" },
+      links: [{ to: "node9", yaw: 111 }, { to: "node11", yaw: -66 }] },
+    { id: "node11", name: { en: "Balconies and screens", ur: "جھروکے اور جالیاں" },
+      note: { en: "The best stretch for wooden jharokhas. The carved screens let air and light in while keeping the rooms behind them private.",
+              ur: "لکڑی کے جھروکوں کے لیے یہ بہترین حصہ ہے۔ نقش دار جالیاں ہوا اور روشنی اندر آنے دیتی ہیں اور پیچھے کے کمروں کا پردہ بھی رکھتی ہیں۔" },
+      links: [{ to: "node10", yaw: 64 }, { to: "node12", yaw: -125 }] },
+    { id: "node12", name: { en: "Haveli Bhai Nath", ur: "حویلی بھائی ناتھ" },
+      note: { en: "A haveli is a family mansion, with rooms arranged around an inner courtyard. From the street you only see the door, the shop below and the windows above.",
+              ur: "حویلی ایک خاندانی گھر ہوتا ہے جس کے کمرے اندرونی صحن کے گرد ہوتے ہیں۔ گلی سے صرف دروازہ، نیچے دکان اور اوپر کھڑکیاں نظر آتی ہیں۔" },
+      links: [{ to: "node11", yaw: 96 }, { to: "node13", yaw: -77 }] },
+    { id: "node13", name: { en: "On past the haveli", ur: "حویلی سے آگے" },
+      note: { en: "The street narrows and the crowd thickens as you get closer to Wazir Khan's square. Keep an eye out for motorbikes.",
+              ur: "وزیر خان چوک کے قریب گلی تنگ اور ہجوم زیادہ ہو جاتا ہے۔ موٹر سائیکلوں کا دھیان رکھیں۔" },
+      links: [{ to: "node12", yaw: 4 }, { to: "node14", yaw: -150 }] },
+    { id: "node14", name: { en: "Walled City Authority office", ur: "والڈ سٹی اتھارٹی کا دفتر" },
+      note: { en: "The Walled City of Lahore Authority looks after the old city and restored this trail. Its office sits right on the route.",
+              ur: "والڈ سٹی آف لاہور اتھارٹی پرانے شہر کی دیکھ بھال کرتی ہے اور اسی نے یہ گزرگاہ بحال کی۔ اس کا دفتر راستے پر ہی ہے۔" },
+      links: [{ to: "node13", yaw: 96 }, { to: "node15", yaw: -106 }] },
+    { id: "node15", name: { en: "Chowk Wazir Khan", ur: "چوک وزیر خان" },
+      note: { en: "The end of the walk. Through the arch is the square in front of Wazir Khan Mosque, finished in the 1640s and covered in tile work. Open the mosque's page to read more.",
+              ur: "سیر کا آخری پڑاؤ۔ محراب کے پار مسجد وزیر خان کا چوک ہے، جو 1640 کی دہائی میں مکمل ہوئی اور کاشی کاری سے ڈھکی ہے۔ مزید پڑھنے کے لیے مسجد کا صفحہ کھولیں۔" },
+      links: [{ to: "node14", yaw: -176 }], site: "wazir-khan-mosque" },
+  ],
+};

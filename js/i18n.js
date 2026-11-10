@@ -130,6 +130,14 @@ LL.I18N = (function () {
     reset: "Start over", routeDone: "Route complete!", routeDoneText: "Every stop ticked off. Shabash!",
     routeMap: "The route", stop: (n) => `Stop ${n}`, finish: "Finish", start: "Start",
     badgeUnlocked: "Badge unlocked", rankUp: "New rank", allAreas: "All",
+    fromSource: "Source:", officialTitle: "Official sources",
+    trailTitle: "Walk the Royal Trail in 360°", trailShort: "Royal Trail 360°",
+    trailLead: "Fifteen 360° stops from Delhi Gate to Wazir Khan's square, photographed by the Walled City of Lahore Authority. Drag to look around, tap the arrows to walk.",
+    trailCta: "Start at Delhi Gate", trailEyebrow: (i, n) => `Royal Trail 360° · stop ${i} of ${n}`,
+    trailHint: "Drag to look around · tap the arrows to walk", trailLoading: "Loading the view…",
+    trailError: "The 360° view couldn't load. Check your connection and try again.", trailAria: "360 degree view. Drag or use arrow keys to look around.",
+    trailNext: "Walk on", trailEnd: "Visit Wazir Khan Mosque", trailReadMore: "Read about this place",
+    trailCredit: "360° photography by the", trailNew: "New",
     pointsRows: [["Open a place", 10], ["Earn its stamp", 25], ["Visit it in person", 40], ["Verified by location", 15], ["Each quiz point (best score)", 3]],
   };
 

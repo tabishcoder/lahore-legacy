@@ -89,6 +89,8 @@ LL.Photos = (function () {
     if (!s) return [];
     const list = [];
     if (s.photo && s.photo.src) list.push({ url: s.photo.src, local: true, by: s.photo.by, caption: s.name });
+    // photos from official heritage bodies (js/config/official-photos.js), shown first
+    ((LL.OFFICIAL_PHOTOS || {})[key] || []).forEach((g) => list.push({ url: width <= 640 ? g.small : g.src, local: true, official: true, by: g.by, from: g.from, caption: g.caption, ur: g.ur, w: g.w, h: g.h }));
     // photos downloaded and converted to WebP by tools/fetch-photos.mjs
     const local = (LL.LOCAL_PHOTOS || {})[key] || [];
     local.forEach((g) => list.push({ url: width <= 500 && g.small ? g.small : g.src, local: true, caption: g.caption, ur: g.ur, file: g.file, w: g.w, h: g.h }));
