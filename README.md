@@ -130,3 +130,11 @@ LL.KEYS = { carto: "your-key-here" };
 Free for non-commercial sites up to 5 million tile requests a month (1 million if commercial). In the CARTO dashboard, restrict the key to your domain so nobody else can use it. Keep the "© OpenStreetMap · © CARTO" credit visible. Without a key the map still works, but shows a simple outline instead of streets.
 #   l a h o r e - l e g a c y  
  
+## v10 — heritage look
+The dark-and-gold theme is gone. The site now looks like an old travel notebook:
+- **Paper and ink:** parchment background with a light grain, dark-brown ink text.
+- **Colours from the city:** Lahori brick red, kashi blue (Wazir Khan's tiles), haldi yellow, garden green.
+- **Type:** IM Fell English for headings (old printed books), EB Garamond for reading, Noto Naskh for Urdu. Labels are small caps instead of spaced-out capitals.
+- **Shapes:** place photos sit in pointed Mughal arches (jharokhas), photo heroes end in a row of arches, the footer has a jali pattern, stamps are red ink.
+- **Map** tiles are toned sepia, like a survey sheet. Share cards and the certificate are printed on paper too.
+- All animations are unchanged. The palette lives at the top of `css/style.css`; the look itself is the "HERITAGE LAYER" at the end of it.

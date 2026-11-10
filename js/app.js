@@ -148,7 +148,7 @@
     // hero: photo slideshow, then real video when the connection allows
     const heroBox = $("#hero-photo"), capText = $("#hero-cap-text"), vbtn = $("#hero-vbtn");
     const night = LL.Motion.isNight();
-    const show = LL.Motion.slideshow(heroBox, night ? "night" : "day", (g) => { capText.innerHTML = `${night ? "🌙 " : ""}${esc(g.caption)}`; });
+    const show = LL.Motion.slideshow(heroBox, night ? "night" : "day", (g) => { capText.innerHTML = `${esc(g.caption)}`; });
     const vids = LL.Motion.videoLoop(heroBox, LL.Motion.pickClips(LL.VIDEOS.home), (c) => {
       show && show.stop();
       capText.innerHTML = `▶ ${esc(c.label)} · <a href="${c.page}" target="_blank" rel="noopener">${t("videoBy", esc(c.by))}</a>`;
@@ -1039,7 +1039,7 @@
       header();
       const now = LL.Game.rank().en;
       if (before && before !== now) LL.FX.rank(LL.Game.rank(), ico("crown"));
-      LL.Game.check().forEach((b) => (b.id === "first" || b.id === "all" ? toast(`🏅 ${t("badgeUnlocked")}: ${b.en}`) : LL.FX.badge(b, ico(b.icon))));
+      LL.Game.check().forEach((b) => (b.id === "first" || b.id === "all" ? toast(`${t("badgeUnlocked")}: ${b.en}`) : LL.FX.badge(b, ico(b.icon))));
       window.__rank = now;
     });
     window.__rank = LL.Game.rank().en;

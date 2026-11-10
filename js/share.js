@@ -8,7 +8,7 @@ window.LL = window.LL || {};
 
 LL.Share = (function () {
   const W = 1080, H = 1350;
-  const C = { ink: "#17191B", navy: "#172333", gold: "#B28A45", gold2: "#D1B27A", ivory: "#F4EFE5", sand: "#C9B89A", burg: "#632F36" };
+  const C = { ink: "#F1E6D0", navy: "#E8D9BC", gold: "#9A3A1F", gold2: "#1F5A78", ivory: "#2B1D14", sand: "#6E4A30", burg: "#8B2A1E" };
 
   function skylineImage() {
     return new Promise((res) => {
@@ -24,32 +24,32 @@ LL.Share = (function () {
     await (document.fonts ? document.fonts.ready : Promise.resolve());
     ctx.fillStyle = C.ink; ctx.fillRect(0, 0, W, H);
     const g = ctx.createRadialGradient(W / 2, 380, 50, W / 2, 380, 900);
-    g.addColorStop(0, "rgba(23,35,51,1)"); g.addColorStop(1, "rgba(23,25,27,1)");
+    g.addColorStop(0, "rgba(248,240,224,1)"); g.addColorStop(1, "rgba(228,212,182,1)");
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     ctx.strokeStyle = C.gold; ctx.lineWidth = 2; ctx.strokeRect(40, 40, W - 80, H - 80);
-    ctx.strokeStyle = "rgba(178,138,69,.35)"; ctx.strokeRect(54, 54, W - 108, H - 108);
+    ctx.strokeStyle = "rgba(154,58,31,.35)"; ctx.strokeRect(54, 54, W - 108, H - 108);
     const sky = await skylineImage();
     if (sky) {
       try {
         const h = 330, r = Math.max((W - 112) / sky.naturalWidth, h / sky.naturalHeight);
         const sw = (W - 112) / r, sh = h / r;
-        ctx.globalAlpha = 0.5;
+        ctx.globalAlpha = 0.45; ctx.filter = "sepia(0.7)";
         ctx.drawImage(sky, (sky.naturalWidth - sw) / 2, (sky.naturalHeight - sh) / 2, sw, sh, 56, H - 56 - h, W - 112, h);
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = 1; ctx.filter = "none";
         const fade = ctx.createLinearGradient(0, H - 56 - h, 0, H - 56 - h + 160);
-        fade.addColorStop(0, "rgba(23,25,27,1)"); fade.addColorStop(1, "rgba(23,25,27,0)");
+        fade.addColorStop(0, "rgba(236,224,200,1)"); fade.addColorStop(1, "rgba(236,224,200,0)");
         ctx.fillStyle = fade; ctx.fillRect(56, H - 56 - h, W - 112, 160);
       } catch (e) { ctx.globalAlpha = 1; }
     }
     ctx.textAlign = "center";
     ctx.fillStyle = C.gold2;
-    ctx.font = "600 30px Manrope, sans-serif";
-    ctx.fillText("L A H O R E   L E G A C Y", W / 2, 150);
+    ctx.font = 'italic 34px "IM Fell English", Georgia, serif';
+    ctx.fillText("Lahore Legacy", W / 2, 150);
     ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 40, 180, 80, 2);
   }
 
   const urdu = () => false; // share images are always in English
-  const serif = (size, w = 600) => (urdu() ? `${w >= 600 ? 700 : 500} ${Math.round(size * 0.78)}px "Noto Naskh Arabic", serif` : `${w} ${size}px "Cormorant Garamond", Georgia, serif`);
+  const serif = (size, w = 600) => (urdu() ? `${w >= 600 ? 700 : 500} ${Math.round(size * 0.78)}px "Noto Naskh Arabic", serif` : `${w} ${size}px "IM Fell English", Georgia, serif`);
 
   function wrap(ctx, text, x, y, maxW, lh) {
     const words = text.split(" ");
@@ -70,11 +70,11 @@ LL.Share = (function () {
     ctx.fillStyle = C.sand; ctx.font = serif(54, 500);
     ctx.direction = urdu() ? "rtl" : "ltr";
     ctx.fillText(LL.I18N.t("quizTitle"), W / 2, 300);
-    ctx.fillStyle = C.ivory; ctx.font = `600 300px "Cormorant Garamond", Georgia, serif`;
-    ctx.fillText(`${right}/${total}`, W / 2, 640);
+    ctx.fillStyle = C.ivory; ctx.font = `500 260px "EB Garamond", Georgia, serif`;
+    ctx.fillText(`${right}/${total}`, W / 2, 600);
     ctx.fillStyle = C.gold2; ctx.font = serif(48, 500);
-    ctx.fillText(LL.I18N.t("resultLine", right, total), W / 2, 730);
-    ctx.fillStyle = "rgba(244,239,229,.7)"; ctx.font = serif(40, 500);
+    ctx.fillText(LL.I18N.t("resultLine", right, total), W / 2, 760);
+    ctx.fillStyle = "rgba(43,29,20,.72)"; ctx.font = serif(40, 500);
     wrap(ctx, urdu() ? "بادشاہی مسجد · شاہی قلعہ · مسجد وزیر خان · شالامار باغ · مینارِ پاکستان" : "Badshahi Mosque · Lahore Fort · Wazir Khan · Shalimar · Minar-e-Pakistan", W / 2, 840, W - 200, 54);
     return cv;
   }
@@ -96,15 +96,15 @@ LL.Share = (function () {
     (got.length >= 6 ? got : LL.SITES).slice(0, 6).forEach((s, i) => {
       const cx = 250 + (i % 3) * 290, cy = 720 + Math.floor(i / 3) * 210, r = 82;
       ctx.save(); ctx.translate(cx, cy); ctx.rotate(((i % 2 ? 1 : -1) * 7 * Math.PI) / 180);
-      ctx.strokeStyle = C.gold2; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = C.burg; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
       ctx.lineWidth = 1; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.arc(0, 0, r - 12, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = C.ivory; ctx.font = urdu() ? `700 22px "Noto Naskh Arabic", serif` : `600 25px "Cormorant Garamond", Georgia, serif`;
+      ctx.fillStyle = C.ivory; ctx.font = urdu() ? `700 22px "Noto Naskh Arabic", serif` : `600 25px "IM Fell English", Georgia, serif`;
       const nm = s.name.en.split(" ");
       const lines = nm.length > 2 ? [nm.slice(0, 2).join(" "), nm.slice(2).join(" ")] : nm.length === 2 && !urdu() ? nm : [nm.join(" ")];
       lines.forEach((ln, k) => ctx.fillText(ln, 0, (k - (lines.length - 1) / 2) * 28 + 8));
       ctx.restore();
     });
-    ctx.fillStyle = "rgba(244,239,229,.6)"; ctx.font = `500 28px Manrope, sans-serif`;
+    ctx.fillStyle = "rgba(43,29,20,.6)"; ctx.font = `italic 30px "EB Garamond", Georgia, serif`;
     ctx.fillText(new Date().toLocaleDateString(urdu() ? "ur-PK" : "en-GB", { day: "numeric", month: "long", year: "numeric" }), W / 2, 1150);
     return cv;
   }
