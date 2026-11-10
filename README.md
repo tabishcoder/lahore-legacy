@@ -149,14 +149,14 @@ Photos, 360° views and information from official heritage bodies, used with per
 - heritage.pakistan.gov.pk and punjab.gov.pk did not respond, and whc.unesco.org blocks automated access, so nothing was taken from them directly.
 
 ## Analytics (Google Analytics 4 + Microsoft Clarity)
-Open `js/analytics.js` and paste your IDs at the top:
+In use: Google Analytics 4, Measurement ID `G-TM6XTLHCMB`. To change it, open `js/analytics.js` and edit the IDs at the top:
 ```js
 const GA4_ID = "G-XXXXXXXXXX";   // visitors, countries, pages, time on site
 const CLARITY_ID = "xxxxxxxxxx"; // session recordings + heatmaps
 ```
 Leave one empty to switch it off. Nothing loads on localhost. Every page change is sent as a page view, plus these events: `open_place`, `stamp_earned`, `quiz_complete`, `trail_stop`, `get_directions`, `share`, `outbound_click`, `language`.
 
-### Google Tag Manager (in use: GTM-TKZC42C9)
+### Google Tag Manager (optional, not in use)
 The site loads Tag Manager and pushes `virtual_page_view` on every page change, plus the events listed above. To get them into Google Analytics, in Tag Manager:
 1. **Tags → New → Google tag**, Tag ID = your GA4 Measurement ID (`G-…`), trigger **Initialization – All Pages**.
 2. **Triggers → New → Custom event**, name `virtual_page_view`. **Tags → New → Google Analytics: GA4 Event**, event name `page_view`, Measurement ID `G-…`, event parameter `page_location` = `{{Page URL}}`, trigger = that custom event.

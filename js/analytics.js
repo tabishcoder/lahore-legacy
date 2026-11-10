@@ -27,8 +27,8 @@
 window.LL = window.LL || {};
 
 LL.Analytics = (function () {
-  const GTM_ID = "GTM-TKZC42C9";
-  const GA4_ID = "";
+  const GTM_ID = "";
+  const GA4_ID = "G-TM6XTLHCMB";
   const CLARITY_ID = "";
 
   const local = /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === "file:";
