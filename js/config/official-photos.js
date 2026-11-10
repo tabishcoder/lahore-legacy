@@ -260,6 +260,83 @@ LL.OFFICIAL_PHOTOS = {
    "by": "Walled City of Lahore Authority · Shahi Hammam",
    "from": "https://shahihamam.com/",
    "orig": "https://shahihamam.com/images/kari.jpg"
+  },
+  {
+   "src": "assets/official/shahi-hammam/10.webp",
+   "small": "assets/official/shahi-hammam/10-s.webp",
+   "w": 1600,
+   "h": 1200,
+   "caption": "The restored outer walls",
+   "ur": "بحال شدہ بیرونی دیواریں",
+   "by": "Walled City of Lahore Authority · Shahi Hammam",
+   "from": "https://shahihamam.com/",
+   "orig": "https://shahihamam.com/images/12.jpg"
+  },
+  {
+   "src": "assets/official/shahi-hammam/11.webp",
+   "small": "assets/official/shahi-hammam/11-s.webp",
+   "w": 1600,
+   "h": 1067,
+   "caption": "Dome over the hot room",
+   "ur": "گرم کمرے کا گنبد",
+   "by": "Walled City of Lahore Authority · Shahi Hammam",
+   "from": "https://shahihamam.com/",
+   "orig": "https://shahihamam.com/images/cielingf.jpg"
+  },
+  {
+   "src": "assets/official/shahi-hammam/12.webp",
+   "small": "assets/official/shahi-hammam/12-s.webp",
+   "w": 1600,
+   "h": 991,
+   "caption": "Painted dome and skylight",
+   "ur": "رنگین گنبد اور روشن دان",
+   "by": "Walled City of Lahore Authority · Shahi Hammam",
+   "from": "https://shahihamam.com/",
+   "orig": "https://shahihamam.com/images/bg.jpg"
+  },
+  {
+   "src": "assets/official/shahi-hammam/13.webp",
+   "small": "assets/official/shahi-hammam/13-s.webp",
+   "w": 1600,
+   "h": 1067,
+   "caption": "The hall lit at dusk",
+   "ur": "شام کو روشن ہال",
+   "by": "Walled City of Lahore Authority · Shahi Hammam",
+   "from": "https://shahihamam.com/",
+   "orig": "https://shahihamam.com/images/cold_bath.jpg"
+  },
+  {
+   "src": "assets/official/shahi-hammam/14.webp",
+   "small": "assets/official/shahi-hammam/14-s.webp",
+   "w": 1600,
+   "h": 1067,
+   "caption": "A plunge pool",
+   "ur": "غسل کا حوض",
+   "by": "Walled City of Lahore Authority · Shahi Hammam",
+   "from": "https://shahihamam.com/",
+   "orig": "https://shahihamam.com/images/hot.jpg"
+  },
+  {
+   "src": "assets/official/shahi-hammam/15.webp",
+   "small": "assets/official/shahi-hammam/15-s.webp",
+   "w": 1600,
+   "h": 1200,
+   "caption": "A bathing niche with old plaster",
+   "ur": "پرانے پلستر والا غسل کا طاقچہ",
+   "by": "Walled City of Lahore Authority · Shahi Hammam",
+   "from": "https://shahihamam.com/",
+   "orig": "https://shahihamam.com/images/13.jpg"
+  },
+  {
+   "src": "assets/official/shahi-hammam/16.webp",
+   "small": "assets/official/shahi-hammam/16-s.webp",
+   "w": 1600,
+   "h": 1067,
+   "caption": "Frescoed walls around the hall",
+   "ur": "ہال کی فریسکو والی دیواریں",
+   "by": "Walled City of Lahore Authority · Shahi Hammam",
+   "from": "https://shahihamam.com/",
+   "orig": "https://shahihamam.com/images/cb.jpg"
   }
  ],
  "shalimar-gardens": [
@@ -345,17 +422,6 @@ LL.OFFICIAL_PHOTOS = {
    "by": "Walled City of Lahore Authority",
    "from": "https://walledcitylahore.gop.pk/",
    "orig": "https://walledcitylahore.gop.pk/wp-content/uploads/2024/06/2.png"
-  },
-  {
-   "src": "assets/official/walled-city/02.webp",
-   "small": "assets/official/walled-city/02-s.webp",
-   "w": 1280,
-   "h": 896,
-   "caption": "Craftsmen at work",
-   "ur": "کام کرتے کاریگر",
-   "by": "Walled City of Lahore Authority",
-   "from": "https://walledcitylahore.gop.pk/",
-   "orig": "https://walledcitylahore.gop.pk/wp-content/uploads/2024/06/4.png"
   }
  ]
 };
@@ -409,28 +475,6 @@ LL.HAMMAM_STORY = [
   "small": "assets/official/hammam-story/05-s.webp",
   "w": 1400,
   "h": 934,
-  "caption": "Scaffolding goes up inside",
-  "ur": "اندر ڈھانچے کھڑے کیے گئے",
-  "by": "Walled City of Lahore Authority · Shahi Hammam",
-  "from": "https://shahihamam.com/",
-  "orig": "https://shahihamam.com/images/con1.jpg"
- },
- {
-  "src": "assets/official/hammam-story/06.webp",
-  "small": "assets/official/hammam-story/06-s.webp",
-  "w": 1400,
-  "h": 934,
-  "caption": "Removing later floors to find the old one",
-  "ur": "بعد کے فرش ہٹا کر پرانا فرش نکالا گیا",
-  "by": "Walled City of Lahore Authority · Shahi Hammam",
-  "from": "https://shahihamam.com/",
-  "orig": "https://shahihamam.com/images/con2.jpg"
- },
- {
-  "src": "assets/official/hammam-story/07.webp",
-  "small": "assets/official/hammam-story/07-s.webp",
-  "w": 1400,
-  "h": 934,
   "caption": "Repairing the ceiling patterns by hand",
   "ur": "چھت کے نقش ہاتھ سے مرمت",
   "by": "Walled City of Lahore Authority · Shahi Hammam",
@@ -438,8 +482,8 @@ LL.HAMMAM_STORY = [
   "orig": "https://shahihamam.com/images/con4.jpg"
  },
  {
-  "src": "assets/official/hammam-story/08.webp",
-  "small": "assets/official/hammam-story/08-s.webp",
+  "src": "assets/official/hammam-story/06.webp",
+  "small": "assets/official/hammam-story/06-s.webp",
   "w": 1400,
   "h": 934,
   "caption": "Rebuilding brickwork",
@@ -449,8 +493,8 @@ LL.HAMMAM_STORY = [
   "orig": "https://shahihamam.com/images/con7.jpg"
  },
  {
-  "src": "assets/official/hammam-story/09.webp",
-  "small": "assets/official/hammam-story/09-s.webp",
+  "src": "assets/official/hammam-story/07.webp",
+  "small": "assets/official/hammam-story/07-s.webp",
   "w": 1400,
   "h": 1103,
   "caption": "UNESCO Asia-Pacific Award of Merit, 2016",
