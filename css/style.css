@@ -1731,3 +1731,16 @@ body.on-map .to-top, body.on-trail .to-top, body.no-scroll .to-top { display: no
 .foot__logo { width: auto; height: 104px; flex: none; opacity: 0.95; }
 @media (max-width: 640px) { .brand img { height: 36px; } .foot__logo { height: 88px; } }
 @media (max-width: 380px) { .brand img { height: 32px; } }
+
+/* English only: no Urdu anywhere (names, labels, subtitles) */
+html:not(.mode-mix) [lang="ur"] { display: none !important; }
+
+/* language choice on the Me page */
+.langpick { display: flex; align-items: center; justify-content: space-between; gap: 1rem 1.5rem; flex-wrap: wrap; padding: 1rem 1.2rem; margin-bottom: 1rem; border: 1px solid var(--line-2); border-radius: 4px; background: var(--navy); box-shadow: var(--shadow); }
+.langpick b { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.3rem; }
+.langpick small { display: block; color: var(--faint); max-width: 34em; line-height: 1.4; }
+.langpick__opts { display: inline-flex; padding: 4px; gap: 4px; border: 1px solid var(--line-2); border-radius: 4px; background: #FFFBF1; }
+.langpick__opts button { min-height: 44px; padding: 0 1.1rem; border: 0; border-radius: 3px; background: none; color: var(--ink); font: 600 1.02rem var(--sans); white-space: nowrap; }
+.langpick__opts button[aria-pressed="true"] { background: var(--brick); color: #FFF8EA; }
+.foot__lang { color: var(--gold-2) !important; text-decoration: underline; text-underline-offset: 3px; font-size: 0.95rem; }
+@media (max-width: 640px) { .langpick__opts { width: 100%; } .langpick__opts button { flex: 1; padding: 0 0.5rem; } }

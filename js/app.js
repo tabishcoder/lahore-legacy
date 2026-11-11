@@ -61,11 +61,7 @@
     [["places", "#/"], ["map", "#/map"], ["plan", "#/plan"], ["tour", "#/tour"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
-    const mix = LL.I18N.mode === "mix";
-    const b = $("#lang");
-    b.textContent = mix ? t("toEnglish") : t("toMix");
-    b.title = mix ? t("toEnglishTitle") : t("toMixTitle");
-    b.classList.toggle("is-ur", !mix);
+    $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
     const n = LL.Progress.stampCount(), rk = LL.Game.rank();
     $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span>`;
     $("#progress-pill").title = `${rk.en} · ${rk.points} points · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
@@ -758,6 +754,13 @@
           <div><b>${P.visitedCount()}</b><span>${t("statVisited")}</span></div>
           <div><b>${earnedN}</b><small>/${G.BADGES.length}</small><span>${t("statBadges")}</span></div>
         </div>
+        <div class="langpick" role="group" aria-label="${t("langTitle")}">
+          <div><b>${t("langTitle")}</b><small>${t("langHint")}</small></div>
+          <div class="langpick__opts">
+            <button data-lang="mix" aria-pressed="${LL.I18N.mode === "mix"}">${t("langMix")}</button>
+            <button data-lang="en" aria-pressed="${LL.I18N.mode === "en"}">${t("langEn")}</button>
+          </div>
+        </div>
         <div class="me__links">
           <a class="btn btn--gold" href="#/map">${ico("map")} ${t("openMap")}</a>
           <a class="btn btn--ghost" href="#/quiz">${ico("quiz")} ${t("quizTitle")}</a>
@@ -1085,7 +1088,13 @@
   }
 
   function boot() {
-    $("#lang").addEventListener("click", () => { LL.I18N.set(LL.I18N.mode === "mix" ? "en" : "mix"); LL.Analytics && LL.Analytics.event("language", { mode: LL.I18N.mode }); });
+    // language choice (on the Me page)
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-lang]");
+      if (!b || b.dataset.lang === LL.I18N.mode) return;
+      LL.I18N.set(b.dataset.lang);
+      LL.Analytics && LL.Analytics.event("language", { mode: LL.I18N.mode });
+    });
     document.addEventListener("ll:lang", render);
     document.addEventListener("ll:progress", () => {
       const before = window.__rank;
