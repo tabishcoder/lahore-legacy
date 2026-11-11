@@ -130,6 +130,7 @@ LL.I18N = (function () {
     reset: "Start over", routeDone: "Route complete!", routeDoneText: "Every stop ticked off. Shabash!",
     routeMap: "The route", stop: (n) => `Stop ${n}`, finish: "Finish", start: "Start",
     badgeUnlocked: "Badge unlocked", rankUp: "New rank", allAreas: "All",
+    cue: "Explore", glPlaces: "heritage places", glStops: "stops in the 360° walk", glPlans: "ready tour plans", glAreas: "parts of the city",
     langTitle: "Language", langHint: "Urdu + English shows the stories and visitor info in Urdu. English only shows everything in English.", langMix: "اردو + English", langEn: "English only", langChange: "change",
     fromSource: "Source:", officialTitle: "Official sources",
     trailTitle: "Walk the Royal Trail in 360°", trailShort: "Royal Trail 360°",
