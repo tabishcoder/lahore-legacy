@@ -101,8 +101,18 @@
             <a class="action" href="#/plan"><span class="action__icon">${ico("plan")}</span><b>${t("actPlan")}</b><small>${t("actPlanSub")}</small></a>
             <a class="action" href="#/tour"><span class="action__icon">${ico("tour")}</span><b>${t("actTour")}</b><small>${t("actTourSub")}</small></a>
           </div>
+          <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
           ${seen ? `<a class="hero__progress" href="#/me">${ico("crown")} <b>${esc(rk.en)}</b> · ${rk.points} pts · ${t("stampsOf", stamps, TOTAL())} →</a>` : ""}
         </div>
+      </section>
+
+      <div class="marquee" id="marquee"></div>
+
+      <section class="glance wrap" id="explore">
+        <div><b data-count="${TOTAL()}">${TOTAL()}</b><span>${t("glPlaces")}</span></div>
+        <div><b data-count="${LL.TRAIL360.stops.length}">${LL.TRAIL360.stops.length}</b><span>${t("glStops")}</span></div>
+        <div><b data-count="${LL.PLANS.length}">${LL.PLANS.length}</b><span>${t("glPlans")}</span></div>
+        <div><b data-count="${LL.AREAS.length}">${LL.AREAS.length}</b><span>${t("glAreas")}</span></div>
       </section>
 
       <section class="row">
@@ -158,9 +168,14 @@
       row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(tile(s)); });
     });
     LL.Ease && LL.Ease.rowArrows(main());
+    const mixNames = LL.I18N.mode === "mix";
+    LL.Delight.marquee($("#marquee"), LL.SITES.map((x, i) => (mixNames && i % 2 ? `<span lang="ur">${esc(x.name.ur)}</span>` : esc(x.name.en))));
+    const stopRows = LL.Delight.rows(main());
+    LL.Delight.tiltCards(main());
+    $(".hero__cue").addEventListener("click", (e) => { e.preventDefault(); $("#explore").scrollIntoView({ behavior: "smooth", block: "start" }); });
     const back = LL.Motion.lastMorph();
     if (back) { const c = main().querySelector(`.tile[href="#/site/${back}"] .media`); if (c) c.style.viewTransitionName = "hero-photo"; }
-    LL.Motion.reveal(main(), ".row__head, .band");
+    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .trailband");
 
     // search
     const q = $("#q"), res = $("#results");
@@ -192,7 +207,7 @@
       const cv = await LL.Share.certificate(name);
       LL.Share.deliver(cv, "lahore-legacy-certificate.png", t("certTitle"));
     });
-    return () => { show && show.stop(); vids && vids.stop(); };
+    return () => { show && show.stop(); vids && vids.stop(); stopRows(); };
   }
 
   /* tall photo tile used in the swipe rows */
@@ -1085,6 +1100,7 @@
     header();
     window.scrollTo(0, 0);
     LL.Ease && LL.Ease.afterRender();
+    LL.Delight && LL.Delight.page(main());
   }
 
   function boot() {
