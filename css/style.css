@@ -1722,3 +1722,12 @@ body.on-map .to-top, body.on-trail .to-top, body.no-scroll .to-top { display: no
 .trail__nav .btn { white-space: normal; text-align: center; line-height: 1.2; padding-block: 0.5rem; min-width: 0; }
 .trail__bar { grid-template-columns: auto minmax(0, 1fr) auto; }
 @media (max-width: 380px) { .trail__step--next { font-size: 0.9rem; padding: 0 0.6rem; } }
+
+/* brand logo (Minar-e-Pakistan + gate line mark) */
+.brand img { width: auto; height: 44px; flex: none; }
+.brand span { color: #5A1424; }
+.brand em { color: #8A5B22; font-style: normal; }
+.foot__inner { align-items: center; justify-content: flex-start; gap: 1.6rem; }
+.foot__logo { width: auto; height: 104px; flex: none; opacity: 0.95; }
+@media (max-width: 640px) { .brand img { height: 36px; } .foot__logo { height: 88px; } }
+@media (max-width: 380px) { .brand img { height: 32px; } }
