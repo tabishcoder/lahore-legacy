@@ -48,72 +48,79 @@ LL.Delight = (function () {
     el.style.setProperty("--dur", `${Math.max(40, items.length * 3.2)}s`);
   }
 
-  /* ---------- numbers count up ---------- */
+  /* ---------- numbers run up, every time they come into view ---------- */
   function counters(root) {
     const els = root.querySelectorAll("[data-count]");
     if (!els.length) return;
     const run = (el) => {
       const to = +el.dataset.count, suffix = el.dataset.suffix || "";
       if (reduce()) { el.textContent = to + suffix; return; }
-      const t0 = performance.now(), dur = 1300;
+      if (el._running) return;
+      el._running = true;
+      const t0 = performance.now(), dur = 1500 + Math.min(900, to * 30);
       const step = (t) => {
-        const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 4);
         el.textContent = Math.round(to * e) + suffix;
-        if (k < 1) requestAnimationFrame(step);
+        if (k < 1) requestAnimationFrame(step); else { el._running = false; el.classList.add("is-done"); setTimeout(() => el.classList.remove("is-done"), 600); }
       };
       requestAnimationFrame(step);
     };
     if (!("IntersectionObserver" in window)) { els.forEach(run); return; }
-    const io = new IntersectionObserver((en) => en.forEach((x) => { if (x.isIntersecting) { run(x.target); io.unobserve(x.target); } }), { threshold: 0.6 });
+    const io = new IntersectionObserver((en) => en.forEach((x) => { if (x.isIntersecting) run(x.target); else if (!x.target._running) x.target.textContent = "0" + (x.target.dataset.suffix || ""); }), { threshold: 0.6 });
     els.forEach((el) => io.observe(el));
   }
 
-  /* ---------- card rows: deal in, then drift ---------- */
+  /* ---------- card rows: deal in, then glide ----------
+     The glide is a CSS transform on an inner track (smooth on phones, no
+     fight with scrolling). The moment someone touches a row, the glide is
+     swapped for the same position as a real scroll, and never restarts. */
   function rows(root) {
     const list = [...root.querySelectorAll(".row__scroll")];
     if (!list.length) return () => {};
-    const state = new Map();
-    let raf = 0, alive = true;
+    const stops = [];
 
     list.forEach((row, n) => {
-      [...row.children].forEach((c, i) => c.style.setProperty("--i", Math.min(i, 6)));
-      const st = { on: false, stopped: reduce(), dir: n % 2 ? -1 : 1, x: 0, wait: 0 };
-      state.set(row, st);
-      const stop = () => { if (st.stopped) return; st.stopped = true; row.classList.remove("is-drifting"); };
-      ["pointerdown", "wheel", "touchstart", "keydown", "focusin"].forEach((ev) => row.addEventListener(ev, stop, { passive: true }));
-      row.addEventListener("mouseenter", () => { st.hover = true; });
-      row.addEventListener("mouseleave", () => { st.hover = false; });
-      const head = row.parentElement.querySelector(".row__arrows");
-      if (head) head.addEventListener("click", stop);
+      const track = document.createElement("div");
+      track.className = "row__track";
+      while (row.firstChild) track.appendChild(row.firstChild);
+      row.appendChild(track);
+      row.classList.add("has-track");
+      [...track.children].forEach((c, i) => c.style.setProperty("--i", Math.min(i, 6)));
+
+      let stopped = reduce();
+      const stop = () => {
+        if (stopped) return;
+        stopped = true;
+        const m = new DOMMatrixReadOnly(getComputedStyle(track).transform);
+        row.classList.remove("is-gliding");
+        track.style.animation = "none";
+        track.style.transform = "none";
+        row.scrollTo({ left: -m.m41, behavior: "instant" });   // carry on from exactly where it was
+      };
+      ["pointerdown", "touchstart", "wheel", "keydown", "focusin"].forEach((ev) => row.addEventListener(ev, stop, { passive: true }));
+      const arrows = row.parentElement.querySelector(".row__arrows");
+      if (arrows) arrows.addEventListener("pointerdown", stop, { capture: true });
+      stops.push(stop);
+
+      const start = () => {
+        if (stopped) return;
+        const dist = track.scrollWidth - row.clientWidth + 2 * parseFloat(getComputedStyle(row).paddingLeft || 0);
+        if (dist < 60) return;
+        track.style.setProperty("--dist", `${-dist}px`);
+        track.style.setProperty("--dur", `${Math.max(14, dist / 34)}s`);   // about 34 px a second
+        track.style.animationDirection = n % 2 ? "alternate-reverse" : "alternate";
+        row.classList.add("is-gliding");
+      };
+
+      if (!("IntersectionObserver" in window)) { row.classList.add("is-dealt"); return; }
+      const io = new IntersectionObserver((en) => en.forEach((x) => {
+        if (x.isIntersecting && !row.classList.contains("is-dealt")) { row.classList.add("is-dealt"); setTimeout(start, 1500); }
+        row.classList.toggle("is-off", !x.isIntersecting);       // pause while off screen
+      }), { threshold: 0.2 });
+      io.observe(row);
+      stops.push(() => io.disconnect());
     });
-
-    const io = "IntersectionObserver" in window ? new IntersectionObserver((en) => en.forEach((x) => {
-      const st = state.get(x.target);
-      st.on = x.isIntersecting;
-      if (x.isIntersecting && !x.target.classList.contains("is-dealt")) {
-        x.target.classList.add("is-dealt");
-        st.wait = performance.now() + 1600;      // let the cards land before drifting
-        if (!st.stopped && x.target.scrollWidth > x.target.clientWidth + 40) { x.target.classList.add("is-drifting"); st.x = x.target.scrollLeft; }
-      }
-    }), { threshold: 0.25 }) : null;
-    if (io) list.forEach((r) => io.observe(r)); else list.forEach((r) => r.classList.add("is-dealt"));
-
-    let last = performance.now();
-    const tick = (t) => {
-      if (!alive) return;
-      const dt = Math.min(50, t - last); last = t;
-      state.forEach((st, row) => {
-        if (!st.on || st.stopped || st.hover || t < st.wait || !row.classList.contains("is-drifting")) return;
-        const max = row.scrollWidth - row.clientWidth;
-        st.x += st.dir * dt * 0.022;             // about 22 px a second
-        if (st.x >= max) { st.x = max; st.dir = -1; st.wait = t + 1400; }
-        if (st.x <= 0) { st.x = 0; st.dir = 1; st.wait = t + 1400; }
-        row.scrollLeft = st.x;
-      });
-      raf = requestAnimationFrame(tick);
-    };
-    if (!reduce()) raf = requestAnimationFrame(tick);
-    return () => { alive = false; cancelAnimationFrame(raf); io && io.disconnect(); };
+    return () => stops.forEach((f) => f());
   }
 
   /* ---------- cards lean toward the mouse ---------- */

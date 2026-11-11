@@ -1827,3 +1827,56 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.9s var(--ease) backw
   h1.is-split .w { animation: none; }
 }
 #explore { scroll-margin-top: calc(var(--top) + 16px); }
+
+/* =========================================================================
+   MOBILE-FIRST MOTION
+   Card rows glide with a transform (smooth on phones) instead of nudging
+   the scroll position, and the heavy effects are dropped on touch screens.
+   ========================================================================= */
+.row__scroll { filter: none; scroll-snap-type: x proximity; }
+.row__scroll.has-track { display: block; }
+.row__track { display: grid; grid-auto-flow: column; grid-auto-columns: inherit; gap: inherit; width: max-content; }
+.row__scroll.is-gliding .row__track { animation: glide var(--dur, 30s) ease-in-out infinite alternate; will-change: transform; }
+.row__scroll.is-gliding.is-off .row__track { animation-play-state: paused; }
+@keyframes glide { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(var(--dist, -200px), 0, 0); } }
+@media (hover: hover) { .row__scroll.is-gliding:hover .row__track { animation-play-state: paused; } }
+
+/* photo settles as the card lands */
+.row__scroll.is-dealt .tile .media img { animation: settle 1.8s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 90ms); }
+@keyframes settle { from { transform: scale(1.18); } to { transform: scale(1); } }
+
+/* numbers: a small pop when they finish running */
+.glance b { display: inline-block; transition: transform 0.4s var(--ease), color 0.4s; }
+.glance b.is-done { transform: scale(1.14); color: var(--kashi); }
+.glance > div { position: relative; overflow: hidden; }
+.glance > div::after { content: ""; position: absolute; left: 20%; right: 20%; bottom: 8px; height: 2px; background: var(--haldi); transform: scaleX(0); transition: transform 1.6s var(--ease) 0.2s; }
+.glance > div.in::after { transform: scaleX(1); }
+
+/* section headings slide in from the side */
+.row__head.rv { transform: translateX(-26px); }
+.row__head.rv.in { transform: none; }
+
+/* things answer a finger */
+.tile:active { transform: scale(0.97); transition-duration: 0.12s; }
+.action:active, .btn:active, .choice:active, .trail__step:active { transform: scale(0.97); }
+.nav a .ico { transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.nav a:active .ico { transform: scale(0.82); }
+.nav a.is-active .ico { animation: navPop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1); }
+@keyframes navPop { from { transform: translateY(6px) scale(0.8); } to { transform: none; } }
+
+/* touch screens: lighter effects */
+@media (pointer: coarse) {
+  .tile { will-change: auto; transform: none; }
+  .tile:hover { transform: none; }
+  .row__scroll { perspective: none; }
+  h1.is-split .w { animation-name: wordInLite; }
+  .trailband__strip img { animation-duration: 12s; }
+}
+@keyframes wordInLite { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) {
+  .marquee__track { animation-duration: calc(var(--dur, 70s) * 0.75); }
+  .glance b { font-size: 2.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { .row__scroll.is-gliding .row__track { animation: none; } }
+.row__scroll.has-track { scroll-snap-type: none; scroll-behavior: auto; }
+.row__scroll.has-track .tile { scroll-snap-align: none; }
