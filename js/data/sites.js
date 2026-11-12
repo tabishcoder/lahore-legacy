@@ -62,7 +62,7 @@ LL.SITES = [
         ],
         [
           "Dress",
-          "Modest clothing. Women cover their heads."
+          "Modest clothing for everyone; women may want to bring a scarf for inside."
         ],
         [
           "Best time",
@@ -84,7 +84,7 @@ LL.SITES = [
         ],
         [
           "لباس",
-          "پورا اور سادہ لباس پہنیں۔ خواتین سر ڈھانپیں۔"
+          "سادہ لباس پہنیں؛ خواتین چاہیں تو دوپٹہ ساتھ رکھ سکتی ہیں۔"
         ],
         [
           "کب جائیں",

@@ -171,3 +171,8 @@ The site loads Tag Manager and pushes `virtual_page_view` on every page change, 
 
 ## Link previews
 `index.html` has Open Graph and Twitter tags pointing at `assets/og/lahore-legacy.jpg` (1200×630, Badshahi Mosque from the air, ~150 KB). If the domain changes, update the `https://lahorelegacy.com/` URLs there. WhatsApp and Facebook cache previews: a link shared before the update can keep showing the old preview for a while; use the Facebook Sharing Debugger ("Scrape again") to refresh it.
+
+## SEO
+`index.html` has keyword-rich title/description/keywords meta tags, Open Graph + Twitter cards, and two JSON-LD blocks (WebSite + an ItemList of all 24 places). `js/app.js`'s `setPageMeta()` also sets a unique `<title>` and meta description per route (place page, trail, plan, map, quiz) for browser history and sharing. `robots.txt` and `sitemap.xml` are in place.
+
+**Real limitation:** this is a single-page app using `#/` hash routes (`#/site/lahore-fort`). A URL fragment is never sent to the server, so Google indexes `https://lahorelegacy.com/` as one page — individual place pages cannot rank on their own for "Badshahi Mosque Lahore" or similar searches under the current architecture, no matter what meta tags they carry. Ranking each place separately would need real server paths (e.g. `/places/badshahi-mosque`) with pre-rendered HTML per page — a bigger change (a static site generator, or a prerendering service) than a text/meta-tag pass. The changes here are the most that's achievable without that rework, and they do help the one page that *is* indexed, plus any sharing/browser-history use of the per-route titles.

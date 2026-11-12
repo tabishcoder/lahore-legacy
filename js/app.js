@@ -89,6 +89,7 @@
         <div class="hero__photo" id="hero-photo"></div>
         <div class="hero__media-cap" id="hero-cap"><span id="hero-cap-text"></span><button class="hero__vbtn" id="hero-vbtn" hidden aria-label="Pause video">❚❚</button></div>
         <div class="hero__inner">
+          <p class="eyebrow">${t("heroEyebrow")}</p>
           <h1>${t("heroTitle")}</h1>
           <p class="lead">${t("heroLead", TOTAL())}</p>
           <div class="search" role="search">
@@ -1118,10 +1119,26 @@
   }
   function go(h) { location.hash = h; }
 
+  /* a distinct <title> and meta description per route — small SEO/sharing win
+     even though the site is a single hash-routed page for crawlers */
+  const DEFAULT_TITLE = "Lahore Legacy — Lahore Heritage Guide: Places to Visit, Tour Plans & 360° Walled City Tour";
+  const DEFAULT_DESC = "A free guide to Lahore's heritage: Badshahi Mosque, Lahore Fort, Shalimar Gardens and 21 more. Visiting times, tickets, ready-made tour plans and a 360° Walled City walk. English and Urdu.";
+  function setPageMeta(r) {
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const set = (title, desc) => { document.title = title; if (metaDesc && desc) metaDesc.setAttribute("content", desc); };
+    if (r.page === "site") { const s = site(r.param); if (s) return set(`${s.name.en} — Visiting Times, Tickets & History | Lahore Legacy`, `${s.name.en}, Lahore: ${s.line.en} Visiting times, tickets and what to see, from Lahore Legacy's free heritage guide.`); }
+    if (r.page === "trail") return set("Royal Trail in 360° — Walk Through the Walled City | Lahore Legacy", "Walk the Royal Trail in 360°, from Delhi Gate to Wazir Khan's square, across Lahore's Walled City.");
+    if (r.page === "plan") return set("Plan a Visit to Lahore's Heritage Sites | Lahore Legacy", "Ready-made tour plans for Lahore's heritage sites, from 2 hours to a full day, with directions and tips.");
+    if (r.page === "map") return set("Map of Lahore's Heritage Sites | Lahore Legacy", "An interactive map of Lahore's 24 heritage places, sorted by what's nearest you.");
+    if (r.page === "quiz") return set("Lahore Heritage Quiz — How Well Do You Know Lahore? | Lahore Legacy", "A 60-second quiz on Lahore's heritage. Answer what you can, then share your score.");
+    set(DEFAULT_TITLE, DEFAULT_DESC);
+  }
+
   function render() { LL.Motion.transition(renderNow); }
   function renderNow() {
     if (cleanup) { cleanup(); cleanup = null; }
     const r = route();
+    setPageMeta(r);
     main().classList.remove("is-in"); void main().offsetWidth; main().classList.add("is-in");
     if (r.page === "site") cleanup = sitePage(r.param);
     else if (r.page === "me") mePage();
