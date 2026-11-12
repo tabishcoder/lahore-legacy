@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The site is a single-page app using #/ hash routes (e.g. #/site/lahore-fort).
+     Search engines do not treat a hash fragment as a separate, indexable URL, so
+     only the one real address is listed here. See the README note on SEO for
+     what this means and how to go further. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://lahorelegacy.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

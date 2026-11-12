@@ -83,8 +83,8 @@ LL.AREAS = [
         ur: ["سنہرے گنبد — نیچے بازار سے سب سے اچھے نظر آتے ہیں۔", "نماز ہال کی رنگین دیواریں۔"],
       },
       visit: {
-        en: [["Entry", "Free."], ["Shoes & dress", "Shoes off; modest clothes, women cover their heads."], ["Best time", "Morning. Avoid prayer times."]],
-        ur: [["داخلہ", "مفت۔"], ["جوتے اور لباس", "جوتے اتاریں، سادہ لباس، خواتین سر ڈھانپیں۔"], ["کب جائیں", "صبح۔ نماز کے وقت نہ جائیں۔"]],
+        en: [["Entry", "Free."], ["Shoes & dress", "Shoes off at the door; dress modestly, and women may want a scarf."], ["Best time", "Morning. Avoid prayer times."]],
+        ur: [["داخلہ", "مفت۔"], ["جوتے اور لباس", "اندر جاتے وقت جوتے اتاریں، سادہ لباس پہنیں؛ خواتین چاہیں تو دوپٹہ ساتھ رکھ سکتی ہیں۔"], ["کب جائیں", "صبح۔ نماز کے وقت نہ جائیں۔"]],
       },
     }),
     S({
@@ -127,8 +127,8 @@ LL.AREAS = [
         ur: ["سنگِ مرمر کا صحن، جہاں ہر وقت لوگ ہوتے ہیں۔", "لنگر، جو ہر آنے والے کو ملتا ہے۔"],
       },
       visit: {
-        en: [["Entry", "Free. Open day and night."], ["Security", "Body check at the gate; avoid large bags."], ["Dress", "Modest clothes, shoes off; women cover their heads and use the women's entrance."]],
-        ur: [["داخلہ", "مفت۔ دن رات کھلا ہے۔"], ["سیکیورٹی", "دروازے پر تلاشی ہوتی ہے، بڑے بیگ نہ لے جائیں۔"], ["لباس", "سادہ لباس، جوتے اتاریں۔ خواتین سر ڈھانپیں اور خواتین والا دروازہ استعمال کریں۔"]],
+        en: [["Entry", "Free. Open day and night."], ["Security", "Body check at the gate; avoid large bags."], ["Dress", "Modest clothes, shoes off; women may want a scarf, and there's a separate entrance for women."]],
+        ur: [["داخلہ", "مفت۔ دن رات کھلا ہے۔"], ["سیکیورٹی", "دروازے پر تلاشی ہوتی ہے، بڑے بیگ نہ لے جائیں۔"], ["لباس", "سادہ لباس، جوتے اتاریں؛ خواتین چاہیں تو دوپٹہ ساتھ رکھ سکتی ہیں، اور خواتین کے لیے الگ دروازہ ہے۔"]],
       },
     }),
 
