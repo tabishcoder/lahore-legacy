@@ -16,7 +16,7 @@ LL.TRAIL360 = {
     { id: "node1", name: { en: "Delhi Gate, from the road", ur: "دہلی دروازہ، سڑک کی طرف سے" },
       note: { en: "This is where the Royal Trail begins. The gate faced the road to Delhi, which gave it its name. Turn right to see the arch, then tap the arrow to walk through.",
               ur: "شاہی گزرگاہ یہیں سے شروع ہوتی ہے۔ یہ دروازہ دہلی جانے والی سڑک کی طرف کھلتا تھا، اسی لیے اس کا نام دہلی دروازہ پڑا۔ دائیں مڑ کر محراب دیکھیں، پھر تیر پر ٹیپ کر کے اندر چلیں۔" },
-      links: [{ to: "node3", yaw: 117, pitch: 7 }] },
+      links: [{ to: "node3", yaw: 117, pitch: 7 }], site: "delhi-gate" },
     { id: "node3", name: { en: "Inside Delhi Gate", ur: "دہلی دروازے کے اندر" },
       note: { en: "The gate is a building, not just a doorway: brick rooms with arched openings line the passage. Look at the wooden windows high up on the walls.",
               ur: "دروازہ صرف ایک راستہ نہیں، پوری عمارت ہے: گزرگاہ کے دونوں طرف محراب دار کمرے ہیں۔ اوپر دیواروں میں لکڑی کی کھڑکیاں دیکھیں۔" },
