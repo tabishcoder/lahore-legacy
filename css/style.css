@@ -1880,3 +1880,22 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.9s var(--ease) backw
 @media (prefers-reduced-motion: reduce) { .row__scroll.is-gliding .row__track { animation: none; } }
 .row__scroll.has-track { scroll-snap-type: none; scroll-behavior: auto; }
 .row__scroll.has-track .tile { scroll-snap-align: none; }
+
+/* ---------- UX clarity pass: trail card, nearby row, directions placement ---------- */
+.trailcard { display: grid; grid-template-columns: 110px 1fr; gap: 1rem; align-items: center; margin: 0 0 2.4rem; padding: 0.9rem; border: 1px solid var(--line-2); border-radius: 8px; background: var(--navy); text-decoration: none !important; color: var(--ivory); transition: border-color 0.25s, transform 0.25s var(--ease); }
+.trailcard:hover { border-color: var(--gold-2); transform: translateY(-2px); }
+.trailcard__media { width: 110px; height: 110px; border-radius: 6px; overflow: hidden; flex: none; }
+.trailcard__media img { width: 100%; height: 100%; object-fit: cover; }
+.trailcard__body { display: grid; gap: 0.3rem; }
+.trailcard__body b { display: flex; align-items: center; gap: 0.5rem; font-family: var(--serif); font-size: 1.25rem; font-weight: 600; }
+.trailcard__body b .ico { width: 20px; height: 20px; color: var(--gold-2); }
+.trailcard__body > span:not(.btn) { color: var(--dim); font-size: 0.9rem; }
+.trailcard__body .btn { justify-self: start; margin-top: 0.2rem; }
+
+.nearby .row__scroll { padding: 0.3rem 0 1rem; grid-auto-columns: clamp(170px, 42vw, 220px); }
+
+@media (max-width: 640px) {
+  .trailcard { grid-template-columns: 76px 1fr; gap: 0.75rem; padding: 0.7rem; }
+  .trailcard__media { width: 76px; height: 76px; }
+  .trailcard__body b { font-size: 1.05rem; }
+}

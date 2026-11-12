@@ -287,8 +287,8 @@
             <h1>${esc(s.name.en)}</h1>
             <p class="site__ur" lang="ur">${esc(s.name.ur)}</p>
             <div class="site__actions">
-              <a class="btn btn--gold btn--sm" href="${maps(s.name.en + ", Lahore")}" target="_blank" rel="noopener">${ico("pin")} ${t("directions")}</a>
-              <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("eye")} ${t("virtualView")}</a>
+              <button class="btn btn--gold btn--sm" id="see-photos">${ico("eye")} ${t("seePhotos")}</button>
+              <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("tour")} ${t("virtualView")}</a>
               <a class="btn btn--ghost btn--sm" href="#/map/${id}">${ico("map")} ${t("onMap")}</a>
               <button class="btn btn--ghost btn--sm" id="share-place">${ico("share")} ${t("sharePlace")}</button>
             </div>
@@ -299,6 +299,8 @@
           <dl class="quick">${(LL.QUICK[id] || []).map(([k, v]) => `<div><dt>${t("quick")[k]}</dt><dd ${U()}>${fx(pick(v))}</dd></div>`).join("")}</dl>
 
           <section class="been" id="been"></section>
+
+          ${trailCard(id)}
 
           <p class="story" ${U()}>${fx(pick(s.story))}</p>
 
@@ -325,10 +327,13 @@
           <section class="block visit">
             <h2>${t("visit")}</h2>
             <dl ${U()}>${pick(s.visit).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
-            <p class="hint">${t("visitNote")}</p>
+            <p><a class="btn btn--ghost btn--sm" href="${maps(s.name.en + ", Lahore")}" target="_blank" rel="noopener">${ico("pin")} ${t("directions")} ↗</a></p>
+            <p class="hint">${t("directionsNote")}. ${t("visitNote")}</p>
           </section>
 
           <section class="block check" id="check"></section>
+
+          <section class="block nearby" id="nearby" hidden><h2>${t("nearbyTitle")}</h2><div class="row__scroll" id="nearby-row"></div></section>
 
           <a class="next" href="#/site/${next.id}">
             <span class="next__label">${t("next")} →</span>
@@ -383,12 +388,41 @@
     });
 
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
+    $("#see-photos").addEventListener("click", () => lightbox(id, 0));
     miniQuiz(id);
     beenBox(id);
+    nearbyBox(id);
     return () => { siteVid && siteVid.stop(); const rb = $("#readbar"); if (rb) rb.remove(); };
   }
 
   /* "Have you been here?" — self check-in, or verified by the phone's location */
+  /* a card linking to the matching 360° Royal Trail stop, on the handful of place pages that have one */
+  function trailCard(id) {
+    const stop = (LL.TRAIL360.stops || []).find((x) => x.site === id);
+    if (!stop) return "";
+    return `<a class="trailcard" href="#/trail/${stop.id}">
+      <span class="trailcard__media"><img src="${LL.Trail360.thumb(stop.id)}" alt="" loading="lazy"></span>
+      <span class="trailcard__body">
+        <b>${ico("tour")} ${t("trailCardTitle")}</b>
+        <span>${t("trailCardText")}</span>
+        <span class="btn btn--gold btn--sm">${t("trailCardCta")} →</span>
+      </span></a>`;
+  }
+
+  /* a handful of other places nearby, so there is always somewhere else to go */
+  function nearbyBox(id) {
+    const box = $("#nearby"), row = $("#nearby-row");
+    if (!box || !row) return;
+    const s = site(id);
+    const sameArea = LL.SITES.filter((x) => x.id !== id && x.area === s.area);
+    const rest = LL.SITES.filter((x) => x.id !== id && x.area !== s.area);
+    const list = sameArea.concat(rest).slice(0, 6);
+    if (!list.length) return;
+    list.forEach((x, i) => { const el = tile(x); el.style.setProperty("--i", Math.min(i, 6)); row.appendChild(el); });
+    row.classList.add("is-dealt");
+    box.hidden = false;
+  }
+
   function beenBox(id) {
     const box = $("#been");
     if (!box) return;
@@ -496,7 +530,7 @@
             ${prev ? `<a class="btn btn--ghost btn--sm" href="#/tour/${prev.id}">← ${t("prev")}</a>` : "<span></span>"}
             ${next ? `<a class="btn btn--gold btn--sm" href="#/tour/${next.id}">${t("next")} →</a>` : `<a class="btn btn--gold btn--sm" href="#/tour/done">${t("next")} →</a>`}
           </div>
-          <p class="tour__links"><a href="#/site/${s.id}">${t("fullStory")} →</a></p>
+          <p class="tour__links"><a class="btn btn--ghost btn--sm" href="#/site/${s.id}">${ico("flag")} ${t("fullStory")} →</a></p>
         </aside>
       </section>`;
     document.body.classList.add("on-tour");
