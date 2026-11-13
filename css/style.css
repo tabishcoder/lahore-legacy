@@ -1923,3 +1923,178 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 }
 /* contain layout on long lists so the browser skips off-screen work */
 .row__scroll, .stops, .badges, .areas-prog, .collection, .wcla-tours ul, .trail__stops { contain: content; }
+
+/* =========================================================================
+   DISCOVER SECTION — home page feature cards
+   ========================================================================= */
+.discover-section { padding: 2rem 0 1rem; }
+.discover-hd { margin-bottom: 1.5rem; text-align: center; }
+.discover-hd h2 { font-family: "IM Fell English", Georgia, serif; font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--charcoal); }
+.discover-hd p { color: var(--warm-grey, #8a7a6a); font-size: 0.95rem; margin-top: 0.3rem; }
+.discover-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 700px) { .discover-grid { grid-template-columns: 1fr; gap: 0.75rem; } }
+
+.discover-card {
+  display: flex; flex-direction: column; gap: 0.5rem;
+  padding: 1.5rem 1.4rem 1.3rem;
+  border-radius: var(--r-lg, 14px); text-decoration: none;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  position: relative; overflow: hidden;
+}
+.discover-card::before { content:""; position:absolute; inset:0; opacity:0; transition:opacity 0.2s; background:rgba(255,255,255,0.08); }
+.discover-card:hover::before { opacity:1; }
+.discover-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.22); }
+
+.discover-card .dc__icon { font-size: 1.6rem; width: 2.4rem; height: 2.4rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.15); margin-bottom: 0.4rem; }
+.discover-card .dc__icon .ico { width:1.3rem; height:1.3rem; stroke:currentColor; }
+.discover-card strong { font-family: "IM Fell English", Georgia, serif; font-size: 1.05rem; line-height: 1.25; }
+.discover-card span:not(.dc__icon):not(.dc__cta) { font-size: 0.82rem; opacity: 0.82; line-height: 1.4; }
+.discover-card .dc__cta { margin-top: auto; padding-top: 0.75rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.9; }
+
+.dc--myths  { background: linear-gradient(140deg, #1a2744 0%, #2b3d6b 100%); color: #e8d9b0; }
+.dc--myths .dc__icon { background: rgba(212,175,55,0.2); color: #d4af37; }
+.dc--persona { background: linear-gradient(140deg, #3d1a1a 0%, #6b2b2b 100%); color: #f0dfc0; }
+.dc--persona .dc__icon { background: rgba(212,154,42,0.2); color: #d49a2a; }
+.dc--1947 { background: linear-gradient(140deg, #1e1a16 0%, #3a3025 100%); color: #ddd0b8; }
+.dc--1947 .dc__icon { background: rgba(180,160,120,0.2); color: #c8b48a; }
+
+/* =========================================================================
+   SHARED FEATURE PAGE
+   ========================================================================= */
+.feature-page { min-height: 70vh; }
+.feature-header { padding-top: 2rem; padding-bottom: 2rem; }
+.feature-header .back { display: inline-block; color: var(--burgundy); font-size: 0.9rem; text-decoration: none; margin-bottom: 1rem; }
+.feature-header h1 { font-family: "IM Fell English", Georgia, serif; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1; color: var(--charcoal); margin: 0.3rem 0 0.7rem; }
+.feature-header .lead { color: var(--warm-grey, #7a6a58); font-size: 1.0rem; max-width: 54ch; }
+
+/* =========================================================================
+   MYTHS PAGE
+   ========================================================================= */
+.myths-scoreline { display:flex; justify-content:space-between; align-items:center; background:var(--navy); color:var(--ivory); border-radius:8px; padding:0.6rem 1rem; margin-top:1rem; font-size:0.88rem; }
+.myths-scoreline b { font-size:1.1rem; color:var(--gold); }
+.myths-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; padding-bottom: 3rem; }
+@media (max-width: 600px) { .myths-grid { grid-template-columns: 1fr; } }
+
+.myth-card {
+  background: var(--ivory);
+  border: 1.5px solid rgba(154,58,31,0.15);
+  border-radius: var(--r-lg, 14px);
+  padding: 1.2rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+  transition: box-shadow 0.2s var(--ease), border-color 0.2s;
+  position: relative;
+}
+.myth-card.is-correct { border-color: var(--ok); background: color-mix(in srgb, var(--ivory) 92%, var(--ok)); }
+.myth-card.is-wrong   { border-color: var(--burgundy); background: color-mix(in srgb, var(--ivory) 92%, var(--burgundy)); }
+
+.myth-cat { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--burgundy); }
+.myth-cat--architecture { color: #1a4a7a; }
+.myth-cat--history      { color: #5a2d0c; }
+.myth-cat--culture      { color: #3a5a2d; }
+.myth-cat--person       { color: #6b2b6b; }
+
+.myth-claim { font-family: "IM Fell English", Georgia, serif; font-size: 1.0rem; line-height: 1.5; color: var(--charcoal); flex: 1; }
+
+.myth-vote-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.myth-btn { flex: 1; min-width: 70px; padding: 0.4rem 0.5rem; border-radius: 6px; border: 1.5px solid rgba(154,58,31,0.3); background: transparent; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s; color: var(--charcoal); }
+.myth-btn:hover:not(:disabled) { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+.myth-btn.is-the-truth.myth-btn--truth  { background: var(--ok); color: #fff; border-color: var(--ok); }
+.myth-btn.is-the-truth.myth-btn--myth   { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+.myth-btn.is-the-truth.myth-btn--legend { background: #6b4e71; color: #fff; border-color: #6b4e71; }
+.myth-card.is-answered .myth-vote-row { opacity: 0.6; pointer-events: none; }
+
+.myth-reveal { animation: mythReveal 0.35s var(--ease) forwards; }
+@keyframes mythReveal { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+
+.myth-verdict { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0.65rem; border-radius: 20px; margin-bottom: 0.4rem; }
+.mv--truth  { background: var(--ok); color: #fff; }
+.mv--myth   { background: var(--burgundy); color: #fff; }
+.mv--legend { background: #6b4e71; color: #fff; }
+
+.myth-exp { font-size: 0.85rem; line-height: 1.55; color: var(--charcoal); }
+
+/* =========================================================================
+   PERSONA QUIZ
+   ========================================================================= */
+.persona-page { min-height: 100vh; display: flex; flex-direction: column; }
+.persona-top { display: flex; align-items: center; gap: 1rem; padding: 1.2rem var(--wrap-pad, 1.25rem) 0; }
+.persona-top .back { font-size: 0.88rem; color: var(--burgundy); text-decoration: none; white-space: nowrap; }
+.persona-prog { flex: 1; display: flex; align-items: center; gap: 0.75rem; }
+.persona-prog__bar { flex: 1; height: 5px; border-radius: 3px; background: rgba(154,58,31,0.15); overflow: hidden; }
+.persona-prog__bar i { display: block; height: 100%; background: linear-gradient(90deg,var(--burgundy),var(--gold)); border-radius: 3px; transition: width 0.4s var(--ease); }
+.persona-prog span { font-size: 0.8rem; color: var(--warm-grey,#8a7a6a); white-space: nowrap; }
+
+.persona-wrap { max-width: 640px; margin: 0 auto; padding: 2.5rem var(--wrap-pad,1.25rem) 3rem; flex: 1; display: flex; flex-direction: column; gap: 1.5rem; }
+.persona-num { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--burgundy); margin: 0; }
+.persona-q-text { font-family: "IM Fell English", Georgia, serif; font-size: clamp(1.3rem, 3.5vw, 1.9rem); line-height: 1.3; color: var(--charcoal); margin: 0; }
+.persona-opts { display: flex; flex-direction: column; gap: 0.65rem; }
+.persona-opt {
+  padding: 0.9rem 1.1rem; border-radius: 10px;
+  border: 1.5px solid rgba(154,58,31,0.2);
+  background: var(--ivory); color: var(--charcoal);
+  font-size: 0.95rem; text-align: left; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  opacity: 0; transform: translateY(12px);
+  animation: optIn 0.35s var(--ease) calc(var(--i,0) * 70ms) forwards;
+}
+@keyframes optIn { to { opacity:1; transform:none; } }
+.persona-opt:hover:not(:disabled) { background: rgba(154,58,31,0.07); border-color: rgba(154,58,31,0.5); transform: translateX(3px); }
+.persona-opt.is-selected { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+
+.persona-result-page { min-height: 100vh; }
+.persona-result { display: grid; grid-template-rows: 50vh 1fr; min-height: 100vh; }
+@media (min-width: 800px) { .persona-result { grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; min-height: 70vh; } }
+.persona-result__photo { position: relative; overflow: hidden; }
+.persona-result__photo .media { width: 100%; height: 100%; object-fit: cover; }
+.persona-result__body { padding: 2.5rem var(--wrap-pad,1.25rem); display: flex; flex-direction: column; gap: 0.75rem; justify-content: center; background: var(--navy); color: var(--ivory); }
+.persona-result__body .eyebrow { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin: 0; }
+.persona-result__body h1 { font-family: "IM Fell English", Georgia, serif; font-size: clamp(1.6rem,4vw,2.5rem); line-height: 1.1; margin: 0; color: var(--ivory); }
+.persona-monument { font-size: 0.9rem; color: var(--gold); margin: 0; }
+.persona-monument a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.persona-tagline { font-style: italic; font-size: 1.0rem; opacity: 0.85; margin: 0; }
+.persona-desc { font-size: 0.9rem; line-height: 1.65; opacity: 0.8; margin: 0; max-width: 50ch; }
+.persona-acts { display: flex; flex-wrap: wrap; gap: 0.65rem; padding-top: 0.5rem; }
+
+/* =========================================================================
+   1947 STORIES PAGE
+   ========================================================================= */
+.page-1947 { padding-bottom: 4rem; }
+.page-1947 .feature-header { border-bottom: 1px solid rgba(154,58,31,0.15); margin-bottom: 0; }
+
+.story-1947 { margin: 3rem auto; padding: 0 var(--wrap-pad,1.25rem); max-width: 68ch; }
+.story-header { margin-bottom: 1.5rem; }
+.story-loc { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--burgundy); display: block; margin-bottom: 0.6rem; }
+.story-header h2 { font-family: "IM Fell English", Georgia, serif; font-size: clamp(1.5rem, 3.5vw, 2.2rem); line-height: 1.15; color: var(--charcoal); margin: 0; }
+
+.pull-quote {
+  border-left: 3px solid var(--gold);
+  padding: 0.8rem 0 0.8rem 1.4rem;
+  margin: 1.5rem 0;
+  font-family: "IM Fell English", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--charcoal);
+  opacity: 0.85;
+}
+.story-body p { margin: 0.9em 0; line-height: 1.8; font-size: 0.97rem; color: var(--charcoal); }
+.story-body em { font-style: italic; color: var(--warm-grey,#7a6a58); font-size: 0.88rem; }
+.story-divider { text-align: center; padding: 2rem 0; color: var(--gold); letter-spacing: 0.5em; opacity: 0.6; font-size: 0.9rem; border-bottom: 1px solid rgba(154,58,31,0.1); }
+
+/* =========================================================================
+   PHOTO SPOTS (site page section)
+   ========================================================================= */
+.photo-spots h2 .ico { width: 1.1rem; height: 1.1rem; vertical-align: middle; margin-right: 0.3rem; margin-top: -2px; }
+.spots-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem; }
+.spot-tip { background: var(--ivory); border: 1px solid rgba(154,58,31,0.15); border-radius: 10px; padding: 1rem 1.1rem; }
+.spot-angle { display: block; font-size: 0.82rem; font-weight: 700; color: var(--burgundy); letter-spacing: 0.03em; margin-bottom: 0.35rem; }
+.spot-text { font-size: 0.88rem; line-height: 1.6; color: var(--charcoal); margin: 0 0 0.5rem; }
+.spot-time { display: flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; color: var(--warm-grey,#8a7a6a); }
+.spot-time .ico { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
+
+/* =========================================================================
+   SOUNDS BUTTON (site hero)
+   ========================================================================= */
+.sounds-btn { transition: background 0.15s, color 0.15s; }
+.sounds-btn.is-playing { background: rgba(154,58,31,0.12); border-color: var(--burgundy) !important; color: var(--burgundy); }
+.sounds-btn .ico { width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem; margin-top: -2px; }
