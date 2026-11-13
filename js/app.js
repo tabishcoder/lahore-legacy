@@ -58,7 +58,7 @@
 
   /* ---------------- header ---------------- */
   function header() {
-    [["places", "#/"], ["map", "#/map"], ["plan", "#/plan"], ["tour", "#/tour"], ["me", "#/me"]].forEach(([k]) => {
+    [["places", "#/"], ["plan", "#/plan"], ["tour", "#/tour"], ["quiz", "#/quiz"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
     $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
@@ -718,8 +718,8 @@
           <b class="lmap__name">${esc(x.name.en)} <span lang="ur">${esc(x.name.ur)}</span></b>
           ${statusChip(x.id)}
           <div class="lmap__acts">
-            <a class="btn btn--gold btn--sm" href="${maps(x.name.en + ", Lahore")}" target="_blank" rel="noopener">${ico("pin")} ${t("directions")}</a>
-            <a class="btn btn--ghost btn--sm" href="#/site/${x.id}">${t("open")} →</a>
+            <a class="btn btn--gold btn--sm" href="#/site/${x.id}">${t("open")} →</a>
+            <a class="btn btn--ghost btn--sm" href="${maps(x.name.en + ", Lahore")}" target="_blank" rel="noopener">${ico("pin")} ${t("directions")} ↗</a>
           </div>`;
       },
     });
@@ -756,7 +756,15 @@
       b.disabled = true;
       const pos = await m.locate(true);
       b.disabled = false;
-      if (!pos) return toast(t("noLocation2"));
+      if (!pos) {
+        toast(t("noLocation2"));
+        // Guide user to browse by area instead of leaving them stuck
+        setSheet("half");
+        const chips = $("#map-chips");
+        chips.classList.add("chips--highlight");
+        setTimeout(() => chips.classList.remove("chips--highlight"), 2000);
+        return;
+      }
       if (G.distance(pos, [31.58, 74.33]) > 40000) toast(t("farAway"));
       order = "near"; filter = null;
       document.querySelectorAll("#map-chips button").forEach((x, i) => x.setAttribute("aria-selected", String(i === 0)));
