@@ -67,6 +67,7 @@
     const toNextTxt = rk.next ? ` · ${rk.toNext} pts to ${rk.next.en}` : "";
     $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
     $("#progress-pill").title = `${rk.en} · ${rk.points} pts${toNextTxt} · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
+    $("#progress-pill").classList.toggle("pill--near-rank", pct > 80 && !!rk.next);
     $("#footer-text").textContent = t("footer");
     const r = route();
     document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));

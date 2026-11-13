@@ -524,7 +524,9 @@ body.on-tour .foot { display: none; }
 .pill__seal { display: inline-flex; color: var(--gold-2); }
 .pill__rank { color: var(--dim); font-size: 0.75rem; }
 #progress-pill { position: relative; overflow: hidden; }
-.pill__bar { position: absolute; bottom: 0; left: 0; height: 2px; width: var(--pct, 0%); background: var(--gold-2); transition: width 0.8s var(--ease); border-radius: 999px; }
+.pill__bar { position: absolute; bottom: 0; left: 0; height: 2px; width: var(--pct, 0%); background: linear-gradient(90deg, var(--gold), var(--gold-2)); transition: width 0.8s var(--ease); border-radius: 999px; box-shadow: 0 0 5px rgba(212, 154, 42, 0.55); }
+.pill--near-rank .pill__bar { animation: barPulse 1.8s ease-in-out infinite; }
+@keyframes barPulse { 0%, 100% { box-shadow: 0 0 5px rgba(212, 154, 42, 0.5); } 50% { box-shadow: 0 0 10px rgba(212, 154, 42, 0.95); } }
 .pill--pop { animation: pill-pop 0.45s var(--ease) both; }
 @keyframes pill-pop { 0% { transform: scale(1); } 40% { transform: scale(1.22); } 100% { transform: scale(1); } }
 .badge-nudge { font-size: 0.8rem; color: var(--gold-2); display: flex; align-items: center; gap: 0.4em; margin: 0.75rem 0 0; }
@@ -736,7 +738,7 @@ body.on-tour .foot { display: none; }
 @keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 
 /* scroll reveal */
-.rv { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease), transform 0.8s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
+.rv { opacity: 0; transform: translateY(14px); transition: opacity 0.55s var(--ease), transform 0.55s var(--ease); transition-delay: calc(var(--i, 0) * 45ms); }
 .rv.in { opacity: 1; transform: none; }
 .card.rv { animation: none; }
 .area.rv { animation: none; }
@@ -879,7 +881,7 @@ small, .hint { font-size: max(0.82rem, 13px); }
 /* Place card: a paper card with the photo in a jharokha window on top and
    the name written underneath, so nothing covers the building. */
 .tile { position: relative; display: flex; flex-direction: column; scroll-snap-align: start; padding: 10px 10px 0; border-radius: 4px; background: var(--navy); border: 1px solid var(--line-2); box-shadow: var(--shadow); color: var(--ink); text-decoration: none !important; transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.3s; }
-.tile:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset, 0 22px 32px -22px rgba(70, 40, 15, 0.6); }
+.tile:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset, 0 22px 32px -22px rgba(70, 40, 15, 0.6), 0 0 0 1px rgba(154, 58, 31, 0.28); }
 .tile__frame {
   position: relative; display: block; aspect-ratio: 5 / 6; overflow: hidden; background: var(--navy-2);
   -webkit-mask: var(--arch-mask) center / 100% 100% no-repeat; mask: var(--arch-mask) center / 100% 100% no-repeat;
@@ -1209,9 +1211,9 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(36, 22,
 /* status chips */
 .status { border-radius: 2px; }
 .status--new { color: var(--faint); }
-.status--seen { color: var(--sand); background: rgba(212, 154, 42, 0.16); }
-.status--stamp { color: #FFF8EA; background: var(--burgundy); }
-.status--visited { color: #FFF8EA; background: var(--ok); }
+.status--seen { color: var(--sand); background: rgba(212, 154, 42, 0.22); }
+.status--stamp { color: #FFF8EA; background: var(--burgundy); box-shadow: 0 0 0 1.5px rgba(154, 58, 31, 0.5); }
+.status--visited { color: #FFF8EA; background: var(--ok); box-shadow: 0 0 0 1.5px rgba(79, 122, 58, 0.5); }
 
 /* ---------- place page ---------- */
 .story { color: var(--ink); }
@@ -1253,8 +1255,8 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(36, 22,
 .lg--new { border-color: var(--line-2); }
 .ap__t { border-color: var(--line-2); }
 .badge { border-style: dashed; background: transparent; box-shadow: none; }
-.badge.is-on { border-style: solid; background: var(--navy); border-color: var(--line-2); box-shadow: var(--shadow); }
-.badge.is-on .badge__icon { background: var(--burgundy); border-color: var(--burgundy); color: #FFF8EA; box-shadow: 0 0 0 3px var(--navy), 0 0 0 4px var(--burgundy); }
+.badge.is-on { border-style: solid; background: linear-gradient(155deg, rgba(154, 58, 31, 0.1), var(--navy)); border-color: rgba(154, 58, 31, 0.45); box-shadow: var(--shadow), 0 0 18px rgba(154, 58, 31, 0.1); }
+.badge.is-on .badge__icon { background: var(--burgundy); border-color: var(--burgundy); color: #FFF8EA; box-shadow: 0 0 0 3px var(--navy), 0 0 0 4px var(--burgundy), 0 0 12px rgba(154, 58, 31, 0.45); }
 .badge__icon { border-style: dashed; }
 .road::before { background: repeating-linear-gradient(180deg, var(--line-2) 0 10px, transparent 10px 18px); }
 .road::after { background: var(--gold); }
@@ -1757,8 +1759,8 @@ html:not(.mode-mix) [lang="ur"] { display: none !important; }
    DELIGHT: motion that invites people in (see js/delight.js)
    ========================================================================= */
 /* titles arrive word by word */
-h1.is-split .w { display: inline-block; animation: wordIn 0.9s var(--ease) backwards; animation-delay: calc(0.15s + var(--w) * 85ms); }
-@keyframes wordIn { from { opacity: 0; transform: translateY(0.55em) rotate(3deg); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backwards; animation-delay: calc(0.08s + var(--w) * 55ms); }
+@keyframes wordIn { from { opacity: 0; transform: translateY(0.38em) rotate(2.5deg); } to { opacity: 1; transform: none; } }
 
 /* hero: "Explore" cue */
 .hero__cue { display: inline-flex; flex-direction: column; align-items: center; gap: 0.3rem; margin-top: 1.4rem; color: #F7EEDC !important; font-variant-caps: small-caps; letter-spacing: 0.1em; font-weight: 600; text-decoration: none !important; opacity: 0.9; }
@@ -1792,7 +1794,7 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.9s var(--ease) backw
 /* cards are dealt in, then the row drifts */
 .row__scroll:not(.is-dealt) .tile { opacity: 0; }
 .row__scroll.is-dealt .tile { animation: dealIn 0.8s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 90ms); }
-@keyframes dealIn { from { opacity: 0; transform: translate(60px, 26px) rotate(4deg); } to { opacity: 1; transform: none; } }
+@keyframes dealIn { from { opacity: 0; transform: translate(60px, 26px) rotate(4deg) scale(0.92); } to { opacity: 1; transform: none; } }
 .row__scroll.is-drifting { scroll-snap-type: none; scroll-behavior: auto; }
 .row__scroll { perspective: 1200px; }
 .tile { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); will-change: transform; }
@@ -1844,8 +1846,8 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.9s var(--ease) backw
 .row__scroll { filter: none; scroll-snap-type: x proximity; }
 .row__scroll.has-track { display: block; }
 .row__track { display: grid; grid-auto-flow: column; grid-auto-columns: inherit; gap: inherit; width: max-content; }
-.row__scroll.is-gliding .row__track { animation: glide var(--dur, 30s) ease-in-out infinite alternate; will-change: transform; }
-.row__scroll.is-gliding.is-off .row__track { animation-play-state: paused; }
+.row__scroll.is-gliding .row__track { will-change: auto; }
+.row__scroll.is-gliding.is-off .row__track { }
 @keyframes glide { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(var(--dist, -200px), 0, 0); } }
 @media (hover: hover) { .row__scroll.is-gliding:hover .row__track { animation-play-state: paused; } }
 
@@ -1861,7 +1863,7 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.9s var(--ease) backw
 .glance > div.in::after { transform: scaleX(1); }
 
 /* section headings slide in from the side */
-.row__head.rv { transform: translateX(-26px); }
+.row__head.rv { transform: translateX(-14px); }
 .row__head.rv.in { transform: none; }
 
 /* things answer a finger */
