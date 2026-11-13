@@ -523,6 +523,12 @@ body.on-tour .foot { display: none; }
 #progress-pill .ico { width: 15px; height: 15px; }
 .pill__seal { display: inline-flex; color: var(--gold-2); }
 .pill__rank { color: var(--dim); font-size: 0.75rem; }
+#progress-pill { position: relative; overflow: hidden; }
+.pill__bar { position: absolute; bottom: 0; left: 0; height: 2px; width: var(--pct, 0%); background: var(--gold-2); transition: width 0.8s var(--ease); border-radius: 999px; }
+.pill--pop { animation: pill-pop 0.45s var(--ease) both; }
+@keyframes pill-pop { 0% { transform: scale(1); } 40% { transform: scale(1.22); } 100% { transform: scale(1); } }
+.badge-nudge { font-size: 0.8rem; color: var(--gold-2); display: flex; align-items: center; gap: 0.4em; margin: 0.75rem 0 0; }
+.badge-nudge .ico { width: 13px; height: 13px; flex-shrink: 0; }
 .hero__progress { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem; border: 1px solid var(--line-2); border-radius: 999px; background: rgba(23, 25, 27, 0.55); color: var(--ivory); }
 .hero__progress .ico { width: 16px; height: 16px; color: var(--gold-2); }
 
