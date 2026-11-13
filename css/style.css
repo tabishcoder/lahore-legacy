@@ -1899,3 +1899,17 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.9s var(--ease) backw
   .trailcard__media { width: 76px; height: 76px; }
   .trailcard__body b { font-size: 1.05rem; }
 }
+
+/* =========================================================================
+   PERF: disable heavy effects on touch devices where they cost the most
+   backdrop-filter is a known ~15-30% frame cost on mid-range Android.
+   Replace with a solid colour that still looks fine.
+   ========================================================================= */
+@media (pointer: coarse) {
+  body.is-scrolled .top,
+  .path, .search input, .action, .mapview__chips button, .plan__bar { backdrop-filter: none !important; }
+  .area__bg img { filter: blur(10px) saturate(1.1); }   /* was blur(18px) */
+  .fx { backdrop-filter: none !important; }
+}
+/* contain layout on long lists so the browser skips off-screen work */
+.row__scroll, .stops, .badges, .areas-prog, .collection, .wcla-tours ul, .trail__stops { contain: content; }
