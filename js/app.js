@@ -92,7 +92,7 @@
     const seen = P.seenCount(), stamps = P.stampCount(), rk = LL.Game.rank();
     const now = rightNow();
     main().innerHTML = `
-      <section class="hero hero--short">
+      <section class="hero hero--home">
         <div class="hero__photo" id="hero-photo"></div>
         <div class="hero__media-cap" id="hero-cap"><span id="hero-cap-text"></span><button class="hero__vbtn" id="hero-vbtn" hidden aria-label="Pause video">❚❚</button></div>
         <div class="hero__inner">
@@ -104,10 +104,10 @@
             <input id="q" type="search" autocomplete="off" placeholder="${t("searchPh", TOTAL())}" aria-label="${t("searchPh", TOTAL())}">
             <div class="search__results" id="results" hidden></div>
           </div>
-          <div class="actions">
-            <a class="action" href="#/map/near"><span class="action__icon">${ico("pin")}</span><b>${t("actNear")}</b><small>${t("actNearSub")}</small></a>
-            <a class="action" href="#/plan"><span class="action__icon">${ico("plan")}</span><b>${t("actPlan")}</b><small>${t("actPlanSub")}</small></a>
-            <a class="action" href="#/tour"><span class="action__icon">${ico("tour")}</span><b>${t("actTour")}</b><small>${t("actTourSub")}</small></a>
+          <div class="hero-dock">
+            <a class="dock-btn" href="#/map/near">${ico("pin")} ${t("actNear")}</a>
+            <a class="dock-btn" href="#/plan">${ico("plan")} ${t("actPlan")}</a>
+            <a class="dock-btn" href="#/tour">${ico("tour")} ${t("actTour")}</a>
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
           ${seen ? `<a class="hero__progress" href="#/me">${ico("crown")} <b>${esc(rk.en)}</b> · ${rk.points} pts · ${t("stampsOf", stamps, TOTAL())} →</a>` : ""}
@@ -1424,23 +1424,47 @@
     const cv = document.getElementById("ll-intro-cv");
     const ctx = cv.getContext("2d");
     let W, H, R, cx, cy;
+    const stars = [];
     function resize() {
       W = cv.width = window.innerWidth;
       H = cv.height = window.innerHeight;
-      R = Math.min(W, H) * 0.33;
+      R = Math.min(W, H) * 0.38;
       cx = W / 2; cy = H / 2;
+      stars.length = 0;
+      for (let i = 0; i < 200; i++) {
+        let sx, sy;
+        do { sx = Math.random(); sy = Math.random(); }
+        while (Math.hypot(sx * W - cx, sy * H - cy) < R + 24);
+        stars.push({ x: sx, y: sy, r: Math.random() * 1.2 + 0.2, a: Math.random() * 0.55 + 0.3, ph: Math.random() * Math.PI * 2 });
+      }
     }
     resize();
     window.addEventListener("resize", resize);
     let rot = 0, fN = 0, exited = false, raf;
-    const DUR = 300;
+    const DUR = 160;
     function globe() {
       ctx.clearRect(0, 0, W, H);
-      const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.6);
-      glow.addColorStop(0, "rgba(140,65,5,0.1)");
-      glow.addColorStop(0.6, "rgba(80,35,2,0.05)");
-      glow.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+      // Stars
+      stars.forEach(s => {
+        ctx.globalAlpha = s.a * (0.45 + 0.55 * (Math.sin(fN * 0.04 + s.ph) * 0.5 + 0.5));
+        ctx.fillStyle = "#fff";
+        ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2); ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      // Atmosphere outer glow
+      for (let i = 10; i >= 1; i--) {
+        ctx.beginPath(); ctx.arc(cx, cy, R + i * 3.5, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(50,130,220," + (0.1 / i) + ")"; ctx.lineWidth = 2.5; ctx.stroke();
+      }
+      // 3-D sphere base (radial gradient with offset highlight)
+      const sph = ctx.createRadialGradient(cx - R * 0.28, cy - R * 0.3, R * 0.08, cx, cy, R);
+      sph.addColorStop(0, "rgba(60,88,160,0.95)");
+      sph.addColorStop(0.3, "rgba(22,36,88,0.97)");
+      sph.addColorStop(0.7, "rgba(8,14,42,0.98)");
+      sph.addColorStop(1, "rgba(2,4,14,1)");
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.fillStyle = sph; ctx.fill();
+      // Grid lines clipped to sphere
       ctx.save();
       ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
       for (let lat = -75; lat <= 75; lat += 15) {
@@ -1449,20 +1473,27 @@
         const ey = cy - sinP * R, rx = cosP * R;
         if (rx < 2) continue;
         ctx.beginPath(); ctx.ellipse(cx, ey, rx, rx * 0.28, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(212,154,42,0.28)"; ctx.lineWidth = 0.5; ctx.stroke();
+        ctx.strokeStyle = "rgba(70,155,255,0.22)"; ctx.lineWidth = 0.5; ctx.stroke();
       }
       ctx.beginPath(); ctx.ellipse(cx, cy, R, R * 0.28, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(212,154,42,0.5)"; ctx.lineWidth = 0.9; ctx.stroke();
+      ctx.strokeStyle = "rgba(90,180,255,0.5)"; ctx.lineWidth = 1; ctx.stroke();
       for (let lon = 0; lon < 180; lon += 20) {
         const a = (lon + rot) * Math.PI / 180;
         const cosA = Math.cos(a), rx = Math.abs(cosA) * R;
         ctx.beginPath(); ctx.ellipse(cx, cy, rx, R, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = cosA > 0 ? "rgba(212,154,42,0.45)" : "rgba(212,154,42,0.1)";
-        ctx.lineWidth = cosA > 0 ? 0.6 : 0.3; ctx.stroke();
+        ctx.strokeStyle = cosA > 0 ? "rgba(70,155,255,0.42)" : "rgba(70,155,255,0.08)";
+        ctx.lineWidth = cosA > 0 ? 0.65 : 0.25; ctx.stroke();
       }
       ctx.restore();
+      // Sphere outline
       ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(212,154,42,0.5)"; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.strokeStyle = "rgba(80,170,255,0.55)"; ctx.lineWidth = 1.3; ctx.stroke();
+      // Specular highlight
+      const spec = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.32, 0, cx - R * 0.2, cy - R * 0.2, R * 0.55);
+      spec.addColorStop(0, "rgba(255,255,255,0.14)"); spec.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.fillStyle = spec; ctx.fill();
+      // Lahore marker (lat 31.5°N, lon 74.3°E)
       const lPhi = 31.5 * Math.PI / 180;
       const lTheta = (74.3 + rot) * Math.PI / 180;
       const lz = Math.cos(lPhi) * Math.cos(lTheta);
@@ -1473,12 +1504,12 @@
         const pulse = (Math.sin(fN * 0.09) + 1) * 0.5;
         for (let i = 1; i <= 3; i++) {
           ctx.beginPath(); ctx.arc(lx, ly, 5 + i * (8 + pulse * 4), 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(255,90,35," + (aa * 0.18 / i) + ")"; ctx.lineWidth = 1; ctx.stroke();
+          ctx.strokeStyle = "rgba(255,100,40," + (aa * 0.2 / i) + ")"; ctx.lineWidth = 1; ctx.stroke();
         }
         ctx.beginPath(); ctx.arc(lx, ly, 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,90,35," + aa + ")"; ctx.fill();
+        ctx.fillStyle = "rgba(255,100,40," + aa + ")"; ctx.fill();
         ctx.beginPath(); ctx.arc(lx, ly, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,210,160," + aa + ")"; ctx.fill();
+        ctx.fillStyle = "rgba(255,220,170," + aa + ")"; ctx.fill();
       }
     }
     function setOp(sel, op) {
@@ -1487,13 +1518,13 @@
     }
     function tick() {
       if (exited) return;
-      rot += 0.22; fN++;
+      rot += 0.3; fN++;
       globe();
       const p = Math.min(1, fN / DUR);
-      if (p > 0.25) setOp(".ll-intro__city", Math.min(1, (p - 0.25) * 6));
-      if (p > 0.42) setOp(".ll-intro__ur", Math.min(1, (p - 0.42) * 6));
-      if (p > 0.58) setOp(".ll-intro__tag", Math.min(1, (p - 0.58) * 6));
-      if (p > 0.80) setOp(".ll-intro__tap", Math.min(1, (p - 0.80) * 8));
+      if (p > 0.14) setOp(".ll-intro__city", Math.min(1, (p - 0.14) * 9));
+      if (p > 0.30) setOp(".ll-intro__ur", Math.min(1, (p - 0.30) * 9));
+      if (p > 0.46) setOp(".ll-intro__tag", Math.min(1, (p - 0.46) * 9));
+      if (p > 0.72) setOp(".ll-intro__tap", Math.min(1, (p - 0.72) * 12));
       if (fN >= DUR) { exit(); return; }
       raf = requestAnimationFrame(tick);
     }

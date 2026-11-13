@@ -2122,3 +2122,21 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .discover-outer .discover-card { min-height:250px; }
 .discover-outer .discover-card strong { font-size:1.18rem; }
 .discover-outer .discover-card:hover { transform:translateY(-7px) scale(1.015); box-shadow:0 24px 56px rgba(0,0,0,0.5),0 0 0 1px rgba(212,154,42,0.2); }
+
+/* =========================================================================
+   HOME HERO — full height, photo-first
+   ========================================================================= */
+.hero--home { min-height: 90vh; min-height: 90svh; align-items: end; }
+.hero--home::before { background: linear-gradient(90deg,rgba(10,7,4,0.84),rgba(10,7,4,0.38) 55%,rgba(10,7,4,0.06)),linear-gradient(to top,rgba(10,7,4,0.92) 8%,transparent 52%) !important; }
+@media (max-width: 700px) {
+  .hero--home { min-height: 85vh; min-height: 85svh; }
+  .hero--home::before { background:linear-gradient(to top,rgba(10,7,4,0.96) 15%,rgba(10,7,4,0.55) 55%,rgba(10,7,4,0.3)) !important; }
+}
+.hero--home h1 { font-size:clamp(2.6rem,8vw,5.2rem); margin-bottom:0.25em; }
+.hero--home .lead { font-size:clamp(1.05rem,2.4vw,1.3rem); margin-bottom:1rem; }
+
+/* Pill dock — replaces the grid action cards */
+.hero-dock { display:flex; gap:0.55rem; flex-wrap:wrap; margin-top:1.2rem; }
+.dock-btn { display:inline-flex; align-items:center; gap:0.45em; padding:0.52rem 1.15rem; border:1px solid rgba(244,239,229,0.28); border-radius:999px; color:var(--ivory); text-decoration:none !important; font-size:0.88rem; font-weight:500; backdrop-filter:blur(10px); background:rgba(8,6,3,0.45); transition:background 0.22s,border-color 0.22s,transform 0.22s; white-space:nowrap; }
+.dock-btn:hover { background:rgba(212,154,42,0.22); border-color:rgba(212,154,42,0.65); transform:translateY(-2px); color:var(--ivory); }
+.dock-btn .ico { width:14px; height:14px; flex-shrink:0; }
