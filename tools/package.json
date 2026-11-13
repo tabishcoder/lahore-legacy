@@ -1,0 +1,7 @@
+{
+  "name": "lahore-legacy-build",
+  "private": true,
+  "description": "Build-time tooling only — bundles js/* into dist/",
+  "scripts": { "build": "node build.mjs", "dev": "node build.mjs --dev" },
+  "dependencies": { "terser": "^5.30.0" }
+}

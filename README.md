@@ -176,3 +176,25 @@ The site loads Tag Manager and pushes `virtual_page_view` on every page change, 
 `index.html` has keyword-rich title/description/keywords meta tags, Open Graph + Twitter cards, and two JSON-LD blocks (WebSite + an ItemList of all 24 places). `js/app.js`'s `setPageMeta()` also sets a unique `<title>` and meta description per route (place page, trail, plan, map, quiz) for browser history and sharing. `robots.txt` and `sitemap.xml` are in place.
 
 **Real limitation:** this is a single-page app using `#/` hash routes (`#/site/lahore-fort`). A URL fragment is never sent to the server, so Google indexes `https://lahorelegacy.com/` as one page — individual place pages cannot rank on their own for "Badshahi Mosque Lahore" or similar searches under the current architecture, no matter what meta tags they carry. Ranking each place separately would need real server paths (e.g. `/places/badshahi-mosque`) with pre-rendered HTML per page — a bigger change (a static site generator, or a prerendering service) than a text/meta-tag pass. The changes here are the most that's achievable without that rework, and they do help the one page that *is* indexed, plus any sharing/browser-history use of the per-route titles.
+
+## Build (before deploying)
+Run once on your machine (needs Node 18+):
+```bash
+cd tools && npm install   # installs terser (only build dep)
+cd .. && node tools/build.mjs
+```
+This produces `dist/bundle.*.js` and `dist/bundle.*.css`, and updates `index.html` to reference them. The site now loads **2 asset requests instead of 27** (one JS, one CSS), and both files are minified (JS: 326→240 KB, CSS: 150→125 KB; gzip brings the JS to ~75 KB over the wire).
+
+To go back to editing the original source files:
+```bash
+node tools/build.mjs --dev
+```
+This switches `index.html` back to the original `js/*.js` and `css/style.css` references, so you can edit and reload without rebuilding.
+
+**Why bundling matters more than minification:** on a slow phone connection, each extra HTTP request costs ~100-300 ms of round-trip. Going from 27 requests to 2 saves ~5-7 seconds on a 3G connection, regardless of file size.
+
+### Other perf improvements (shipped)
+- Logos converted from PNG to WebP, resized to actual display dimensions (footer logo 150 → 35 KB, header 47 → 14 KB).
+- `backdrop-filter: blur()` disabled on touch devices — it's ~15-30% of a frame on mid-range Android.
+- `contain: content` on long scroll lists so the browser skips off-screen layout work.
+- Images added via `media()` already use lazy-loading; the hero and visible cards are `eager`, everything else waits.
