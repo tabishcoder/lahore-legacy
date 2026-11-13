@@ -52,13 +52,17 @@
     share: '<path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 002 2h10a2 2 0 002-2v-5"/>',
     me: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
     phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+    myth: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 2-2.5 3-2.5 4"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    camera: '<rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="3"/><path d="M15 3l-1.5 3h-3L9 3"/>',
+    book: '<path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4h16v13H6.5A2.5 2.5 0 004 19.5V4z"/>',
+    sound: '<path d="M11 5L6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14"/>',
   };
   const ico = (n) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
   let cleanup = null;
 
   /* ---------------- header ---------------- */
   function header() {
-    [["places", "#/"], ["plan", "#/plan"], ["tour", "#/tour"], ["quiz", "#/quiz"], ["me", "#/me"]].forEach(([k]) => {
+    [["places", "#/"], ["plan", "#/plan"], ["tour", "#/tour"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
     $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
@@ -67,6 +71,7 @@
     const toNextTxt = rk.next ? ` · ${rk.toNext} pts to ${rk.next.en}` : "";
     $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
     $("#progress-pill").title = `${rk.en} · ${rk.points} pts${toNextTxt} · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
+    $("#progress-pill").classList.toggle("pill--near-rank", pct > 80 && !!rk.next);
     $("#footer-text").textContent = t("footer");
     const r = route();
     document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));
@@ -145,6 +150,30 @@
           <input id="cert-name" class="input" maxlength="28" placeholder="${t("certName")}" value="${esc(P.state.name)}">
           <button class="btn btn--gold">${t("certCta")}</button></form>
       </div></section>` : ""}
+
+      <section class="wrap"><div class="discover-section rv">
+        <div class="discover-hd"><h2>Explore More</h2><p>Go beyond the guidebook</p></div>
+        <div class="discover-grid">
+          <a class="discover-card dc--myths" href="#/myths">
+            <span class="dc__icon">${ico("myth")}</span>
+            <strong>Myth or Truth?</strong>
+            <span>15 claims about Lahore — which are real?</span>
+            <span class="dc__cta">Play →</span>
+          </a>
+          <a class="discover-card dc--persona" href="#/persona">
+            <span class="dc__icon">${ico("crown")}</span>
+            <strong>Which Monument Are You?</strong>
+            <span>7 questions. One Lahore personality.</span>
+            <span class="dc__cta">Find out →</span>
+          </a>
+          <a class="discover-card dc--1947" href="#/1947">
+            <span class="dc__icon">${ico("book")}</span>
+            <strong>Lahore 1947</strong>
+            <span>Three quiet stories from the year the city divided.</span>
+            <span class="dc__cta">Read →</span>
+          </a>
+        </div>
+      </div></section>
 
       <section class="wrap">
         <a class="band band--quiz" href="#/quiz">
@@ -269,6 +298,174 @@
     return a;
   }
 
+  /* ---------------- helpers for new features ---------------- */
+  function photoSpotsHtml(id) {
+    const spots = LL.PHOTO_SPOTS && LL.PHOTO_SPOTS[id];
+    if (!spots || !spots.length) return "";
+    return `<section class="block photo-spots">
+      <h2>${ico("camera")} Photo Spots</h2>
+      <p class="hint">Best angles and tips for photographing this place.</p>
+      <ul class="spots-list">${spots.map((sp) => `
+        <li class="spot-tip rv">
+          <b class="spot-angle">${esc(sp.angle)}</b>
+          <p class="spot-text">${esc(sp.tip)}</p>
+          <span class="spot-time">${ico("clock")} ${esc(sp.bestTime)}</span>
+        </li>`).join("")}
+      </ul>
+    </section>`;
+  }
+
+  /* ---- Myths page ---- */
+  function mythsPage() {
+    const u = U();
+    main().innerHTML = `
+      <div class="feature-page">
+        <header class="feature-header wrap-narrow">
+          <a class="back" href="#/">← ${t("back")}</a>
+          <p class="eyebrow">Test Yourself</p>
+          <h1>Myth or Truth?</h1>
+          <p class="lead">15 claims about Lahore's heritage. Can you tell the real from the legend?</p>
+          <div class="myths-scoreline"><span>Score <b id="myth-score">0</b> / ${(LL.MYTHS || []).length}</span><span id="myth-remain">0 answered</span></div>
+        </header>
+        <div class="myths-grid wrap">
+          ${(LL.MYTHS || []).map((m) => `
+            <div class="myth-card myth-card--${m.category} rv" data-id="${m.id}" data-verdict="${m.verdict}">
+              <span class="myth-cat myth-cat--${m.category}">${m.category}</span>
+              <p class="myth-claim" ${u}>${esc(pick(m.claim))}</p>
+              <div class="myth-vote-row">
+                <button class="myth-btn myth-btn--truth" data-v="truth">✓ Truth</button>
+                <button class="myth-btn myth-btn--myth" data-v="myth">✗ Myth</button>
+                <button class="myth-btn myth-btn--legend" data-v="legend">? Legend</button>
+              </div>
+              <div class="myth-reveal" hidden>
+                <span class="myth-verdict mv--${m.verdict}">${m.verdict === "truth" ? "✓ True!" : m.verdict === "myth" ? "✗ Myth!" : "⟡ Legend"}</span>
+                <p class="myth-exp" ${u}>${esc(pick(m.explanation))}</p>
+              </div>
+            </div>`).join("")}
+        </div>
+      </div>`;
+
+    let answered = 0, score = 0;
+    const scoreEl = $("#myth-score"), remainEl = $("#myth-remain");
+    main().querySelectorAll(".myth-card").forEach((card) => {
+      card.querySelectorAll(".myth-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (card.classList.contains("is-answered")) return;
+          const chosen = btn.dataset.v, correct = card.dataset.verdict, right = chosen === correct;
+          if (right) { score++; card.classList.add("is-correct"); } else { card.classList.add("is-wrong"); }
+          card.classList.add("is-answered");
+          card.querySelectorAll(".myth-btn").forEach((b) => { b.disabled = true; if (b.dataset.v === correct) b.classList.add("is-the-truth"); });
+          card.querySelector(".myth-reveal").hidden = false;
+          answered++;
+          scoreEl.textContent = score;
+          remainEl.textContent = `${answered} answered`;
+          if (right) LL.FX && LL.FX.points(btn, 5);
+          if (answered === (LL.MYTHS || []).length && score >= 10) setTimeout(() => LL.FX && LL.FX.confetti && LL.FX.confetti(), 300);
+        });
+      });
+    });
+    LL.Motion.reveal(main(), ".myth-card");
+  }
+
+  /* ---- Persona quiz ---- */
+  function personaPage() {
+    if (!LL.PERSONA) return go("#/");
+    const qs = LL.PERSONA.questions, results = LL.PERSONA.results;
+    let qIdx = 0;
+    const tally = {};
+    const u = U();
+
+    function drawQ() {
+      const q = qs[qIdx], pct = Math.round((qIdx / qs.length) * 100);
+      main().innerHTML = `
+        <div class="feature-page persona-page">
+          <div class="persona-top">
+            <a class="back" href="#/">← ${t("back")}</a>
+            <div class="persona-prog"><div class="persona-prog__bar"><i style="width:${pct}%"></i></div><span>${qIdx + 1} / ${qs.length}</span></div>
+          </div>
+          <div class="persona-wrap">
+            <p class="persona-num">Question ${qIdx + 1}</p>
+            <h2 class="persona-q-text" ${u}>${esc(pick(q.q))}</h2>
+            <div class="persona-opts">
+              ${q.options.map((o, i) => `<button class="persona-opt" style="--i:${i}" data-m="${o.m}">${esc(pick(o.label))}</button>`).join("")}
+            </div>
+          </div>
+        </div>`;
+      main().querySelectorAll(".persona-opt").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tally[btn.dataset.m] = (tally[btn.dataset.m] || 0) + 1;
+          btn.classList.add("is-selected");
+          btn.closest(".persona-opts").querySelectorAll(".persona-opt").forEach((b) => { b.disabled = true; });
+          setTimeout(() => { qIdx++; qIdx < qs.length ? drawQ() : drawResult(); }, 380);
+        });
+      });
+    }
+
+    function drawResult() {
+      const winner = Object.entries(tally).sort((a, b) => b[1] - a[1])[0]?.[0] || "lahore-fort";
+      const res = results[winner];
+      const siteData = site(winner);
+      main().innerHTML = `
+        <div class="feature-page persona-result-page">
+          <div class="persona-result">
+            <div class="persona-result__photo" id="persona-ph"></div>
+            <div class="persona-result__body">
+              <p class="eyebrow">You are</p>
+              <h1 ${u}>${esc(pick(res.title))}</h1>
+              <p class="persona-monument">${siteData ? `<a href="#/site/${winner}">${esc(siteData.name.en)}</a>` : ""}</p>
+              <p class="persona-tagline" ${u}>${esc(pick(res.tagline))}</p>
+              <p class="persona-desc" ${u}>${esc(pick(res.desc))}</p>
+              <div class="persona-acts">
+                <button class="btn btn--gold" id="persona-share">${ico("share")} Share</button>
+                ${siteData ? `<a class="btn btn--ghost" href="#/site/${winner}">${ico("eye")} Visit →</a>` : ""}
+                <button class="btn btn--ghost" id="persona-retry">Try Again</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      const ph = $("#persona-ph");
+      if (ph && siteData) ph.appendChild(media(winner, { width: 960, eager: true }));
+      LL.Motion.reveal(main(), ".persona-result__body");
+      setTimeout(() => LL.FX && LL.FX.confetti && LL.FX.confetti(), 400);
+      $("#persona-share").addEventListener("click", async () => {
+        const title = pick(res.title), monument = siteData ? siteData.name.en : winner;
+        const text = `I'm "${title}" (${monument}) according to the Lahore Legacy quiz!`;
+        if (navigator.share) { try { await navigator.share({ title: "Lahore Personality Quiz", text, url: location.href }); } catch(e) {} }
+        else { try { await navigator.clipboard.writeText(text); toast("Copied!"); } catch(e) {} }
+      });
+      $("#persona-retry").addEventListener("click", () => { qIdx = 0; Object.keys(tally).forEach(k => delete tally[k]); drawQ(); });
+    }
+
+    drawQ();
+  }
+
+  /* ---- 1947 Stories page ---- */
+  function page1947() {
+    const stories = LL.STORIES_1947 || [];
+    const u = U();
+    const storyHtml = (s) => esc(s).replace(/\*(.*?)\*/g, "<em>$1</em>");
+    main().innerHTML = `
+      <div class="feature-page page-1947">
+        <header class="feature-header wrap-narrow">
+          <a class="back" href="#/">← ${t("back")}</a>
+          <p class="eyebrow">1947</p>
+          <h1>Lahore, Divided</h1>
+          <p class="lead">Three quiet stories from the year the city became two cities.</p>
+        </header>
+        ${stories.map((s, i) => `
+          <article class="story-1947 rv" id="story-${s.id}">
+            <header class="story-header">
+              <span class="story-loc" ${u}>${esc(pick(s.location))}</span>
+              <h2 ${u}>${esc(pick(s.title))}</h2>
+            </header>
+            <blockquote class="pull-quote" ${u}>"${esc(pick(s.pullQuote))}"</blockquote>
+            <div class="story-body" ${u}>${pick(s.story).split(/\n\n/).map((p) => `<p>${storyHtml(p)}</p>`).join("")}</div>
+          </article>
+          ${i < stories.length - 1 ? '<div class="story-divider wrap-narrow" aria-hidden="true"><span>✦ ✦ ✦</span></div>' : ""}`).join("")}
+      </div>`;
+    LL.Motion.reveal(main(), ".story-1947");
+  }
+
   /* ---------------- place page ---------------- */
   function sitePage(id) {
     const s = site(id);
@@ -295,6 +492,7 @@
               <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("tour")} ${t("virtualView")}</a>
               <a class="btn btn--ghost btn--sm" href="#/map/${id}">${ico("map")} ${t("onMap")}</a>
               <button class="btn btn--ghost btn--sm" id="share-place">${ico("share")} ${t("sharePlace")}</button>
+              <button class="btn btn--ghost btn--sm sounds-btn" id="sounds-btn" hidden>${ico("sound")} Ambience</button>
             </div>
           </div>
         </header>
@@ -318,6 +516,8 @@
             <p class="hint">${t("lookHint")}</p>
             <ul class="look" ${U()}>${pick(s.look).map((l, i) => `<li><label><input type="checkbox" data-look="${i}" ${ticked.includes(i) ? "checked" : ""}><span>${fx(l)}</span></label></li>`).join("")}</ul>
           </section>
+
+          ${photoSpotsHtml(id)}
 
           <section class="block" id="thennow" hidden></section>
 
@@ -356,8 +556,22 @@
     if (vset) siteVid = LL.Motion.videoLoop(sp, [LL.Motion.pickClips(vset)], (c) => {
     });
     LL.Motion.parallax(sp);
+    let sfxAudio = null;
+    const soundsBtn = $("#sounds-btn");
+    if (soundsBtn) {
+      const au = new Audio();
+      au.loop = true;
+      au.addEventListener("canplaythrough", () => { soundsBtn.hidden = false; }, { once: true });
+      let sfxPlaying = false;
+      soundsBtn.addEventListener("click", () => {
+        if (sfxPlaying) { au.pause(); sfxPlaying = false; soundsBtn.classList.remove("is-playing"); soundsBtn.innerHTML = `${ico("sound")} Ambience`; }
+        else { au.play().then(() => { sfxPlaying = true; soundsBtn.classList.add("is-playing"); soundsBtn.innerHTML = `${ico("sound")} ◼ Playing`; }).catch(() => {}); }
+      });
+      au.src = `assets/audio/${id}.mp3`;
+      sfxAudio = au;
+    }
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
-    LL.Motion.reveal(main(), ".quick > div, .been, .story, .block > h2, .facts li, .look li, .strip, .visit dl > div, .next");
+    LL.Motion.reveal(main(), ".quick > div, .been, .story, .block > h2, .facts li, .look li, .spot-tip, .strip, .visit dl > div, .next");
     $("#next-media").appendChild(media(next.id, { width: 500 }));
 
     wireOfficial(main());
@@ -398,7 +612,7 @@
     nearbyBox(id);
     badgeNudge(id);
     if (wasNew) setTimeout(() => { const h = document.querySelector(".site__title h1"); if (h) LL.FX.points(h, LL.Game.PTS.seen); }, 700);
-    return () => { siteVid && siteVid.stop(); const rb = $("#readbar"); if (rb) rb.remove(); };
+    return () => { siteVid && siteVid.stop(); if (sfxAudio) { sfxAudio.pause(); sfxAudio.src = ""; } const rb = $("#readbar"); if (rb) rb.remove(); };
   }
 
   /* "Have you been here?" — self check-in, or verified by the phone's location */
@@ -1161,6 +1375,9 @@
     if (r.page === "plan") return set("Plan a Visit to Lahore's Heritage Sites | Lahore Legacy", "Ready-made tour plans for Lahore's heritage sites, from 2 hours to a full day, with directions and tips.");
     if (r.page === "map") return set("Map of Lahore's Heritage Sites | Lahore Legacy", "An interactive map of Lahore's 24 heritage places, sorted by what's nearest you.");
     if (r.page === "quiz") return set("Lahore Heritage Quiz — How Well Do You Know Lahore? | Lahore Legacy", "A 60-second quiz on Lahore's heritage. Answer what you can, then share your score.");
+    if (r.page === "myths") return set("Myth or Truth? — Lahore Heritage Facts & Legends | Lahore Legacy", "15 claims about Lahore's heritage — test yourself on myths, truths and legends.");
+    if (r.page === "persona") return set("Which Lahore Monument Are You? — Personality Quiz | Lahore Legacy", "Take a 7-question quiz to discover which Lahore monument matches your personality.");
+    if (r.page === "1947") return set("Lahore 1947 — Stories from the Partition | Lahore Legacy", "Three quiet stories from 1947: personal accounts from the year Lahore became two cities.");
     set(DEFAULT_TITLE, DEFAULT_DESC);
   }
 
@@ -1176,6 +1393,9 @@
     else if (r.page === "plan") cleanup = planPage(r.param);
     else if (r.page === "map") cleanup = mapPage(r.param);
     else if (r.page === "quiz") cleanup = quizPage();
+    else if (r.page === "myths") mythsPage();
+    else if (r.page === "persona") personaPage();
+    else if (r.page === "1947") page1947();
     else if (r.page === "trail") cleanup = LL.Trail360.page(main(), r.param, { esc, t, pick, attrs: U, ico });
     else cleanup = home();
     header();

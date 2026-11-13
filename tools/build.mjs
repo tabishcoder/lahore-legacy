@@ -18,7 +18,7 @@ const dev = process.argv.includes("--dev");
 const SCRIPTS = [
   "js/analytics.js", "js/md5.js",
   "js/config/assets.js", "js/config/local-photos.js", "js/config/official-photos.js", "js/config/videos.js", "js/config/keys.js",
-  "js/data/sites.js", "js/data/guide.js", "js/data/more.js", "js/data/geo.js", "js/data/trail360.js", "js/data/official.js",
+  "js/data/sites.js", "js/data/guide.js", "js/data/more.js", "js/data/geo.js", "js/data/trail360.js", "js/data/official.js", "js/data/discover.js",
   "js/i18n.js", "js/ui.js", "js/commons.js", "js/share.js", "js/viewer.js", "js/game.js", "js/lahoremap.js", "js/motion.js", "js/fx.js",
   "js/trail360.js", "js/ease.js", "js/delight.js", "js/app.js",
 ];
