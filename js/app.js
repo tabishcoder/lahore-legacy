@@ -63,8 +63,10 @@
     });
     $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
     const n = LL.Progress.stampCount(), rk = LL.Game.rank();
-    $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span>`;
-    $("#progress-pill").title = `${rk.en} · ${rk.points} points · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
+    const pct = Math.round(rk.pct * 100);
+    const toNextTxt = rk.next ? ` · ${rk.toNext} pts to ${rk.next.en}` : "";
+    $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
+    $("#progress-pill").title = `${rk.en} · ${rk.points} pts${toNextTxt} · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
     $("#footer-text").textContent = t("footer");
     const r = route();
     document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));
@@ -271,6 +273,7 @@
   function sitePage(id) {
     const s = site(id);
     if (!s) return go("#/");
+    const wasNew = !LL.Progress.state.seen[id];
     LL.Progress.see(id);
     const P = LL.Progress.state;
     const idx = LL.SITES.indexOf(s);
@@ -393,6 +396,8 @@
     miniQuiz(id);
     beenBox(id);
     nearbyBox(id);
+    badgeNudge(id);
+    if (wasNew) setTimeout(() => { const h = document.querySelector(".site__title h1"); if (h) LL.FX.points(h, LL.Game.PTS.seen); }, 700);
     return () => { siteVid && siteVid.stop(); const rb = $("#readbar"); if (rb) rb.remove(); };
   }
 
@@ -422,6 +427,23 @@
     list.forEach((x, i) => { const el = tile(x); el.style.setProperty("--i", Math.min(i, 6)); row.appendChild(el); });
     row.classList.add("is-dealt");
     box.hidden = false;
+  }
+
+  /* nudge showing how many more stamps needed for the area badge */
+  function badgeNudge(id) {
+    const s = site(id);
+    if (!s) return;
+    const b = LL.Game.BADGES.find((x) => x.id === `area-${s.area}`);
+    if (!b) return;
+    const [have, need] = b.prog();
+    const left = need - have;
+    if (left <= 0 || have === 0) return; // done or not started at all yet
+    const box = $("#been");
+    if (!box) return;
+    const nudge = document.createElement("p");
+    nudge.className = "badge-nudge";
+    nudge.innerHTML = `${ico("stamp")} <b>${left}</b> more stamp${left === 1 ? "" : "s"} to earn <b>${esc(b.en)}</b>`;
+    box.appendChild(nudge);
   }
 
   function beenBox(id) {
@@ -1174,6 +1196,8 @@
     document.addEventListener("ll:progress", () => {
       const before = window.__rank;
       header();
+      const pill = $("#progress-pill");
+      if (pill) { pill.classList.remove("pill--pop"); void pill.offsetWidth; pill.classList.add("pill--pop"); }
       const now = LL.Game.rank().en;
       if (before && before !== now) LL.FX.rank(LL.Game.rank(), ico("crown"));
       LL.Game.check().forEach((b) => (b.id === "first" || b.id === "all" ? toast(`${t("badgeUnlocked")}: ${b.en}`) : LL.FX.badge(b, ico(b.icon))));
