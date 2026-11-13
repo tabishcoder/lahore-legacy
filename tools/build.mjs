@@ -33,12 +33,20 @@ async function write(f, s) { await fs.mkdir(path.dirname(path.join(ROOT, f)), { 
 function hash(s) { return crypto.createHash("sha1").update(s).digest("hex").slice(0, 8); }
 
 async function minifyCss(src) {
-  let s = src;
+  // Protect the inside of calc(), url(), var(), rgba(), hsl() etc. from
+  // whitespace collapsing — spaces around + and - inside calc() are REQUIRED,
+  // stripping them silently kills the rule in every browser.
+  const guards = [];
+  let s = src.replace(/(calc|var|rgba?|hsla?|clamp|min|max|linear-gradient|radial-gradient|conic-gradient|url)\([^()]*(?:\([^()]*\)[^()]*)*\)/g, (m) => {
+    guards.push(m);
+    return `__G${guards.length - 1}__`;
+  });
   s = s.replace(/\/\*[\s\S]*?\*\//g, "");                     // strip comments
   s = s.replace(/\s+/g, " ");                                 // collapse whitespace
-  s = s.replace(/\s*([{}:;,>+~])\s*/g, "$1");                 // trim around separators
+  s = s.replace(/\s*([{};:,>])\s*/g, "$1");                   // trim around separators (NOT + or ~, which are unsafe inside guarded calc or selectors with no space)
   s = s.replace(/;}/g, "}");                                   // drop last ;
   s = s.replace(/:0(px|em|rem|%|vh|vw)/g, ":0");               // 0px -> 0
+  s = s.replace(/__G(\d+)__/g, (_, i) => guards[+i]);         // restore guarded bits
   return s.trim();
 }
 
