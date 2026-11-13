@@ -125,7 +125,7 @@ main.is-in { animation: fade 0.5s var(--ease) both; }
 .media__label { position: absolute; z-index: 2; inset-inline-start: 10px; top: 10px; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3em 0.6em; background: rgba(23, 25, 27, 0.85); color: var(--sand); }
 
 /* ---------- Home ---------- */
-.hero { position: relative; min-height: 92vh; min-height: 92svh; display: grid; align-items: end; padding: calc(var(--top) + 2rem) clamp(20px, 6vw, 80px) clamp(3rem, 9vh, 6rem); isolation: isolate; }
+.hero { position: relative; min-height: 65vh; min-height: 65svh; display: grid; align-items: end; padding: calc(var(--top) + 2rem) clamp(20px, 6vw, 80px) clamp(3rem, 9vh, 6rem); isolation: isolate; }
 .hero__photo { position: absolute; inset: 0; z-index: -2; }
 .hero__photo .media { position: absolute; inset: 0; }
 .hero__photo img { animation: push 24s ease-out both; }
@@ -321,7 +321,7 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(23, 25,
   .nav a { flex: 1; text-align: center; padding: 0.7rem 0; }
   body { padding-bottom: 56px; }
   .cards { grid-template-columns: 1fr; }
-  .hero { min-height: 86vh; }
+  .hero { min-height: 60vh; }
   .hero::before, html[dir="rtl"] .hero::before { background: linear-gradient(to top, var(--charcoal) 15%, rgba(23, 25, 27, 0.5) 60%, rgba(23, 25, 27, 0.35)); }
   .actions .btn { flex: 1 1 100%; }
   .hero__credit, .site__credit { max-width: 90%; font-size: 0.62rem; }
@@ -478,6 +478,8 @@ body.on-tour .foot { display: none; }
 .chips button small { color: var(--faint); font-weight: 600; margin-inline-start: 0.2rem; }
 .chips button[aria-selected="true"] { background: var(--ivory); color: var(--charcoal); border-color: var(--ivory); }
 .chips button[aria-selected="true"] small { color: var(--burgundy); }
+.chips--highlight { animation: chips-pulse 2s ease; }
+@keyframes chips-pulse { 0%,100% { opacity:1; } 25%,75% { opacity:0.4; } 50% { opacity:1; } }
 .area { margin: 0 0 2.4rem; animation: fade 0.5s var(--ease) both; }
 .area__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 0.6rem; margin-bottom: 1rem; }
 .area__head h3 { font-size: 1.6rem; margin: 0; }
