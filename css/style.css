@@ -2140,3 +2140,17 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .dock-btn { display:inline-flex; align-items:center; gap:0.45em; padding:0.52rem 1.15rem; border:1px solid rgba(244,239,229,0.28); border-radius:999px; color:var(--ivory); text-decoration:none !important; font-size:0.88rem; font-weight:500; backdrop-filter:blur(10px); background:rgba(8,6,3,0.45); transition:background 0.22s,border-color 0.22s,transform 0.22s; white-space:nowrap; }
 .dock-btn:hover { background:rgba(212,154,42,0.22); border-color:rgba(212,154,42,0.65); transform:translateY(-2px); color:var(--ivory); }
 .dock-btn .ico { width:14px; height:14px; flex-shrink:0; }
+
+/* =========================================================================
+   CINEMA HERO — site label + progress bar
+   ========================================================================= */
+.hero-site-label { position:absolute; bottom:clamp(1.8rem,6vh,4.5rem); right:clamp(16px,5vw,60px); text-align:right; pointer-events:none; z-index:2; }
+.hero-site-count { display:block; font-size:0.68rem; letter-spacing:0.28em; opacity:0.5; font-weight:700; text-transform:uppercase; margin-bottom:0.25em; color:var(--ivory); }
+.hero-site-name { display:block; font-family:"IM Fell English",Georgia,serif; font-size:clamp(0.95rem,2.2vw,1.4rem); font-style:italic; opacity:0.92; color:var(--ivory); line-height:1.2; transition:opacity 0.4s; }
+.hero-site-era { display:block; font-size:0.72rem; opacity:0.52; margin-top:0.2em; letter-spacing:0.1em; color:var(--ivory); }
+.hero-progress-bar { position:absolute; bottom:0; left:0; right:0; height:2px; background:rgba(255,255,255,0.12); z-index:3; overflow:hidden; }
+.hero-progress-fill { height:100%; width:0; background:linear-gradient(90deg,var(--gold,#d49a2a),rgba(212,154,42,0.6)); border-radius:0 1px 1px 0; }
+
+/* Ken Burns on each slide */
+.hero--home .hero__photo .slide.is-on img { animation:ckb 3.6s ease-out both !important; }
+@keyframes ckb { from{transform:scale(1.08) translate(0.5%,0.5%)} to{transform:scale(1) translate(0,0)} }
