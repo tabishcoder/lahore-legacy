@@ -151,29 +151,31 @@
           <button class="btn btn--gold">${t("certCta")}</button></form>
       </div></section>` : ""}
 
-      <section class="wrap"><div class="discover-section rv">
-        <div class="discover-hd"><h2>Explore More</h2><p>Go beyond the guidebook</p></div>
-        <div class="discover-grid">
-          <a class="discover-card dc--myths" href="#/myths">
-            <span class="dc__icon">${ico("myth")}</span>
-            <strong>Myth or Truth?</strong>
-            <span>15 claims about Lahore — which are real?</span>
-            <span class="dc__cta">Play →</span>
-          </a>
-          <a class="discover-card dc--persona" href="#/persona">
-            <span class="dc__icon">${ico("crown")}</span>
-            <strong>Which Monument Are You?</strong>
-            <span>7 questions. One Lahore personality.</span>
-            <span class="dc__cta">Find out →</span>
-          </a>
-          <a class="discover-card dc--1947" href="#/1947">
-            <span class="dc__icon">${ico("book")}</span>
-            <strong>Lahore 1947</strong>
-            <span>Three quiet stories from the year the city divided.</span>
-            <span class="dc__cta">Read →</span>
-          </a>
-        </div>
-      </div></section>
+      <section class="discover-outer">
+        <div class="wrap"><div class="discover-section rv">
+          <div class="discover-hd"><h2>Explore More</h2><p>Go beyond the guidebook</p></div>
+          <div class="discover-grid">
+            <a class="discover-card dc--myths" href="#/myths">
+              <span class="dc__icon">${ico("myth")}</span>
+              <strong>Myth or Truth?</strong>
+              <span>15 claims about Lahore's heritage — which are fact, which are fiction?</span>
+              <span class="dc__cta">Play now →</span>
+            </a>
+            <a class="discover-card dc--persona" href="#/persona">
+              <span class="dc__icon">${ico("crown")}</span>
+              <strong>Which Monument Are You?</strong>
+              <span>7 questions. Discover your Lahore personality in 60 seconds.</span>
+              <span class="dc__cta">Find out →</span>
+            </a>
+            <a class="discover-card dc--1947" href="#/1947">
+              <span class="dc__icon">${ico("book")}</span>
+              <strong>Lahore 1947</strong>
+              <span>Three quiet stories from the year the city became two worlds.</span>
+              <span class="dc__cta">Read the stories →</span>
+            </a>
+          </div>
+        </div></div>
+      </section>
 
       <section class="wrap">
         <a class="band band--quiz" href="#/quiz">
@@ -1404,6 +1406,108 @@
     LL.Delight && LL.Delight.page(main());
   }
 
+  function runIntro(onDone) {
+    if (sessionStorage.getItem("ll-intro")) { onDone(); return; }
+    sessionStorage.setItem("ll-intro", "1");
+    const overlay = document.createElement("div");
+    overlay.id = "ll-intro";
+    overlay.setAttribute("role", "presentation");
+    overlay.innerHTML =
+      '<canvas id="ll-intro-cv" aria-hidden="true"></canvas>' +
+      '<div class="ll-intro__copy">' +
+        '<div class="ll-intro__city">LAHORE</div>' +
+        '<div class="ll-intro__ur">لاہور کی وراثت</div>' +
+        '<div class="ll-intro__tag">A&nbsp;LIVING&nbsp;MUSEUM</div>' +
+      '</div>' +
+      '<div class="ll-intro__tap">tap to enter ›</div>';
+    document.body.appendChild(overlay);
+    const cv = document.getElementById("ll-intro-cv");
+    const ctx = cv.getContext("2d");
+    let W, H, R, cx, cy;
+    function resize() {
+      W = cv.width = window.innerWidth;
+      H = cv.height = window.innerHeight;
+      R = Math.min(W, H) * 0.33;
+      cx = W / 2; cy = H / 2;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    let rot = 0, fN = 0, exited = false, raf;
+    const DUR = 300;
+    function globe() {
+      ctx.clearRect(0, 0, W, H);
+      const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.6);
+      glow.addColorStop(0, "rgba(140,65,5,0.1)");
+      glow.addColorStop(0.6, "rgba(80,35,2,0.05)");
+      glow.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
+      for (let lat = -75; lat <= 75; lat += 15) {
+        const phi = lat * Math.PI / 180;
+        const cosP = Math.cos(phi), sinP = Math.sin(phi);
+        const ey = cy - sinP * R, rx = cosP * R;
+        if (rx < 2) continue;
+        ctx.beginPath(); ctx.ellipse(cx, ey, rx, rx * 0.28, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(212,154,42,0.28)"; ctx.lineWidth = 0.5; ctx.stroke();
+      }
+      ctx.beginPath(); ctx.ellipse(cx, cy, R, R * 0.28, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(212,154,42,0.5)"; ctx.lineWidth = 0.9; ctx.stroke();
+      for (let lon = 0; lon < 180; lon += 20) {
+        const a = (lon + rot) * Math.PI / 180;
+        const cosA = Math.cos(a), rx = Math.abs(cosA) * R;
+        ctx.beginPath(); ctx.ellipse(cx, cy, rx, R, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = cosA > 0 ? "rgba(212,154,42,0.45)" : "rgba(212,154,42,0.1)";
+        ctx.lineWidth = cosA > 0 ? 0.6 : 0.3; ctx.stroke();
+      }
+      ctx.restore();
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(212,154,42,0.5)"; ctx.lineWidth = 1.2; ctx.stroke();
+      const lPhi = 31.5 * Math.PI / 180;
+      const lTheta = (74.3 + rot) * Math.PI / 180;
+      const lz = Math.cos(lPhi) * Math.cos(lTheta);
+      const lx = cx + Math.cos(lPhi) * Math.sin(lTheta) * R;
+      const ly = cy - Math.sin(lPhi) * R;
+      if (lz > -0.1) {
+        const aa = Math.max(0.1, (lz + 0.1) / 1.1);
+        const pulse = (Math.sin(fN * 0.09) + 1) * 0.5;
+        for (let i = 1; i <= 3; i++) {
+          ctx.beginPath(); ctx.arc(lx, ly, 5 + i * (8 + pulse * 4), 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(255,90,35," + (aa * 0.18 / i) + ")"; ctx.lineWidth = 1; ctx.stroke();
+        }
+        ctx.beginPath(); ctx.arc(lx, ly, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,90,35," + aa + ")"; ctx.fill();
+        ctx.beginPath(); ctx.arc(lx, ly, 2, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,210,160," + aa + ")"; ctx.fill();
+      }
+    }
+    function setOp(sel, op) {
+      const e = overlay.querySelector(sel);
+      if (e) e.style.opacity = op;
+    }
+    function tick() {
+      if (exited) return;
+      rot += 0.22; fN++;
+      globe();
+      const p = Math.min(1, fN / DUR);
+      if (p > 0.25) setOp(".ll-intro__city", Math.min(1, (p - 0.25) * 6));
+      if (p > 0.42) setOp(".ll-intro__ur", Math.min(1, (p - 0.42) * 6));
+      if (p > 0.58) setOp(".ll-intro__tag", Math.min(1, (p - 0.58) * 6));
+      if (p > 0.80) setOp(".ll-intro__tap", Math.min(1, (p - 0.80) * 8));
+      if (fN >= DUR) { exit(); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    function exit() {
+      if (exited) return; exited = true;
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+      overlay.classList.add("ll-intro--out");
+      setTimeout(() => { overlay.remove(); onDone(); }, 850);
+    }
+    overlay.addEventListener("click", exit);
+    raf = requestAnimationFrame(tick);
+  }
+
   function boot() {
     // language choice (on the Me page)
     document.addEventListener("click", (e) => {
@@ -1428,6 +1532,7 @@
     window.addEventListener("hashchange", render);
     window.addEventListener("scroll", () => document.body.classList.toggle("is-scrolled", scrollY > 30), { passive: true });
     render();
+    runIntro(() => {});
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
