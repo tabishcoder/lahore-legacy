@@ -2249,3 +2249,342 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .tour__teaser.cblk > .cblk__en,
 .tour__fact.cblk > .cblk__ur,
 .tour__fact.cblk > .cblk__en { padding-top: 1.4rem; }
+
+/* =========================================================================
+   HEAVY RESPONSIVE PASS — every element, every screen (320px and up)
+   ========================================================================= */
+
+/* --- universal media clamp --- */
+img, video, iframe, canvas, svg, embed, object { max-width: 100%; height: auto; }
+video { display: block; }
+iframe { border: 0; }
+
+/* --- overflow guard --- */
+html, body { overflow-x: hidden; }
+.wrap, .wrap-narrow { overflow-x: visible; }
+
+/* --- fluid text: never smaller than 15px --- */
+body { font-size: clamp(15px, 2.4vw, 18px); }
+p, li, dd, .story, .lead { max-width: 72ch; }
+
+/* --- buttons: always at least 44×44 tap target --- */
+.btn, .pill, .tool, .nav a, .chips button, .seg button,
+.lmap__tools button, .lightbox__close, .lightbox__nav { touch-action: manipulation; }
+
+/* --- Ambience button: always visible, never hidden --- */
+#sounds-btn { display: inline-flex !important; }
+#sounds-btn.is-playing { border-color: var(--gold-2); color: var(--gold-2); }
+
+/* --- hero sections: scale down on narrow screens --- */
+.hero--home h1 { font-size: clamp(2rem, 9vw, 5.2rem); }
+.hero--short h1 { font-size: clamp(1.9rem, 8.5vw, 4.4rem); }
+.site__title h1 { font-size: clamp(1.9rem, 7.5vw, 4rem); }
+.hero__inner { max-width: min(700px, 100%); }
+
+/* --- virtual tour panorama (360°) --- */
+.tour { max-width: 100vw; }
+.tour__stage { min-height: 0; }
+.tour__panel { word-break: break-word; overflow-wrap: break-word; }
+
+/* --- 360° trail --- */
+.trail { max-width: 100vw; }
+.trail__pano { touch-action: none; }
+.trail__bar { max-width: 100%; }
+.trail__hint { white-space: normal; text-align: center; word-break: break-word; }
+
+/* --- photo strips (horizontal scroll) --- */
+.strip { -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+.strip__item { scroll-snap-align: start; }
+
+/* --- cards grid: never overflow --- */
+.cards, .minis, .tips__grid, .badges, .stats { width: 100%; }
+
+/* --- compare slider: fully fluid --- */
+.compare { width: 100%; }
+.compare img { max-width: none; width: 100%; }
+
+/* --- lightbox: safe on all sizes --- */
+.lightbox img { max-height: calc(100dvh - 120px); }
+
+/* --- footer logo: scale down --- */
+.foot__logo { max-width: 160px; height: auto; }
+
+/* ---- tablet (769px – 1024px) ---- */
+@media (max-width: 1024px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .story-grid { grid-template-columns: repeat(3, 1fr); }
+  .tour-list { grid-template-columns: 1fr; }
+  .band--cert { grid-template-columns: 1fr; }
+  .duo { grid-template-columns: 1fr; }
+}
+
+/* ---- standard phones (≤ 640px) already has many rules; add missing ones ---- */
+@media (max-width: 640px) {
+  /* videos in hero: fill but don't overflow */
+  .bgvideo { width: 100%; height: 100%; object-fit: cover; }
+
+  /* panorama / tour */
+  .tour { grid-template-rows: 55svh auto; }
+  .tour__stage { height: 55svh; }
+  .tour__thumbs { left: 8px; right: 8px; gap: 4px; }
+  .tour__thumbs button { width: 60px; height: 42px; }
+  .tour__tools { right: 8px; gap: 0.25rem; }
+  .tool { width: 38px; height: 38px; }
+  .chip { font-size: 0.6rem; padding: 0.25em 0.55em; }
+
+  /* trail 360° */
+  .trail { grid-template-rows: 55svh auto; }
+  .trail-hot { max-width: calc(100vw - 32px); overflow: hidden; }
+  .trail-hot span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 120px; }
+
+  /* site page actions */
+  .site__utils { gap: 0.35rem; flex-wrap: wrap; }
+  .site__utils .btn { flex: 1 1 auto; min-width: 0; }
+
+  /* comparison images */
+  .compare { aspect-ratio: 4 / 3; }
+
+  /* facts grid */
+  .facts li { grid-template-columns: 1.8rem 1fr; gap: 0.4rem; }
+  .facts li::before { font-size: 1.2rem; }
+
+  /* visit dl */
+  .visit dl div { gap: 0.1rem; }
+
+  /* plan itinerary */
+  .itin__stop { grid-template-columns: 50px 1fr; gap: 0.8rem; }
+
+  /* walk grid map */
+  .walk__grid { gap: 1.5rem; }
+  .map { padding: 0.6rem; }
+
+  /* search results */
+  .search__results { max-height: 50svh; }
+
+  /* quick info grid */
+  .quick { grid-template-columns: 1fr 1fr; }
+  .quick div + div { border-inline-start: 1px solid var(--line); border-top: 0; }
+
+  /* footer */
+  .foot__inner { gap: 0.75rem; }
+  .foot { font-size: 0.84rem; }
+
+  /* next place card */
+  .next { grid-template-columns: 1fr 80px; }
+  .next__name { font-size: 1.2rem; }
+
+  /* dialog */
+  .dialog { max-height: 92svh; overflow-y: auto; }
+}
+
+/* ---- very small phones (≤ 390px) ---- */
+@media (max-width: 390px) {
+  body { font-size: 15px; }
+  .hero--home h1 { font-size: clamp(1.8rem, 11vw, 2.4rem); }
+  .site__title h1 { font-size: clamp(1.7rem, 10vw, 2.4rem); }
+  .nav a { font-size: 0.72rem; }
+  .nav a .ico { width: 19px; height: 19px; }
+  .tour__thumbs button { width: 52px; height: 38px; }
+  .cards { grid-template-columns: 1fr; }
+  .quick { grid-template-columns: 1fr; }
+  .quick div + div { border-inline-start: 0; border-top: 1px solid var(--line); }
+  .site__actions { grid-template-columns: 1fr; }
+  .site__utils .btn { width: 100%; }
+  .answers { grid-template-columns: 1fr; }
+  .lightbox img { max-height: calc(100dvh - 100px); }
+}
+
+/* ---- landscape phones (height ≤ 500px) ---- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero--home, .site__hero { min-height: 100vw; }
+  .tour { grid-template-rows: 100svh auto; }
+  .trail { grid-template-rows: 100svh; grid-template-columns: 1fr 320px; }
+  .trail__panel { overflow-y: auto; }
+  .nav { padding-block: 0.2rem; }
+}
+
+/* ---- safe areas (notch / home bar) ---- */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .nav { padding-bottom: calc(0.4rem + env(safe-area-inset-bottom)); }
+  .trail__bar { bottom: calc(12px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(56px + env(safe-area-inset-bottom)); }
+}
+
+/* ---- performance: reduce heavy CSS on low-power devices ---- */
+@media (prefers-reduced-motion: reduce) {
+  .bgvideo { display: none; }
+  .hero__photo .slide img { animation: none !important; }
+  .trailband__strip img { animation: none !important; }
+}
+
+/* =========================================================================
+   RESPONSIVE PASS 2 — targeted image & video polish
+   Every image/video should look full, beautiful and unbroken on all screens.
+   ========================================================================= */
+
+/* --- absolutely-positioned fills must not be max-width clamped ---
+   .media img already has height:100% via specificity; re-assert for safety */
+.bgvideo,
+.hero__photo .media img,
+.hc .media img,
+.tile .media img,
+.site__photo .media img,
+.walk__photo .media img,
+.tour-intro__photo .media img,
+.band__media .media img,
+.walkmode__ph .media img { max-width: none; width: 100%; height: 100%; }
+
+/* --- band-photo hero: too tall on small phones, reduce to something tasteful --- */
+@media (max-width: 640px) {
+  .band--photo    { min-height: 240px; }
+  .site__hero     { min-height: 56svh; }
+
+  /* wider strip photos so the image fills more of the screen */
+  .strip__item    { flex: 0 0 83%; }
+
+  /* walkmode photo: without explicit height the absolute media is invisible */
+  .walkmode__ph   { height: 55svh; min-height: 220px; }
+
+  /* next-place card thumb: a bit taller so face of place shows */
+  .next__media    { min-height: 90px; }
+
+  /* tour-intro full-height on phone: cap so text is reachable */
+  .tour-intro     { min-height: 60svh; }
+}
+
+@media (max-width: 390px) {
+  .band--photo    { min-height: 200px; }
+  .site__hero     { min-height: 52svh; }
+  .strip__item    { flex: 0 0 90%; }
+  .walkmode__ph   { height: 50svh; }
+}
+
+/* --- lightbox: crisp, centered, never cropped on any screen --- */
+.lightbox {
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+}
+.lightbox img {
+  max-width : min(calc(100vw - 48px), 1200px);
+  max-height: calc(100dvh - 120px);
+  width     : auto;
+  height    : auto;
+  object-fit: contain;
+}
+@media (max-width: 390px) {
+  .lightbox img { max-height: calc(100dvh - 90px); }
+}
+
+/* --- compare slider: touch-friendly on all devices --- */
+.compare { touch-action: none; }
+.compare input[type="range"] { touch-action: none; cursor: ew-resize; }
+
+/* --- hero backgrounds: always cover, never overflow --- */
+.hero__photo .media,
+.site__photo .media,
+.walk__photo .media,
+.tour-intro__photo .media,
+.band__media .media { overflow: hidden; }
+
+/* --- fluid video embeds (YouTube iframes etc.) --- */
+.video-wrap {
+  position      : relative;
+  padding-bottom: 56.25%;
+  height        : 0;
+  overflow      : hidden;
+  border-radius : 6px;
+}
+.video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* --- nav header: never overflow on ultra-narrow phones --- */
+@media (max-width: 320px) {
+  .top     { gap: 0.3rem; }
+  .brand span { display: none; }
+  .nav a   { font-size: 0.65rem; }
+}
+
+/* =========================================================================
+   DESKTOP HERO SIDE PANEL
+   Three frosted-glass quick-access cards at the bottom-right of the home
+   hero — visible only on wide screens, hidden on tablet / mobile.
+   ========================================================================= */
+.hero__side { display: none; }
+
+@media (min-width: 1024px) {
+  .hero__side {
+    display        : flex;
+    flex-direction : column;
+    gap            : 0.65rem;
+    position       : absolute;
+    right          : clamp(40px, 7vw, 110px);
+    bottom         : clamp(3rem, 9vh, 6rem);
+    z-index        : 2;
+    animation      : rise 0.9s var(--ease) 0.4s both;
+  }
+
+  .hq {
+    display         : flex;
+    align-items     : center;
+    gap             : 0.9rem;
+    padding         : 0.85rem 1.15rem;
+    min-width       : 230px;
+    background      : rgba(23, 25, 27, 0.68);
+    backdrop-filter : blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border          : 1px solid rgba(212, 154, 42, 0.22);
+    border-radius   : 10px;
+    color           : var(--ivory);
+    text-decoration : none !important;
+    transition      : background 0.22s, border-color 0.22s, transform 0.22s var(--ease);
+  }
+
+  .hq:hover {
+    background   : rgba(212, 154, 42, 0.14);
+    border-color : rgba(212, 154, 42, 0.65);
+    transform    : translateX(-4px);
+  }
+
+  .hq__icon {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    width           : 36px;
+    height          : 36px;
+    flex-shrink     : 0;
+    border-radius   : 8px;
+    background      : rgba(212, 154, 42, 0.16);
+    color           : var(--gold);
+  }
+  .hq__icon .ico { width: 18px; height: 18px; color: var(--gold); stroke: var(--gold); }
+
+  .hq b {
+    display      : block;
+    font-family  : var(--serif);
+    font-weight  : 500;
+    font-size    : 0.95rem;
+    color        : var(--ivory);
+    margin       : 0;
+    line-height  : 1.2;
+  }
+  .hq span {
+    display    : block;
+    font-size  : 0.71rem;
+    color      : rgba(241, 230, 208, 0.58);
+    margin-top : 0.15rem;
+    line-height: 1.3;
+  }
+}
+
+/* =========================================================================
+   SITE PAGE MOBILE — utils buttons: row on wide, stack neatly on small
+   ========================================================================= */
+@media (max-width: 480px) {
+  .site__utils {
+    display              : grid;
+    grid-template-columns: 1fr 1fr;
+    gap                  : 0.5rem;
+  }
+  /* Ambience button spans full width on very small phones */
+  .site__utils .sounds-btn { grid-column: 1 / -1; }
+}

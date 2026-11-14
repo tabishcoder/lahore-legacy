@@ -119,6 +119,20 @@
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
         </div>
+        <div class="hero__side" aria-label="Quick links">
+          <a class="hq" href="#/trail">
+            <span class="hq__icon">${ico("tour")}</span>
+            <div><b>360° Virtual Tour</b><span>Walk through the Walled City</span></div>
+          </a>
+          <a class="hq" href="#/plan">
+            <span class="hq__icon">${ico("plan")}</span>
+            <div><b>Tour Plans</b><span>Ready-made day itineraries</span></div>
+          </a>
+          <a class="hq" href="#/quiz">
+            <span class="hq__icon">${ico("quiz")}</span>
+            <div><b>Quick Quiz</b><span>60 seconds · test your knowledge</span></div>
+          </a>
+        </div>
       </section>
 
       <div class="marquee" id="marquee"></div>
@@ -655,7 +669,7 @@
             <div class="site__utils">
               <a class="btn btn--ghost btn--sm" href="#/map/${id}">${ico("map")} ${t("onMap")}</a>
               <button class="btn btn--ghost btn--sm" id="share-place">${ico("share")} ${t("sharePlace")}</button>
-              <button class="btn btn--ghost btn--sm sounds-btn" id="sounds-btn" hidden>${ico("sound")} Ambience</button>
+              <button class="btn btn--ghost btn--sm sounds-btn" id="sounds-btn">${ico("sound")} Ambience</button>
             </div>
           </div>
         </header>
@@ -713,16 +727,88 @@
     let sfxAudio = null;
     const soundsBtn = $("#sounds-btn");
     if (soundsBtn) {
-      const au = new Audio();
-      au.loop = true;
-      au.addEventListener("canplaythrough", () => { soundsBtn.hidden = false; }, { once: true });
-      let sfxPlaying = false;
+      let sfxCtx = null, sfxGain = null, sfxSource = null, sfxPlaying = false;
+
+      function buildAmbience() {
+        if (sfxCtx) return;
+        sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const sr = sfxCtx.sampleRate;
+        const dur = 4;
+        const buf = sfxCtx.createBuffer(1, sr * dur, sr);
+        const d = buf.getChannelData(0);
+        let last = 0;
+        for (let i = 0; i < d.length; i++) {
+          last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+          d[i] = last * 3.5;
+        }
+        sfxSource = sfxCtx.createBufferSource();
+        sfxSource.buffer = buf;
+        sfxSource.loop = true;
+        const lp = sfxCtx.createBiquadFilter();
+        lp.type = "lowpass";
+        lp.frequency.value = 320;
+        const hp = sfxCtx.createBiquadFilter();
+        hp.type = "highpass";
+        hp.frequency.value = 55;
+        sfxGain = sfxCtx.createGain();
+        sfxGain.gain.setValueAtTime(0, sfxCtx.currentTime);
+        sfxSource.connect(lp);
+        lp.connect(hp);
+        hp.connect(sfxGain);
+        sfxGain.connect(sfxCtx.destination);
+        sfxSource.start();
+      }
+
+      function startAmbience() {
+        buildAmbience();
+        if (sfxCtx.state === "suspended") sfxCtx.resume();
+        sfxGain.gain.cancelScheduledValues(sfxCtx.currentTime);
+        sfxGain.gain.setValueAtTime(sfxGain.gain.value, sfxCtx.currentTime);
+        sfxGain.gain.linearRampToValueAtTime(0.07, sfxCtx.currentTime + 1.2);
+        sfxPlaying = true;
+        soundsBtn.classList.add("is-playing");
+        soundsBtn.innerHTML = `${ico("sound")} ◼ Playing`;
+      }
+
+      function stopAmbience() {
+        if (!sfxCtx) return;
+        sfxGain.gain.cancelScheduledValues(sfxCtx.currentTime);
+        sfxGain.gain.setValueAtTime(sfxGain.gain.value, sfxCtx.currentTime);
+        sfxGain.gain.linearRampToValueAtTime(0, sfxCtx.currentTime + 0.6);
+        sfxPlaying = false;
+        soundsBtn.classList.remove("is-playing");
+        soundsBtn.innerHTML = `${ico("sound")} Ambience`;
+      }
+
       soundsBtn.addEventListener("click", () => {
-        if (sfxPlaying) { au.pause(); sfxPlaying = false; soundsBtn.classList.remove("is-playing"); soundsBtn.innerHTML = `${ico("sound")} Ambience`; }
-        else { au.play().then(() => { sfxPlaying = true; soundsBtn.classList.add("is-playing"); soundsBtn.innerHTML = `${ico("sound")} ◼ Playing`; }).catch(() => {}); }
+        if (sfxPlaying) { stopAmbience(); }
+        else { startAmbience(); }
       });
-      au.src = `assets/audio/${id}.mp3`;
-      sfxAudio = au;
+
+      /* Auto-start on first user interaction with the page */
+      const autoStart = () => {
+        document.removeEventListener("click", autoStart, true);
+        document.removeEventListener("touchstart", autoStart, true);
+        if (!sfxPlaying) startAmbience();
+      };
+      document.addEventListener("click", autoStart, true);
+      document.addEventListener("touchstart", autoStart, { capture: true, passive: true });
+
+      /* Try immediate autoplay (works if user already interacted earlier) */
+      setTimeout(() => {
+        if (!sfxPlaying) {
+          try {
+            buildAmbience();
+            if (sfxCtx.state !== "suspended") startAmbience();
+          } catch (e) {}
+        }
+      }, 600);
+
+      sfxAudio = {
+        pause: stopAmbience,
+        get src() { return ""; },
+        set src(_) {}
+      };
     }
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
     LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .strip, .visit dl > div, .next");
