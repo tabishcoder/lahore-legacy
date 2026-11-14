@@ -2219,3 +2219,33 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .learn__secret { display: grid; grid-template-columns: 3rem 1fr; gap: 0.6rem 1rem; align-items: start; padding: 1.1rem 1.2rem; background: var(--navy); border-radius: 12px; border: 1px solid var(--line); }
 .learn__secret p { margin: 0; font-size: 0.95rem; line-height: 1.65; color: var(--ink); padding-top: 0.4rem; }
 .learn__secret-icon { color: var(--gold); font-family: var(--serif); font-size: 1.5rem; }
+
+/* ===== CONTENT LANGUAGE TOGGLE (cblk) ===== */
+.cblk { position: relative; }
+.cblk__tog {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.65rem;
+  line-height: 1.6;
+  border: 1px solid rgba(212,154,42,0.45);
+  color: rgba(212,154,42,0.75);
+  background: none;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: border-color 0.15s, color 0.15s, opacity 0.15s;
+  z-index: 1;
+}
+.cblk__tog:hover { border-color: var(--gold); color: var(--gold); }
+/* add a little top-padding so the button doesn't overlap the first line */
+.cblk > .cblk__ur,
+.cblk > .cblk__en { padding-top: 1.6rem; }
+/* inside a p-less context (myth-claim, tour teaser) keep it tighter */
+.myth-claim.cblk > .cblk__ur,
+.myth-claim.cblk > .cblk__en,
+.tour__teaser.cblk > .cblk__ur,
+.tour__teaser.cblk > .cblk__en,
+.tour__fact.cblk > .cblk__ur,
+.tour__fact.cblk > .cblk__en { padding-top: 1.4rem; }
