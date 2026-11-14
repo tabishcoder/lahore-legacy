@@ -203,8 +203,11 @@
     LL.Motion.parallax(heroBox);
 
     // swipe rows
-    main().querySelectorAll(".row__scroll, .sites-grid").forEach((row) => {
+    main().querySelectorAll(".row__scroll").forEach((row) => {
       row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(tile(s)); });
+    });
+    main().querySelectorAll(".sites-grid").forEach((row) => {
+      row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(homeCard(s)); });
     });
     LL.Ease && LL.Ease.rowArrows(main());
     const mixNames = LL.I18N.mode === "mix";
@@ -214,7 +217,7 @@
     $(".hero__cue").addEventListener("click", (e) => { e.preventDefault(); $("#explore").scrollIntoView({ behavior: "smooth", block: "start" }); });
     const back = LL.Motion.lastMorph();
     if (back) { const c = main().querySelector(`.tile[href="#/site/${back}"] .media`); if (c) c.style.viewTransitionName = "hero-photo"; }
-    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .trailband, .discover-section, .all-sites__head, .all-sites__area, .sites-grid .tile");
+    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .discover-section, .all-sites__head, .all-sites__area, .sites-grid .hc");
 
     // search
     const q = $("#q"), res = $("#results");
@@ -287,6 +290,24 @@
     if (lv === "new") return `<span class="status status--new">${t("stNew")}</span>`;
     const g = LL.Game.status(id);
     return `<span class="status status--${lv}">${lv === "visited" ? `${ico("check")} ${t(g.gps ? "stVerified" : "stVisited")}` : lv === "stamp" ? `★ ${t("stamped")}` : `${ico("eye")} ${t("stSeen")}`}</span>`;
+  }
+
+  /* large photo card for the home page 24-sites grid */
+  function homeCard(s) {
+    const a = document.createElement("a");
+    a.className = "hc";
+    a.href = `#/site/${s.id}`;
+    a.appendChild(media(s.id, { width: 700 }));
+    const seen = LL.Game.level(s.id) !== "new";
+    a.insertAdjacentHTML("beforeend", `
+      <div class="hc__overlay" aria-hidden="true"></div>
+      ${seen ? `<span class="hc__seen" aria-label="Visited">✓</span>` : ""}
+      <div class="hc__body">
+        <p class="hc__era">${esc(s.era.en)}</p>
+        <b class="hc__name">${esc(s.name.en)}</b>
+        <span class="hc__cta">Explore <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>`);
+    return a;
   }
 
   /* compact row card used in the "every place" list */
