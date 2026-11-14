@@ -63,7 +63,7 @@
 
   /* ---------------- header ---------------- */
   function header() {
-    [["places", "#/"], ["plan", "#/plan"], ["tour", "#/tour"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
+    [["places", "#/"], ["plan", "#/plan"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
     $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
@@ -75,7 +75,7 @@
     $("#progress-pill").classList.toggle("pill--near-rank", pct > 80 && !!rk.next);
     $("#footer-text").textContent = t("footer");
     const r = route();
-    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));
+    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page)));
   }
 
   /* ---------------- home ---------------- */
@@ -106,7 +106,6 @@
           </div>
           <div class="hero-dock">
             <a class="dock-btn" href="#/plan">${ico("plan")} ${t("actPlan")}</a>
-            <a class="dock-btn" href="#/tour">${ico("tour")} ${t("actTour")}</a>
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
         </div>
@@ -116,7 +115,6 @@
 
       <section class="glance wrap" id="explore">
         <div><b data-count="${TOTAL()}">${TOTAL()}</b><span>${t("glPlaces")}</span></div>
-        <div><b data-count="${LL.TRAIL360.stops.length}">${LL.TRAIL360.stops.length}</b><span>${t("glStops")}</span></div>
         <div><b data-count="${LL.PLANS.length}">${LL.PLANS.length}</b><span>${t("glPlans")}</span></div>
         <div><b data-count="${LL.AREAS.length}">${LL.AREAS.length}</b><span>${t("glAreas")}</span></div>
       </section>
@@ -130,8 +128,6 @@
         <header class="row__head wrap"><div><h2>${t("sitesTitle")}</h2><p>${t("sitesLead")}</p></div></header>
         <div class="row__scroll" data-ids="${LL.SITES.filter((s) => s.top).map((s) => s.id).join(",")}"></div>
       </section>
-
-      <section class="wrap">${trailBand()}</section>
 
       ${LL.AREAS.map((a) => `
       <section class="row">
@@ -351,6 +347,12 @@
             <div class="learn__story" ${U()}>${fx(pick(s.story)).split(/\n+/).map((p) => `<p>${p}</p>`).join("")}</div>
           </section>
 
+          ${(s.history && pick(s.history) && pick(s.history).length) ? pick(s.history).map((sec) => `
+          <section class="learn__section">
+            <h2 class="learn__h2">${esc(sec.heading)}</h2>
+            <div class="learn__story">${fx(sec.body).split(/\n+/).map((p) => `<p>${p}</p>`).join("")}</div>
+          </section>`).join("") : ""}
+
           ${facts.length ? `<section class="learn__section">
             <h2 class="learn__h2">Key facts</h2>
             <ol class="learn__facts" ${U()}>${facts.map((f, i) => `
@@ -359,6 +361,17 @@
                 <p>${fx(f)}</p>
               </li>`).join("")}
             </ol>
+          </section>` : ""}
+
+          ${(s.secrets && pick(s.secrets) && pick(s.secrets).length) ? `
+          <section class="learn__section learn__section--secrets">
+            <h2 class="learn__h2">Hidden facts &amp; lesser-known history</h2>
+            <ul class="learn__secrets">${pick(s.secrets).map((sec, i) => `
+              <li class="learn__secret rv">
+                <span class="learn__fact-num learn__secret-icon">${i + 1}</span>
+                <p>${fx(sec)}</p>
+              </li>`).join("")}
+            </ul>
           </section>` : ""}
 
           ${look.length ? `<section class="learn__section">
@@ -389,6 +402,8 @@
             <div class="strip" id="learn-strip"></div>
           </section>
 
+          <section class="block check" id="check"></section>
+
           <div class="learn__back-cta">
             <a class="btn btn--gold" href="#/site/${id}">${ico("back")} Back to ${esc(s.name.en)}</a>
             <a class="btn btn--ghost" href="#/tour/${id}">${ico("tour")} 360° view</a>
@@ -396,7 +411,8 @@
         </div>
       </div>`;
 
-    LL.Motion.reveal(main(), ".learn__fact, .learn__look li, .spot-tip, .learn__back-cta");
+    LL.Motion.reveal(main(), ".learn__fact, .learn__secret, .learn__look li, .spot-tip, .learn__back-cta");
+    miniQuiz(id);
 
     const strip = $("#learn-strip");
     LL.Photos.candidates(id, 500).forEach((g, i) => {
@@ -637,8 +653,6 @@
             <p class="hint">${t("directionsNote")}. ${t("visitNote")}</p>
           </section>
 
-          <section class="block check" id="check"></section>
-
           <section class="block nearby" id="nearby" hidden><h2>${t("nearbyTitle")}</h2><div class="row__scroll" id="nearby-row"></div></section>
 
           <a class="next" href="#/site/${next.id}">
@@ -689,7 +703,6 @@
 
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
     $("#see-photos").addEventListener("click", () => lightbox(id, 0));
-    miniQuiz(id);
     beenBox(id);
     nearbyBox(id);
     badgeNudge(id);
