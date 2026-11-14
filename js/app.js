@@ -63,7 +63,7 @@
 
   /* ---------------- header ---------------- */
   function header() {
-    [["places", "#/"], ["plan", "#/plan"], ["tour", "#/tour"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
+    [["places", "#/"], ["plan", "#/plan"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
     $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
@@ -75,7 +75,7 @@
     $("#progress-pill").classList.toggle("pill--near-rank", pct > 80 && !!rk.next);
     $("#footer-text").textContent = t("footer");
     const r = route();
-    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));
+    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page)));
   }
 
   /* ---------------- home ---------------- */
@@ -106,7 +106,6 @@
           </div>
           <div class="hero-dock">
             <a class="dock-btn" href="#/plan">${ico("plan")} ${t("actPlan")}</a>
-            <a class="dock-btn" href="#/tour">${ico("tour")} ${t("actTour")}</a>
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
         </div>
@@ -116,7 +115,6 @@
 
       <section class="glance wrap" id="explore">
         <div><b data-count="${TOTAL()}">${TOTAL()}</b><span>${t("glPlaces")}</span></div>
-        <div><b data-count="${LL.TRAIL360.stops.length}">${LL.TRAIL360.stops.length}</b><span>${t("glStops")}</span></div>
         <div><b data-count="${LL.PLANS.length}">${LL.PLANS.length}</b><span>${t("glPlans")}</span></div>
         <div><b data-count="${LL.AREAS.length}">${LL.AREAS.length}</b><span>${t("glAreas")}</span></div>
       </section>
@@ -130,8 +128,6 @@
         <header class="row__head wrap"><div><h2>${t("sitesTitle")}</h2><p>${t("sitesLead")}</p></div></header>
         <div class="row__scroll" data-ids="${LL.SITES.filter((s) => s.top).map((s) => s.id).join(",")}"></div>
       </section>
-
-      <section class="wrap">${trailBand()}</section>
 
       ${LL.AREAS.map((a) => `
       <section class="row">
