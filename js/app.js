@@ -119,16 +119,11 @@
         <div><b data-count="${LL.AREAS.length}">${LL.AREAS.length}</b><span>${t("glAreas")}</span></div>
       </section>
 
-      <section class="row">
-        <header class="row__head wrap"><div><h2>${t("now_" + now.k)}</h2><p>${t("nowLine_" + now.k)}</p></div></header>
-        <div class="row__scroll" data-ids="${now.ids.join(",")}"></div>
+      <section class="wrap home-highlights">
+        <div class="sites-grid" data-ids="${now.ids.join(",")}"></div>
       </section>
 
       <section class="all-sites wrap" id="all-sites">
-        <header class="all-sites__head rv">
-          <h2>${t("sitesTitle")}</h2>
-          <p>${t("sitesLead")}</p>
-        </header>
         ${LL.AREAS.map((a) => {
           const areaSites = LL.SITES.filter((s) => s.area === a.id);
           if (!areaSites.length) return "";
@@ -203,9 +198,6 @@
     LL.Motion.parallax(heroBox);
 
     // swipe rows
-    main().querySelectorAll(".row__scroll").forEach((row) => {
-      row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(tile(s)); });
-    });
     main().querySelectorAll(".sites-grid").forEach((row) => {
       row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(homeCard(s)); });
     });
@@ -217,7 +209,7 @@
     $(".hero__cue").addEventListener("click", (e) => { e.preventDefault(); $("#explore").scrollIntoView({ behavior: "smooth", block: "start" }); });
     const back = LL.Motion.lastMorph();
     if (back) { const c = main().querySelector(`.tile[href="#/site/${back}"] .media`); if (c) c.style.viewTransitionName = "hero-photo"; }
-    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .discover-section, .all-sites__head, .all-sites__area, .sites-grid .hc");
+    LL.Motion.reveal(main(), ".band, .glance > div, .discover-section, .all-sites__area, .sites-grid .hc");
 
     // search
     const q = $("#q"), res = $("#results");
