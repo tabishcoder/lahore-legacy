@@ -109,14 +109,7 @@
             <a class="dock-btn" href="#/tour">${ico("tour")} ${t("actTour")}</a>
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
-          ${seen ? `<a class="hero__progress" href="#/me">${ico("crown")} <b>${esc(rk.en)}</b> · ${rk.points} pts · ${t("stampsOf", stamps, TOTAL())} →</a>` : ""}
         </div>
-        <div class="hero-site-label" aria-hidden="true">
-          <span class="hero-site-count"></span>
-          <span class="hero-site-name"></span>
-          <span class="hero-site-era"></span>
-        </div>
-        <div class="hero-progress-bar"><div class="hero-progress-fill" id="hero-pbar"></div></div>
       </section>
 
       <div class="marquee" id="marquee"></div>
@@ -203,19 +196,10 @@
       heroBox.appendChild(div);
       return { el: div, s };
     });
-    const hNameEl = main().querySelector(".hero-site-name");
-    const hEraEl  = main().querySelector(".hero-site-era");
-    const hCntEl  = main().querySelector(".hero-site-count");
-    const hPbar   = $("#hero-pbar");
     function cinemaGo(n) {
       hSlides[si].el.classList.remove("is-on");
       si = ((n % hSlides.length) + hSlides.length) % hSlides.length;
       hSlides[si].el.classList.add("is-on");
-      const s = hSlides[si].s;
-      if (hNameEl) hNameEl.textContent = s.name.en;
-      if (hEraEl)  hEraEl.textContent  = s.era.en;
-      if (hCntEl)  hCntEl.textContent  = String(si + 1).padStart(2, "0") + " / " + String(hSlides.length).padStart(2, "0");
-      if (hPbar) { hPbar.style.transition = "none"; hPbar.style.width = "0"; requestAnimationFrame(() => { hPbar.style.transition = "width 1.8s linear"; hPbar.style.width = "100%"; }); }
     }
     cinemaGo(0);
     const cinemaT = setInterval(() => cinemaGo(si + 1), 1800);
