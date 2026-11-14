@@ -406,6 +406,8 @@
             <div class="strip" id="learn-strip"></div>
           </section>
 
+          <section class="block check" id="check"></section>
+
           <div class="learn__back-cta">
             <a class="btn btn--gold" href="#/site/${id}">${ico("back")} Back to ${esc(s.name.en)}</a>
             <a class="btn btn--ghost" href="#/tour/${id}">${ico("tour")} 360° view</a>
@@ -414,6 +416,7 @@
       </div>`;
 
     LL.Motion.reveal(main(), ".learn__fact, .learn__secret, .learn__look li, .spot-tip, .learn__back-cta");
+    miniQuiz(id);
 
     const strip = $("#learn-strip");
     LL.Photos.candidates(id, 500).forEach((g, i) => {
@@ -654,8 +657,6 @@
             <p class="hint">${t("directionsNote")}. ${t("visitNote")}</p>
           </section>
 
-          <section class="block check" id="check"></section>
-
           <section class="block nearby" id="nearby" hidden><h2>${t("nearbyTitle")}</h2><div class="row__scroll" id="nearby-row"></div></section>
 
           <a class="next" href="#/site/${next.id}">
@@ -706,7 +707,6 @@
 
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
     $("#see-photos").addEventListener("click", () => lightbox(id, 0));
-    miniQuiz(id);
     beenBox(id);
     nearbyBox(id);
     badgeNudge(id);
