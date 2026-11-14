@@ -35,7 +35,6 @@ LL.VIDEOS = {
     "lahore-fort": { wide: "fort-courtyard", tall: "fort-courtyard" },
     "delhi-gate": { wide: "delhi-gate", tall: "delhi-gate" },
     "minar-e-pakistan": { wide: "minar-aerial", tall: "minar-tall" },
-    "iqbal-park": { wide: "minar-aerial", tall: "minar-tall" },
   },
   clipSeconds: 7,
 };
