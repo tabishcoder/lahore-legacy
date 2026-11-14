@@ -235,7 +235,7 @@
     $(".hero__cue").addEventListener("click", (e) => { e.preventDefault(); $("#explore").scrollIntoView({ behavior: "smooth", block: "start" }); });
     const back = LL.Motion.lastMorph();
     if (back) { const c = main().querySelector(`.tile[href="#/site/${back}"] .media`); if (c) c.style.viewTransitionName = "hero-photo"; }
-    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .trailband");
+    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .trailband, .discover-section");
 
     // search
     const q = $("#q"), res = $("#results");
@@ -1467,7 +1467,7 @@
     resize();
     window.addEventListener("resize", resize);
     let rot = 0, fN = 0, exited = false, raf;
-    const DUR = 160;
+    const DUR = 80;
     function globe() {
       ctx.clearRect(0, 0, W, H);
       // Stars
@@ -1559,7 +1559,7 @@
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       overlay.classList.add("ll-intro--out");
-      setTimeout(() => { overlay.remove(); onDone(); }, 850);
+      setTimeout(() => { overlay.remove(); onDone(); }, 450);
     }
     overlay.addEventListener("click", exit);
     raf = requestAnimationFrame(tick);
