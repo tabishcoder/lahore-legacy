@@ -2156,3 +2156,32 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 /* Ken Burns on each slide */
 .hero--home .hero__photo .slide.is-on img { animation:ckb 2.0s ease-out both !important; }
 @keyframes ckb { from{transform:scale(1.08) translate(0.5%,0.5%)} to{transform:scale(1) translate(0,0)} }
+
+/* ===== DEEP READ CARD (site page → learn page link) ===== */
+.deepread { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.2rem; border: 1px solid var(--line-2); border-radius: 14px; background: var(--navy); text-decoration: none !important; color: inherit; margin: 1.4rem 0; transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+.deepread:hover { background: rgba(212,154,42,0.08); border-color: rgba(212,154,42,0.4); transform: translateY(-2px); }
+.deepread__icon { width: 44px; height: 44px; border-radius: 50%; background: var(--gold); color: var(--charcoal); display: grid; place-items: center; flex-shrink: 0; }
+.deepread__icon .ico { width: 20px; height: 20px; }
+.deepread__body { flex: 1; }
+.deepread__body strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; color: var(--ink); }
+.deepread__body span { font-size: 0.82rem; color: var(--dim); line-height: 1.4; }
+.deepread__arrow { font-size: 1.3rem; color: var(--gold); flex-shrink: 0; }
+
+/* ===== LEARN PAGE (deep-read / Wikipedia-style) ===== */
+.learn-page { min-height: 100vh; }
+.learn__header { padding: calc(var(--top) + 2rem) 0 2rem; border-bottom: 1px solid var(--line); margin-bottom: 0; }
+.learn__h1 { font-size: clamp(2.2rem, 7vw, 4rem); margin: 0.2em 0 0.1em; line-height: 1.1; color: var(--ink); }
+.learn__ur { font-family: var(--serif); font-size: clamp(1.1rem, 3vw, 1.6rem); color: var(--dim); margin: 0 0 0.6rem; direction: rtl; }
+.learn__line { font-size: 1rem; color: var(--dim); margin: 0; line-height: 1.5; }
+.learn__body { padding: 0 0 5rem; }
+.learn__section { margin: 2.8rem 0; padding-top: 2.8rem; border-top: 1px solid var(--line); }
+.learn__section:first-child { border-top: none; padding-top: 0; }
+.learn__h2 { font-size: clamp(1.3rem, 3vw, 1.75rem); margin: 0 0 1.4rem; color: var(--ink); }
+.learn__story p { font-size: clamp(1.0rem, 2.2vw, 1.15rem); line-height: 1.85; margin: 0 0 1.4em; color: var(--ink); }
+.learn__facts { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+.learn__fact { display: grid; grid-template-columns: 3rem 1fr; gap: 0.6rem 1rem; align-items: start; padding: 1.1rem 1.2rem; background: var(--navy); border-radius: 12px; border: 1px solid var(--line); }
+.learn__fact-num { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: var(--gold); line-height: 1; }
+.learn__fact p { margin: 0; font-size: 0.95rem; line-height: 1.65; color: var(--ink); padding-top: 0.4rem; }
+.learn__look { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.learn__look li { padding: 0.8rem 1rem; background: var(--navy); border-radius: 10px; border: 1px solid var(--line); font-size: 0.95rem; color: var(--ink); line-height: 1.55; }
+.learn__back-cta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 2.4rem; border-top: 1px solid var(--line); }

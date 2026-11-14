@@ -325,6 +325,108 @@
     </section>`;
   }
 
+  /* ---- Learn / deep-read page ---- */
+  function learnPage(id) {
+    const s = site(id);
+    if (!s) return go("#/");
+
+    const facts = pick(s.facts) || [];
+    const look = pick(s.look) || [];
+    const spots = LL.PHOTO_SPOTS && LL.PHOTO_SPOTS[id] || [];
+    const O = LL.OFFICIAL;
+
+    main().innerHTML = `
+      <div class="learn-page">
+        <header class="learn__header wrap-narrow">
+          <a class="back" href="#/site/${id}">← Back to ${esc(s.name.en)}</a>
+          <h1 class="learn__h1">${esc(s.name.en)}</h1>
+          <p class="learn__ur" lang="ur" dir="rtl">${esc(s.name.ur)}</p>
+          <p class="learn__line">${esc(s.line.en)}</p>
+        </header>
+
+        <div class="learn__body wrap-narrow">
+
+          <section class="learn__section">
+            <h2 class="learn__h2">The story</h2>
+            <div class="learn__story" ${U()}>${fx(pick(s.story)).split(/\n+/).map((p) => `<p>${p}</p>`).join("")}</div>
+          </section>
+
+          ${facts.length ? `<section class="learn__section">
+            <h2 class="learn__h2">Key facts</h2>
+            <ol class="learn__facts" ${U()}>${facts.map((f, i) => `
+              <li class="learn__fact rv">
+                <span class="learn__fact-num">${i + 1}</span>
+                <p>${fx(f)}</p>
+              </li>`).join("")}
+            </ol>
+          </section>` : ""}
+
+          ${look.length ? `<section class="learn__section">
+            <h2 class="learn__h2">What to look for</h2>
+            <p class="hint">Things worth noticing when you visit.</p>
+            <ul class="learn__look" ${U()}>${look.map((l) => `<li class="rv"><span>${fx(l)}</span></li>`).join("")}</ul>
+          </section>` : ""}
+
+          ${spots.length ? `<section class="learn__section">
+            <h2 class="learn__h2">${ico("camera")} Photo spots</h2>
+            <p class="hint">Best angles and tips for photographing this place.</p>
+            <ul class="spots-list">${spots.map((sp) => `
+              <li class="spot-tip rv">
+                <b class="spot-angle">${esc(sp.angle)}</b>
+                <p class="spot-text">${esc(sp.tip)}</p>
+                <span class="spot-time">${ico("clock")} ${esc(sp.bestTime)}</span>
+              </li>`).join("")}
+            </ul>
+          </section>` : ""}
+
+          <section class="learn__section">
+            <h2 class="learn__h2">Then &amp; now</h2>
+            <div id="learn-thennow"><p class="hint">Loading comparison…</p></div>
+          </section>
+
+          <section class="learn__section">
+            <h2 class="learn__h2">Gallery</h2>
+            <div class="strip" id="learn-strip"></div>
+          </section>
+
+          <div class="learn__back-cta">
+            <a class="btn btn--gold" href="#/site/${id}">${ico("back")} Back to ${esc(s.name.en)}</a>
+            <a class="btn btn--ghost" href="#/tour/${id}">${ico("tour")} 360° view</a>
+          </div>
+        </div>
+      </div>`;
+
+    LL.Motion.reveal(main(), ".learn__fact, .learn__look li, .spot-tip, .learn__back-cta");
+
+    const strip = $("#learn-strip");
+    LL.Photos.candidates(id, 500).forEach((g, i) => {
+      const b = document.createElement("button");
+      b.className = "strip__item";
+      b.setAttribute("aria-label", cap(g));
+      b.appendChild(media(id, { width: 500, start: i, label: false }));
+      b.insertAdjacentHTML("beforeend", `<span>${fx(cap(g))}</span>`);
+      b.addEventListener("click", () => lightbox(id, i));
+      strip.appendChild(b);
+    });
+
+    Promise.all([LL.Photos.old(id, 960), LL.Photos.resolve(id, 960, 0)]).then(([oldP, nowP]) => {
+      const box = $("#learn-thennow");
+      if (!box || !oldP || !nowP) { if (box) box.innerHTML = "<p class='hint'>No historical photo available for this site.</p>"; return; }
+      box.innerHTML = `<p class="hint">${t("thenNowHint")}</p>
+        <div class="compare" style="--pos:50%">
+          <img src="${nowP.url}" alt="${t("now")}" draggable="false">
+          <img class="compare__old" src="${oldP.url}" alt="${t("then")}" draggable="false">
+          <span class="compare__line"></span>
+          <span class="compare__tag compare__tag--then">${t("then")}</span><span class="compare__tag compare__tag--now">${t("now")}</span>
+          <input type="range" min="0" max="100" value="50" aria-label="${t("thenNowHint")}">
+        </div>`;
+      const cmp = box.querySelector(".compare");
+      box.querySelector("input").addEventListener("input", (e) => cmp.style.setProperty("--pos", e.target.value + "%"));
+    });
+
+    if (O) wireOfficial(main());
+  }
+
   /* ---- Myths page ---- */
   function mythsPage() {
     const u = U();
@@ -485,7 +587,6 @@
     const P = LL.Progress.state;
     const idx = LL.SITES.indexOf(s);
     const next = LL.SITES[(idx + 1) % LL.SITES.length];
-    const ticked = P.look[id] || [];
     const cfg = LL.ASSETS.locations[id];
 
     main().innerHTML = `
@@ -520,24 +621,14 @@
 
           ${trailCard(id)}
 
-          <p class="story" ${U()}>${fx(pick(s.story))}</p>
-
-          <section class="block">
-            <h2>${t("facts")}</h2>
-            <ol class="facts" ${U()}>${pick(s.facts).map((f) => `<li><span>${fx(f).replace(/<span dir="ltr" class="num">(\d{3,4})<\/span>/g, '<span dir="ltr" class="num count">$1</span>')}</span></li>`).join("")}</ol>
-          </section>
-
-          <section class="block">
-            <h2>${t("look")}</h2>
-            <p class="hint">${t("lookHint")}</p>
-            <ul class="look" ${U()}>${pick(s.look).map((l, i) => `<li><label><input type="checkbox" data-look="${i}" ${ticked.includes(i) ? "checked" : ""}><span>${fx(l)}</span></label></li>`).join("")}</ul>
-          </section>
-
-          ${photoSpotsHtml(id)}
-
-          <section class="block" id="thennow" hidden></section>
-
-          ${officialBlock(id)}
+          <a class="deepread rv" href="#/learn/${id}">
+            <span class="deepread__icon">${ico("book")}</span>
+            <span class="deepread__body">
+              <strong>Full history &amp; story</strong>
+              <span>Deep read: facts, what to look for, photo spots, sources &amp; more</span>
+            </span>
+            <span class="deepread__arrow">→</span>
+          </a>
 
           <section class="block visit">
             <h2>${t("visit")}</h2>
@@ -582,12 +673,10 @@
       sfxAudio = au;
     }
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
-    LL.Motion.reveal(main(), ".quick > div, .been, .story, .block > h2, .facts li, .look li, .spot-tip, .strip, .visit dl > div, .next");
+    LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .strip, .visit dl > div, .next");
     $("#next-media").appendChild(media(next.id, { width: 500 }));
 
-    wireOfficial(main());
     const strip = $("#strip");
-    // every photo we have for this place: official sources first, then Wikimedia Commons
     LL.Photos.candidates(id, 500).forEach((g, i) => {
       const b = document.createElement("button");
       b.className = "strip__item";
@@ -596,24 +685,6 @@
       b.insertAdjacentHTML("beforeend", `<span>${fx(cap(g))}</span>`);
       b.addEventListener("click", () => lightbox(id, i));
       strip.appendChild(b);
-    });
-
-    main().querySelectorAll("[data-look]").forEach((c) => c.addEventListener("change", () => LL.Progress.toggleLook(id, +c.dataset.look)));
-
-    Promise.all([LL.Photos.old(id, 960), LL.Photos.resolve(id, 960, 0)]).then(([oldP, nowP]) => {
-      const box = $("#thennow");
-      if (!box || !oldP || !nowP) return;
-      box.hidden = false;
-      box.innerHTML = `<h2>${t("thenNow")}</h2><p class="hint">${t("thenNowHint")}</p>
-        <div class="compare" style="--pos:50%">
-          <img src="${nowP.url}" alt="${t("now")}" draggable="false">
-          <img class="compare__old" src="${oldP.url}" alt="${t("then")}" draggable="false">
-          <span class="compare__line"></span>
-          <span class="compare__tag compare__tag--then">${t("then")}</span><span class="compare__tag compare__tag--now">${t("now")}</span>
-          <input type="range" min="0" max="100" value="50" aria-label="${t("thenNowHint")}">
-        </div>`;
-      const cmp = box.querySelector(".compare");
-      box.querySelector("input").addEventListener("input", (e) => cmp.style.setProperty("--pos", e.target.value + "%"));
     });
 
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
@@ -1386,6 +1457,7 @@
     if (r.page === "plan") return set("Plan a Visit to Lahore's Heritage Sites | Lahore Legacy", "Ready-made tour plans for Lahore's heritage sites, from 2 hours to a full day, with directions and tips.");
     if (r.page === "map") return set("Map of Lahore's Heritage Sites | Lahore Legacy", "An interactive map of Lahore's 24 heritage places, sorted by what's nearest you.");
     if (r.page === "quiz") return set("Lahore Heritage Quiz — How Well Do You Know Lahore? | Lahore Legacy", "A 60-second quiz on Lahore's heritage. Answer what you can, then share your score.");
+    if (r.page === "learn") { const s = site(r.param); if (s) return set(`${s.name.en} — Full History, Facts & Story | Lahore Legacy`, `Deep read: the full story, key facts, what to look for, photo spots and historical comparison for ${s.name.en}, Lahore.`); }
     if (r.page === "myths") return set("Myth or Truth? — Lahore Heritage Facts & Legends | Lahore Legacy", "15 claims about Lahore's heritage — test yourself on myths, truths and legends.");
     if (r.page === "persona") return set("Which Lahore Monument Are You? — Personality Quiz | Lahore Legacy", "Take a 7-question quiz to discover which Lahore monument matches your personality.");
     if (r.page === "1947") return set("Lahore 1947 — Stories from the Partition | Lahore Legacy", "Three quiet stories from 1947: personal accounts from the year Lahore became two cities.");
@@ -1404,6 +1476,7 @@
     else if (r.page === "plan") cleanup = planPage(r.param);
     else if (r.page === "map") cleanup = mapPage(r.param);
     else if (r.page === "quiz") cleanup = quizPage();
+    else if (r.page === "learn") learnPage(r.param);
     else if (r.page === "myths") mythsPage();
     else if (r.page === "persona") personaPage();
     else if (r.page === "1947") page1947();
