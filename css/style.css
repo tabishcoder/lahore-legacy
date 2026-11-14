@@ -2503,3 +2503,88 @@ p, li, dd, .story, .lead { max-width: 72ch; }
   .brand span { display: none; }
   .nav a   { font-size: 0.65rem; }
 }
+
+/* =========================================================================
+   DESKTOP HERO SIDE PANEL
+   Three frosted-glass quick-access cards at the bottom-right of the home
+   hero — visible only on wide screens, hidden on tablet / mobile.
+   ========================================================================= */
+.hero__side { display: none; }
+
+@media (min-width: 1024px) {
+  .hero__side {
+    display        : flex;
+    flex-direction : column;
+    gap            : 0.65rem;
+    position       : absolute;
+    right          : clamp(40px, 7vw, 110px);
+    bottom         : clamp(3rem, 9vh, 6rem);
+    z-index        : 2;
+    animation      : rise 0.9s var(--ease) 0.4s both;
+  }
+
+  .hq {
+    display         : flex;
+    align-items     : center;
+    gap             : 0.9rem;
+    padding         : 0.85rem 1.15rem;
+    min-width       : 230px;
+    background      : rgba(23, 25, 27, 0.68);
+    backdrop-filter : blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border          : 1px solid rgba(212, 154, 42, 0.22);
+    border-radius   : 10px;
+    color           : var(--ivory);
+    text-decoration : none !important;
+    transition      : background 0.22s, border-color 0.22s, transform 0.22s var(--ease);
+  }
+
+  .hq:hover {
+    background   : rgba(212, 154, 42, 0.14);
+    border-color : rgba(212, 154, 42, 0.65);
+    transform    : translateX(-4px);
+  }
+
+  .hq__icon {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    width           : 36px;
+    height          : 36px;
+    flex-shrink     : 0;
+    border-radius   : 8px;
+    background      : rgba(212, 154, 42, 0.16);
+    color           : var(--gold);
+  }
+  .hq__icon .ico { width: 18px; height: 18px; color: var(--gold); stroke: var(--gold); }
+
+  .hq b {
+    display      : block;
+    font-family  : var(--serif);
+    font-weight  : 500;
+    font-size    : 0.95rem;
+    color        : var(--ivory);
+    margin       : 0;
+    line-height  : 1.2;
+  }
+  .hq span {
+    display    : block;
+    font-size  : 0.71rem;
+    color      : rgba(241, 230, 208, 0.58);
+    margin-top : 0.15rem;
+    line-height: 1.3;
+  }
+}
+
+/* =========================================================================
+   SITE PAGE MOBILE — utils buttons: row on wide, stack neatly on small
+   ========================================================================= */
+@media (max-width: 480px) {
+  .site__utils {
+    display              : grid;
+    grid-template-columns: 1fr 1fr;
+    gap                  : 0.5rem;
+  }
+  /* Ambience button spans full width on very small phones */
+  .site__utils .sounds-btn { grid-column: 1 / -1; }
+}

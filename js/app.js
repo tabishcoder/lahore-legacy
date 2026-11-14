@@ -119,6 +119,20 @@
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
         </div>
+        <div class="hero__side" aria-label="Quick links">
+          <a class="hq" href="#/trail">
+            <span class="hq__icon">${ico("tour")}</span>
+            <div><b>360° Virtual Tour</b><span>Walk through the Walled City</span></div>
+          </a>
+          <a class="hq" href="#/plan">
+            <span class="hq__icon">${ico("plan")}</span>
+            <div><b>Tour Plans</b><span>Ready-made day itineraries</span></div>
+          </a>
+          <a class="hq" href="#/quiz">
+            <span class="hq__icon">${ico("quiz")}</span>
+            <div><b>Quick Quiz</b><span>60 seconds · test your knowledge</span></div>
+          </a>
+        </div>
       </section>
 
       <div class="marquee" id="marquee"></div>
