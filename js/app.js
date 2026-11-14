@@ -1280,18 +1280,24 @@
   const stopUrl = (st, mode) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(st.q)}&travelmode=${mode}`;
 
   function planPage(param) {
-    const main3 = LL.PLANS.filter((p) => p.id !== "day2");
-    let active = param && LL.PLANS.some((p) => p.id === param) ? param : (LL.PLANS.find((p) => p.recommended) || LL.PLANS[0]).id;
+    const PLAN_ICONS = { short: "⚡", half: "🚶", full: "☀️", day2: "🏛️" };
+    let active = param && (LL.PLANS.some((p) => p.id === param) || param === "custom") ? param : (LL.PLANS.find((p) => p.recommended) || LL.PLANS[0]).id;
     let overlay = null;
+    let customPick = new Set();
+    let customBuilt = false;
     main().innerHTML = `
       <section class="plan wrap">
         <header class="plan__head">
           <p class="eyebrow">${t("planEyebrow")}</p>
           <h1>${t("planQ")}</h1>
-          <div class="choices">${main3.map((p) => `<button class="choice" data-plan="${p.id}">
+          <div class="choices">${LL.PLANS.map((p) => `<button class="choice" data-plan="${p.id}">
+              <span class="choice__icon" aria-hidden="true">${PLAN_ICONS[p.id] || "📍"}</span>
               <b>${esc(p.label)}</b><small>${t("stopsN", planStops(p).length)} · ${t(travelMode(planStops(p)) === "walking" ? "onFoot" : "byCar")}</small>
-              ${p.recommended ? `<em>${t("recommended")}</em>` : ""}</button>`).join("")}</div>
-          <button class="linkish plan__more" data-plan="day2">${t("moreDay2")} →</button>
+              ${p.recommended ? `<em>${t("recommended")}</em>` : ""}</button>`).join("")}
+            <button class="choice choice--custom" data-plan="custom">
+              <span class="choice__icon" aria-hidden="true">✏️</span>
+              <b>Build my own</b><small>Pick the places you want</small>
+            </button></div>
         </header>
         <div id="plan-body"></div>
         <details class="tips">
@@ -1304,20 +1310,27 @@
     const body = $("#plan-body");
 
     const draw = () => {
-      const p = LL.PLANS.find((x) => x.id === active);
-      const stops = planStops(p), mode = travelMode(stops);
+      if (active === "custom" && !customBuilt) { drawCustomPicker(); return; }
+      const p = active === "custom"
+        ? { id: "custom", title: { en: "My Route", ur: "میرا راستہ" }, intro: { en: "Your custom route through Lahore's heritage.", ur: "" } }
+        : LL.PLANS.find((x) => x.id === active);
+      const stops = active === "custom" ? customPlanStops([...customPick]) : planStops(p);
+      const mode = travelMode(stops);
       const done = LL.Progress.state.planDone[p.id] || [];
       const nDone = stops.filter((_, i) => done.includes(i)).length;
       document.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.plan === active)));
       body.innerHTML = `
         <div class="plan__top">
-          <h2>${esc(p.title.en)}</h2>
+          <div class="plan__title-row">
+            <h2>${esc(p.title.en)}</h2>
+            ${active === "custom" ? `<button class="linkish plan__edit-picks" id="edit-picks">✏️ Edit places</button>` : ""}
+          </div>
           ${cblk(fx(p.intro && p.intro.en || ""), p.intro && p.intro.ur ? fx(p.intro.ur) : null, "plan__intro")}
           <div class="plan__bar">
             <button class="btn btn--gold" id="start">${ico("foot")} ${nDone && nDone < stops.length ? t("continueWalk") : t("startWalk")}</button>
-            <a class="btn btn--ghost" href="${routeUrl(stops)}" target="_blank" rel="noopener">${ico("route")} ${t("routeAll")}</a>
-            <button class="btn btn--ghost" id="share">${ico("share")} ${t("sharePlan")}</button>
             <button class="btn btn--ghost" id="showmap">${ico("map")} ${t("showMap")}</button>
+            <button class="btn btn--ghost" id="share">${ico("share")} ${t("sharePlan")}</button>
+            <a class="plan__gmaps" href="${routeUrl(stops)}" target="_blank" rel="noopener">${ico("route")} Full route on Google Maps ↗</a>
           </div>
           <div class="plan__prog"><span>${t("stopsDone", nDone, stops.length)}</span><span class="bar"><i style="width:${(nDone / stops.length) * 100}%"></i></span>${nDone ? `<button class="linkish" id="reset">${t("reset")}</button>` : ""}</div>
         </div>
@@ -1332,21 +1345,99 @@
                 <b>${esc(st.name.en)}</b>
                 ${cblk(fx(st.note && st.note.en || ""), st.note && st.note.ur ? fx(st.note.ur) : null, "stop__note")}
                 <div class="stop__acts">
-                  <a class="btn btn--gold btn--sm" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")}</a>
-                  ${st.id ? `<a class="btn btn--ghost btn--sm" href="#/site/${st.id}">${t("open")}</a>` : ""}
+                  ${st.id ? `<a class="btn btn--gold btn--sm" href="#/site/${st.id}">${ico("eye")} ${t("open")}</a>` : ""}
+                  <a class="stop__gmaps" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")} ↗</a>
                 </div>
               </div>
             </li>`).join("")}
         </ol>`;
       body.querySelectorAll("[data-ph]").forEach((el) => el.appendChild(media(el.dataset.ph, { width: 330 })));
       body.querySelectorAll(".stop__tick").forEach((b) => b.addEventListener("click", () => tick(p, stops, +b.dataset.i, b)));
-      const r = $("#reset");
+      const r = body.querySelector("#reset");
       if (r) r.addEventListener("click", () => { LL.Progress.resetPlan(p.id); draw(); });
-      $("#start").addEventListener("click", () => walk(p, stops, mode));
-      $("#share").addEventListener("click", () => sharePlan(p, stops));
-      $("#showmap").addEventListener("click", () => mapOverlay(p, stops));
+      body.querySelector("#start").addEventListener("click", () => walk(p, stops, mode));
+      body.querySelector("#share").addEventListener("click", () => sharePlan(p, stops));
+      body.querySelector("#showmap").addEventListener("click", () => mapOverlay(p, stops));
+      const ep = body.querySelector("#edit-picks");
+      if (ep) ep.addEventListener("click", () => {
+        customBuilt = false; draw();
+        body.scrollIntoView({ behavior: LL.Motion.reduce() ? "auto" : "smooth", block: "start" });
+      });
       LL.Motion.reveal(body, ".stop, .leg");
     };
+
+    function nearestNeighborSort(ids) {
+      const withGeo = ids.filter((id) => LL.GEO[id]);
+      const noGeo = ids.filter((id) => !LL.GEO[id]);
+      if (withGeo.length <= 1) return ids;
+      const result = [withGeo[0]];
+      const rem = withGeo.slice(1);
+      while (rem.length) {
+        const lp = LL.GEO[result[result.length - 1]];
+        let bi = 0, bd = Infinity;
+        rem.forEach((id, j) => { const d = LL.Game.distance(lp, LL.GEO[id]); if (d < bd) { bd = d; bi = j; } });
+        result.push(...rem.splice(bi, 1));
+      }
+      return [...result, ...noGeo];
+    }
+
+    function customPlanStops(ids) {
+      return nearestNeighborSort(ids).map((id) => {
+        const sx = site(id);
+        if (!sx) return null;
+        const noteEn = sx.line ? (typeof sx.line === "object" ? sx.line.en : sx.line) : "";
+        const noteUr = sx.line && typeof sx.line === "object" ? sx.line.ur : "";
+        return { id: sx.id, photo: sx.id, at: LL.GEO[sx.id], name: sx.name, note: { en: noteEn, ur: noteUr }, time: null, q: sx.name.en + ", Lahore" };
+      }).filter(Boolean);
+    }
+
+    function drawCustomPicker() {
+      document.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.plan === "custom")));
+      body.innerHTML = `
+        <div class="custom-picker">
+          <p class="custom-picker__hint">Pick the places you want on your route. Select at least 2, then tap <b>Build My Route</b>.</p>
+          <div class="custom-picker__grid">
+            ${LL.SITES.map((sx) => `<button class="custom-site${customPick.has(sx.id) ? " is-picked" : ""}" data-site="${sx.id}" aria-pressed="${customPick.has(sx.id)}">
+              <div class="custom-site__ph" data-ph="${sx.id}"></div>
+              <span class="custom-site__name">${esc(sx.name.en)}</span>
+              <span class="custom-site__check" aria-hidden="true">${ico("check")}</span>
+            </button>`).join("")}
+          </div>
+          <div class="custom-picker__foot">
+            <span class="custom-picker__count" id="pick-count">${customPick.size} selected</span>
+            <button class="btn btn--gold" id="build-route"${customPick.size < 2 ? " disabled" : ""}>Build My Route →</button>
+            ${customPick.size ? `<button class="linkish" id="clear-picks">Clear all</button>` : ""}
+          </div>
+        </div>`;
+      body.querySelectorAll("[data-ph]").forEach((el) => el.appendChild(media(el.dataset.ph, { width: 240 })));
+      body.querySelectorAll(".custom-site").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.site;
+          if (customPick.has(id)) { customPick.delete(id); btn.classList.remove("is-picked"); btn.setAttribute("aria-pressed", "false"); }
+          else { customPick.add(id); btn.classList.add("is-picked"); btn.setAttribute("aria-pressed", "true"); }
+          const cnt = body.querySelector("#pick-count");
+          const bb = body.querySelector("#build-route");
+          if (cnt) cnt.textContent = `${customPick.size} selected`;
+          if (bb) bb.disabled = customPick.size < 2;
+          const cl = body.querySelector("#clear-picks");
+          if (!cl && customPick.size) {
+            const f = body.querySelector(".custom-picker__foot");
+            const c = document.createElement("button");
+            c.className = "linkish"; c.id = "clear-picks"; c.textContent = "Clear all";
+            c.addEventListener("click", () => { customPick.clear(); drawCustomPicker(); });
+            if (f) f.appendChild(c);
+          } else if (cl && !customPick.size) cl.remove();
+        });
+      });
+      const buildBtn = body.querySelector("#build-route");
+      if (buildBtn) buildBtn.addEventListener("click", () => {
+        customBuilt = true; draw();
+        body.scrollIntoView({ behavior: LL.Motion.reduce() ? "auto" : "smooth", block: "start" });
+      });
+      const clearBtn = body.querySelector("#clear-picks");
+      if (clearBtn) clearBtn.addEventListener("click", () => { customPick.clear(); drawCustomPicker(); });
+      LL.Motion.reveal(body, ".custom-site");
+    }
 
     function tick(p, stops, i, b) {
       const on = LL.Progress.togglePlanStop(p.id, i);
@@ -1378,13 +1469,13 @@
             <h2>${esc(st.name.en)}</h2>
             ${cblk(fx(st.note && st.note.en || ""), st.note && st.note.ur ? fx(st.note.ur) : null, "walkmode__note")}
             ${st.leg && i > 0 ? `<p class="hint">${ico("foot")} ${t("walkMin", st.leg)} ${t("fromLast")}</p>` : ""}
-            <a class="btn btn--ghost walkmode__nav" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")}</a>
             <button class="btn btn--gold walkmode__here" id="here">${ico("check")} ${isDone ? (last ? t("finishWalk") : t("nextStop")) : last ? t("hereFinish") : t("hereNext")}</button>
             <div class="walkmode__nav2">
               <button class="linkish" id="prev" ${i === 0 ? "disabled" : ""}>← ${t("prevStop")}</button>
               ${st.id ? `<a class="linkish" href="#/site/${st.id}">${t("aboutPlace")}</a>` : ""}
               <button class="linkish" id="skip" ${last ? "disabled" : ""}>${t("skip")} →</button>
             </div>
+            <a class="walkmode__gmaps" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} Get directions on Google Maps ↗</a>
           </div>`;
         const ph = overlay.querySelector("[data-ph]");
         if (ph) ph.appendChild(media(ph.dataset.ph, { width: innerWidth > 900 ? 1280 : 960, eager: true }));
