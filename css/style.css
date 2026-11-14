@@ -892,10 +892,24 @@ small, .hint { font-size: max(0.82rem, 13px); }
 .all-sites__area { font-size: max(0.78rem, 12px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); font-weight: 700; margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 0.6rem; }
 .all-sites__area span[lang="ur"] { font-size: 1rem; letter-spacing: 0; text-transform: none; color: var(--sand); font-weight: 400; }
 .all-sites__area small { margin-inline-start: auto; font-size: max(0.72rem, 11px); color: var(--dim); font-weight: 400; letter-spacing: 0; text-transform: none; }
-.sites-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 0.8rem; }
-.sites-grid .tile { scroll-snap-align: none; }
-@media (min-width: 560px) { .sites-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 860px) { .sites-grid { grid-template-columns: repeat(4, 1fr); } }
+.sites-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 500px) { .sites-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 860px) { .sites-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* Home card — large photo card for the 24-sites grid */
+.hc { position: relative; display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 3/2; background: var(--navy-2); text-decoration: none !important; color: var(--ink); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+.hc:hover { transform: translateY(-4px); box-shadow: 0 20px 44px -10px rgba(20,8,2,0.7), 0 0 0 1.5px var(--gold); }
+.hc .media { position: absolute; inset: 0; }
+.hc .media img { object-position: center 25%; }
+.hc__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,8,2,0.96) 0%, rgba(18,8,2,0.45) 45%, transparent 100%); pointer-events: none; }
+.hc__body { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.1rem 1.1rem 1rem; }
+.hc__era { font-size: max(0.7rem, 11px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 0 0 0.25rem; }
+.hc__name { display: block; font-family: var(--serif); font-size: clamp(1.05rem, 2.5vw, 1.3rem); font-weight: 400; color: #F1E6D0; line-height: 1.2; margin: 0; }
+.hc__cta { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.55rem; font-size: max(0.75rem, 11.5px); color: rgba(241,230,208,0.6); font-weight: 500; letter-spacing: 0.03em; transition: color 0.2s, gap 0.2s; }
+.hc__cta .ico { width: 13px; height: 13px; transition: transform 0.2s var(--ease); }
+.hc:hover .hc__cta { color: var(--gold); gap: 0.5rem; }
+.hc:hover .hc__cta .ico { transform: translateX(3px); }
+.hc__seen { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; border-radius: 50%; background: rgba(212,154,42,0.92); color: #2B1D14; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
 
 /* Place card: a paper card with the photo in a jharokha window on top and
    the name written underneath, so nothing covers the building. */
