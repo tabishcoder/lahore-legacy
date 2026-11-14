@@ -70,7 +70,7 @@
     const n = LL.Progress.stampCount(), rk = LL.Game.rank();
     const pct = Math.round(rk.pct * 100);
     const toNextTxt = rk.next ? ` · ${rk.toNext} pts to ${rk.next.en}` : "";
-    $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
+    $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><span class="pill__score"><b>${rk.points}</b><small class="pill__pts-label">pts</small></span><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
     $("#progress-pill").title = `${rk.en} · ${rk.points} pts${toNextTxt} · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
     $("#progress-pill").classList.toggle("pill--near-rank", pct > 80 && !!rk.next);
     $("#footer-text").textContent = t("footer");
@@ -769,19 +769,31 @@
     box.appendChild(nudge);
   }
 
-  function beenBox(id) {
+  async function beenBox(id) {
     const box = $("#been");
     if (!box) return;
+    /* Check if geolocation permission is already denied so we can show the right UI */
+    let locDenied = false;
+    if (navigator.permissions) {
+      try {
+        const perm = await navigator.permissions.query({ name: "geolocation" });
+        locDenied = perm.state === "denied";
+        perm.onchange = () => beenBox(id);
+      } catch {}
+    }
     const st = LL.Game.status(id), G = LL.Game.PTS;
     if (st.visited) {
       box.className = "been is-done";
       box.innerHTML = `<span class="been__icon">${ico("check")}</span>
         <div><b>${t(st.gps ? "beenVerified" : "beenDone")}</b><p>${t("beenDate", LL.Progress.state.visited[id].d)}${st.gps ? "" : ` · <button class="linkish" data-a="gps">${t("beenVerify")}</button>`}${st.gps ? "" : ` · <button class="linkish" data-a="undo">${t("undo")}</button>`}</p></div>`;
     } else {
+      const gpsBtn = locDenied
+        ? `<button class="btn btn--ghost btn--sm been__loc-off" disabled title="${t("locDeniedTip")}">${ico("pin")} ${t("locDeniedBtn")}</button>`
+        : `<button class="btn btn--gold btn--sm" data-a="gps">${ico("pin")} ${t("beenGps")}</button>`;
       box.className = "been";
       box.innerHTML = `<span class="been__icon">${ico("pin")}</span>
-        <div><b>${t("beenQ")}</b><p>${t("beenLead", G.visited, G.gps)}</p></div>
-        <div class="been__btns"><button class="btn btn--gold btn--sm" data-a="gps">${ico("pin")} ${t("beenGps")}</button><button class="btn btn--ghost btn--sm" data-a="self">${t("beenSelf")}</button></div>`;
+        <div><b>${t("beenQ")}</b><p>${t("beenLead2", G.visited, G.gps)}</p></div>
+        <div class="been__btns">${gpsBtn}<button class="btn btn--ghost btn--sm" data-a="self">${t("beenSelf")}</button></div>`;
     }
     box.querySelectorAll("[data-a]").forEach((b) => b.addEventListener("click", async () => {
       const a = b.dataset.a;
@@ -794,7 +806,12 @@
           const d = LL.Game.distance(here, LL.GEO[id]);
           if (d <= LL.Game.CHECKIN_RADIUS) { LL.FX.points(b, G.visited + G.gps); LL.FX.confetti(); LL.Progress.visit(id, true); toast(t("beenVerified")); }
           else toast(t("tooFar", d < 10000 ? `${(d / 1000).toFixed(1)} km` : `${Math.round(d / 1000)} km`));
-        } catch (e) { toast(t("noLocation")); }
+        } catch (e) {
+          if (e && e.code === 1) toast(t("locPermDenied"));
+          else toast(t("noLocation"));
+          b.disabled = false;
+          b.innerHTML = `${ico("pin")} ${t("beenGps")}`;
+        }
       }
       beenBox(id);
     }));

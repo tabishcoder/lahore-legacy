@@ -523,14 +523,19 @@ body.on-tour .foot { display: none; }
 .noimg span { color: var(--sand); font-size: 1rem; }
 .noimg small { color: var(--faint); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
-/* header rank pill */
+/* header rank pill — game-score style */
+#progress-pill { position: relative; overflow: hidden; background: linear-gradient(120deg, rgba(212,154,42,0.2) 0%, rgba(170,100,8,0.08) 100%); border-color: rgba(212,154,42,0.5); gap: 0.3rem; }
+#progress-pill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(255,220,120,0.1) 50%, transparent 100%); transform: translateX(-100%); animation: pillShimmer 3.5s ease-in-out infinite 1.5s; pointer-events: none; }
+@keyframes pillShimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
 #progress-pill .ico { width: 15px; height: 15px; }
-.pill__seal { display: inline-flex; color: var(--gold-2); }
-.pill__rank { color: var(--dim); font-size: 0.75rem; }
-#progress-pill { position: relative; overflow: hidden; }
-.pill__bar { position: absolute; bottom: 0; left: 0; height: 2px; width: var(--pct, 0%); background: linear-gradient(90deg, var(--gold), var(--gold-2)); transition: width 0.8s var(--ease); border-radius: 999px; box-shadow: 0 0 5px rgba(212, 154, 42, 0.55); }
-.pill--near-rank .pill__bar { animation: barPulse 1.8s ease-in-out infinite; }
-@keyframes barPulse { 0%, 100% { box-shadow: 0 0 5px rgba(212, 154, 42, 0.5); } 50% { box-shadow: 0 0 10px rgba(212, 154, 42, 0.95); } }
+.pill__seal { display: inline-flex; color: var(--gold); filter: drop-shadow(0 0 3px rgba(212,154,42,0.65)); }
+.pill__score { display: inline-flex; align-items: baseline; gap: 0.18rem; }
+.pill__score b { color: var(--gold); font-size: 1rem; font-weight: 800; line-height: 1; }
+.pill__pts-label { font-size: 0.6rem; color: rgba(212,154,42,0.75); letter-spacing: 0.07em; text-transform: uppercase; font-weight: 700; }
+.pill__rank { color: var(--sand); font-size: 0.72rem; }
+.pill__bar { position: absolute; bottom: 0; left: 0; height: 2.5px; width: var(--pct, 0%); background: linear-gradient(90deg, var(--gold), var(--gold-2)); transition: width 0.8s var(--ease); border-radius: 999px; box-shadow: 0 0 7px rgba(212,154,42,0.65); }
+.pill--near-rank .pill__bar { animation: barPulse 1.4s ease-in-out infinite; }
+@keyframes barPulse { 0%, 100% { box-shadow: 0 0 5px rgba(212,154,42,0.5); } 50% { box-shadow: 0 0 14px rgba(212,154,42,1); } }
 .pill--pop { animation: pill-pop 0.45s var(--ease) both; }
 @keyframes pill-pop { 0% { transform: scale(1); } 40% { transform: scale(1.22); } 100% { transform: scale(1); } }
 .badge-nudge { font-size: 0.8rem; color: var(--gold-2); display: flex; align-items: center; gap: 0.4em; margin: 0.75rem 0 0; }
@@ -549,13 +554,14 @@ body.on-tour .foot { display: none; }
 .card__stamp .status { margin: 0; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4); }
 
 /* place page: check-in */
-.been { display: grid; grid-template-columns: 44px 1fr; gap: 0.6rem 1rem; align-items: start; padding: 1.1rem 1.2rem; margin: 0 0 2rem; border: 1px solid var(--line-2); border-radius: 14px; background: linear-gradient(135deg, rgba(154,110,36,0.1) 0%, rgba(154,110,36,0.04) 100%); }
-.been__icon { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: var(--charcoal); margin-top: 1px; }
-.been__icon .ico { width: 22px; height: 22px; }
-.been b { font-size: 0.95rem; display: block; line-height: 1.3; }
-.been p { margin: 0.25rem 0 0; font-size: 0.83rem; color: var(--dim); line-height: 1.45; }
-.been__btns { grid-column: 2 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.1rem; }
-.been__btns .btn { padding-inline: 0.6em; }
+.been { display: grid; grid-template-columns: 40px 1fr; gap: 0.5rem 0.9rem; align-items: start; padding: 1rem 1.1rem; margin: 0 0 2rem; border: 1px solid var(--line-2); border-radius: 14px; background: linear-gradient(135deg, rgba(154,110,36,0.1) 0%, rgba(154,110,36,0.04) 100%); }
+.been__icon { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: var(--charcoal); margin-top: 1px; flex-shrink: 0; }
+.been__icon .ico { width: 20px; height: 20px; }
+.been b { font-size: 0.9rem; display: block; line-height: 1.3; }
+.been p { margin: 0.2rem 0 0; font-size: 0.8rem; color: var(--dim); line-height: 1.4; }
+.been__btns { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin-top: 0.1rem; }
+.been__btns .btn { padding-inline: 0.6em; font-size: max(0.78rem, 12px); min-width: 0; }
+.been__loc-off { opacity: 0.45; cursor: not-allowed; }
 .been.is-done { background: rgba(127,180,143,0.1); border-color: rgba(127,180,143,0.4); }
 .been.is-done .been__icon { background: var(--ok); }
 .linkish { background: none; border: 0; padding: 0; color: var(--gold-2); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
@@ -713,7 +719,7 @@ body.on-tour .foot { display: none; }
 .lpin .noimg *, .ap__t .noimg *, .road__pin .noimg *, .mini__media .noimg small { display: none; }
 .mini__media .noimg b { font-size: 0.85rem; }
 .mini__media .noimg span { font-size: 0.75rem; }
-@media (max-width: 640px) { .pill__rank { display: none; } .top__right { gap: 0.4rem; } }
+@media (max-width: 640px) { .top__right { gap: 0.4rem; } }
 
 /* ===================== v8 — motion: videos, slideshow, reveals, rewards ===================== */
 /* hero slideshow + background video */
@@ -1516,7 +1522,8 @@ h1, h2, h3, h4, p, li, dd, b, a { overflow-wrap: break-word; }
   .brand svg { width: 26px; height: 26px; }
   .brand span { font-size: 1.12rem; }
   .pill { padding: 0 0.5rem; font-size: 0.85rem; }
-  #progress-pill .pill__seal { display: none; }
+  #progress-pill .pill__rank { display: none; }
+  #progress-pill .pill__score b { font-size: 0.9rem; }
   .actions { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
   .action { padding: 0.7rem; }
   .action__icon { width: 32px; height: 32px; }
