@@ -2133,8 +2133,8 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 /* =========================================================================
    GLOBE INTRO SCREEN
    ========================================================================= */
-#ll-intro { position:fixed; inset:0; z-index:9999; background:#0a0806; display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-#ll-intro canvas { position:absolute; inset:0; width:100%; height:100%; }
+#ll-intro { position:fixed; inset:0; z-index:9999; background:#050810; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.6rem; overflow:hidden; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.ll-intro__globe { width:min(72vmin,420px); height:min(72vmin,420px); object-fit:contain; border-radius:50%; flex-shrink:0; box-shadow:0 0 60px rgba(50,120,220,0.35),0 0 130px rgba(30,80,180,0.18); }
 .ll-intro__copy { position:relative; z-index:1; text-align:center; pointer-events:none; user-select:none; }
 .ll-intro__city { font-family:"IM Fell English",Georgia,serif; font-size:clamp(3rem,12vw,8rem); color:#d49a2a; letter-spacing:0.25em; line-height:1; opacity:0; transition:opacity 0.45s ease; text-shadow:0 0 60px rgba(212,154,42,0.4),0 0 120px rgba(212,154,42,0.15); }
 .ll-intro__ur { font-family:"Noto Naskh Arabic",Georgia,serif; font-size:clamp(0.9rem,3vw,1.7rem); color:rgba(255,240,200,0.75); margin-top:0.5em; opacity:0; transition:opacity 0.45s ease; direction:rtl; letter-spacing:0.05em; }
@@ -2171,8 +2171,6 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .dock-btn { display:inline-flex; align-items:center; gap:0.45em; padding:0.52rem 1.15rem; border:1px solid rgba(244,239,229,0.28); border-radius:999px; color:var(--ivory); text-decoration:none !important; font-size:0.88rem; font-weight:500; backdrop-filter:blur(10px); background:rgba(8,6,3,0.45); transition:background 0.22s,border-color 0.22s,transform 0.22s; white-space:nowrap; }
 .dock-btn:hover { background:rgba(212,154,42,0.22); border-color:rgba(212,154,42,0.65); transform:translateY(-2px); color:var(--ivory); }
 .dock-btn .ico { width:14px; height:14px; flex-shrink:0; }
-.dock-btn--snd { padding:0.42rem 0.9rem; font-size:0.82rem; }
-.dock-btn--snd.is-playing { background:rgba(212,154,42,0.18); border-color:rgba(212,154,42,0.65); color:var(--gold-2); }
 
 /* =========================================================================
    CINEMA HERO — site label + progress bar

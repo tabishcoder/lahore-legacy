@@ -71,233 +71,6 @@
   }
   let cleanup = null;
 
-  /* ---- Heritage Ambient Audio System (module-level, shared across all pages) ---- */
-  const Ambience = (function () {
-    let _ctx = null, _master = null, _nodes = [], _playing = false, _birdT = null;
-
-    function _reverb(secs) {
-      const c = _ctx.createConvolver();
-      const len = Math.floor(_ctx.sampleRate * secs);
-      const b = _ctx.createBuffer(2, len, _ctx.sampleRate);
-      for (let ch = 0; ch < 2; ch++) {
-        const d = b.getChannelData(ch);
-        for (let i = 0; i < len; i++)
-          d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.8);
-      }
-      c.buffer = b; return c;
-    }
-
-    function _brown(secs) {
-      const sr = _ctx.sampleRate, len = sr * secs;
-      const buf = _ctx.createBuffer(1, len, sr);
-      const d = buf.getChannelData(0); let v = 0;
-      for (let i = 0; i < len; i++) { v = (v + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = v * 3.5; }
-      const s = _ctx.createBufferSource(); s.buffer = buf; s.loop = true; return s;
-    }
-
-    function _pink(secs) {
-      const sr = _ctx.sampleRate, len = sr * secs;
-      const buf = _ctx.createBuffer(1, len, sr);
-      const d = buf.getChannelData(0);
-      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-      for (let i = 0; i < len; i++) {
-        const w = Math.random() * 2 - 1;
-        b0 = .99886 * b0 + w * .0555; b1 = .99332 * b1 + w * .0751;
-        b2 = .96900 * b2 + w * .1539; b3 = .86650 * b3 + w * .3105;
-        b4 = .55000 * b4 + w * .5330; b5 = -.7616 * b5 - w * .0169;
-        d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * .5362) * 0.11; b6 = w * .1159;
-      }
-      const s = _ctx.createBufferSource(); s.buffer = buf; s.loop = true; return s;
-    }
-
-    function _bird() {
-      if (!_playing || !_ctx) return;
-      const t = _ctx.currentTime + Math.random() * 3 + 0.8;
-      const f = [1300, 1600, 1900, 2200, 2600][Math.floor(Math.random() * 5)];
-      const c = _ctx.createOscillator(), m = _ctx.createOscillator();
-      const mg = _ctx.createGain(), cg = _ctx.createGain();
-      m.frequency.value = 14 + Math.random() * 12; mg.gain.value = f * 0.18;
-      m.connect(mg); mg.connect(c.frequency);
-      c.frequency.value = f; c.type = "sine";
-      cg.gain.setValueAtTime(0, t);
-      cg.gain.linearRampToValueAtTime(0.055, t + 0.07);
-      cg.gain.exponentialRampToValueAtTime(0.001, t + 0.35 + Math.random() * 0.4);
-      c.connect(cg); cg.connect(_master);
-      c.start(t); m.start(t); c.stop(t + 0.9); m.stop(t + 0.9);
-      _birdT = setTimeout(_bird, (Math.random() * 2.5 + 1.2) * 1000);
-    }
-
-    function _build(type) {
-      if (_ctx) return;
-      _ctx = new (window.AudioContext || window.webkitAudioContext)();
-      _master = _ctx.createGain(); _master.gain.value = 0;
-      _master.connect(_ctx.destination);
-
-      if (type === "mosque" || type === "heritage") {
-        const isMosque = type === "mosque";
-        const rev = _reverb(isMosque ? 4 : 2.2);
-        const rg = _ctx.createGain(); rg.gain.value = isMosque ? 0.58 : 0.36;
-        rev.connect(rg); rg.connect(_master); _nodes.push(rev, rg);
-        const dFreqs = isMosque ? [110, 165, 220, 330] : [146.8, 220, 293.7, 440];
-        const dVols  = [0.065, 0.042, 0.052, 0.022];
-        dFreqs.forEach((f, i) => {
-          const o = _ctx.createOscillator();
-          o.type = i < 2 ? "sine" : "triangle";
-          o.frequency.value = f; o.detune.value = i % 2 ? 2 : -2;
-          const g = _ctx.createGain(); g.gain.value = dVols[i];
-          const lfo = _ctx.createOscillator(); lfo.frequency.value = 0.06 + i * 0.015;
-          const lg = _ctx.createGain(); lg.gain.value = dVols[i] * 0.28;
-          lfo.connect(lg); lg.connect(g.gain); lfo.start();
-          o.connect(g); g.connect(rev); o.start();
-          _nodes.push(o, g, lfo, lg);
-        });
-        const bn = _brown(4); const bnLP = _ctx.createBiquadFilter();
-        bnLP.type = "lowpass"; bnLP.frequency.value = 180;
-        const bnG = _ctx.createGain(); bnG.gain.value = 0.015;
-        bn.connect(bnLP); bnLP.connect(bnG); bnG.connect(_master); bn.start();
-        _nodes.push(bn, bnLP, bnG);
-
-      } else if (type === "garden") {
-        const pn = _pink(3);
-        const wBP = _ctx.createBiquadFilter(); wBP.type = "bandpass"; wBP.frequency.value = 1100; wBP.Q.value = 0.35;
-        const wG = _ctx.createGain(); wG.gain.value = 0.05;
-        const wLFO = _ctx.createOscillator(); wLFO.frequency.value = 0.12;
-        const wLg = _ctx.createGain(); wLg.gain.value = 0.02;
-        wLFO.connect(wLg); wLg.connect(wG.gain); wLFO.start();
-        pn.connect(wBP); wBP.connect(wG); wG.connect(_master); pn.start();
-        _nodes.push(pn, wBP, wG, wLFO, wLg);
-        const wbn = _brown(3);
-        const wtBP = _ctx.createBiquadFilter(); wtBP.type = "bandpass"; wtBP.frequency.value = 700; wtBP.Q.value = 2;
-        const wtG = _ctx.createGain(); wtG.gain.value = 0.034;
-        wbn.connect(wtBP); wtBP.connect(wtG); wtG.connect(_master); wbn.start();
-        _nodes.push(wbn, wtBP, wtG);
-        const dr = _ctx.createOscillator(); dr.type = "sine"; dr.frequency.value = 220;
-        const drg = _ctx.createGain(); drg.gain.value = 0.019;
-        dr.connect(drg); drg.connect(_master); dr.start();
-        _nodes.push(dr, drg);
-        _bird();
-
-      } else if (type === "fort") {
-        const bn = _brown(4);
-        const bnLP = _ctx.createBiquadFilter(); bnLP.type = "lowpass"; bnLP.frequency.value = 500;
-        const bnHP = _ctx.createBiquadFilter(); bnHP.type = "highpass"; bnHP.frequency.value = 60;
-        const bnG = _ctx.createGain(); bnG.gain.value = 0.05;
-        const fLFO = _ctx.createOscillator(); fLFO.frequency.value = 0.09;
-        const fLg = _ctx.createGain(); fLg.gain.value = 0.022;
-        fLFO.connect(fLg); fLg.connect(bnG.gain); fLFO.start();
-        bn.connect(bnLP); bnLP.connect(bnHP); bnHP.connect(bnG); bnG.connect(_master); bn.start();
-        _nodes.push(bn, bnLP, bnHP, bnG, fLFO, fLg);
-        [65.4, 130.8, 196].forEach((f, i) => {
-          const o = _ctx.createOscillator(); o.type = "sawtooth"; o.frequency.value = f;
-          const lp = _ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = f * 2.5;
-          const g = _ctx.createGain(); g.gain.value = [0.036, 0.021, 0.011][i];
-          o.connect(lp); lp.connect(g); g.connect(_master); o.start();
-          _nodes.push(o, lp, g);
-        });
-
-      } else { // "city" — home / default
-        const dFreqs = [146.8, 220, 293.7, 440, 587.3];
-        const dVols  = [0.05, 0.034, 0.042, 0.018, 0.009];
-        dFreqs.forEach((f, i) => {
-          const o = _ctx.createOscillator();
-          o.type = i === 0 ? "sawtooth" : i < 3 ? "triangle" : "sine";
-          o.frequency.value = f; o.detune.value = i % 2 ? 3 : -3;
-          const g = _ctx.createGain(); g.gain.value = dVols[i];
-          const lp = _ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = f * 4;
-          const lfo = _ctx.createOscillator(); lfo.frequency.value = 0.07 + i * 0.012;
-          const lg = _ctx.createGain(); lg.gain.value = dVols[i] * 0.25;
-          lfo.connect(lg); lg.connect(g.gain); lfo.start();
-          o.connect(lp); lp.connect(g); g.connect(_master); o.start();
-          _nodes.push(o, lp, g, lfo, lg);
-        });
-        const bn = _brown(4);
-        const bnLP = _ctx.createBiquadFilter(); bnLP.type = "lowpass"; bnLP.frequency.value = 380;
-        const bnHP = _ctx.createBiquadFilter(); bnHP.type = "highpass"; bnHP.frequency.value = 65;
-        const bnG = _ctx.createGain(); bnG.gain.value = 0.038;
-        bn.connect(bnLP); bnLP.connect(bnHP); bnHP.connect(bnG); bnG.connect(_master); bn.start();
-        _nodes.push(bn, bnLP, bnHP, bnG);
-        _bird();
-      }
-    }
-
-    function _doStart(type) {
-      _build(type);
-      if (_ctx.state === "suspended") _ctx.resume();
-      _master.gain.cancelScheduledValues(_ctx.currentTime);
-      _master.gain.setValueAtTime(_master.gain.value, _ctx.currentTime);
-      _master.gain.linearRampToValueAtTime(0.08, _ctx.currentTime + 1.4);
-      _playing = true;
-    }
-
-    function _doStop() {
-      if (!_ctx) return;
-      clearTimeout(_birdT); _birdT = null;
-      _master.gain.cancelScheduledValues(_ctx.currentTime);
-      _master.gain.setValueAtTime(_master.gain.value, _ctx.currentTime);
-      _master.gain.linearRampToValueAtTime(0, _ctx.currentTime + 0.7);
-      _playing = false;
-    }
-
-    function _syncBtn(btn, playing) {
-      if (!btn) return;
-      btn.classList.toggle("is-playing", playing);
-      btn.innerHTML = `${ico("sound")} ${playing ? "Stop" : "Ambience"}`;
-    }
-
-    function mount(btn, type) {
-      if (!btn) return { pause() {}, get src() { return ""; }, set src(_) {} };
-      let _autoStart = null;
-
-      function cleanListeners() {
-        if (_autoStart) {
-          document.removeEventListener("click", _autoStart, true);
-          document.removeEventListener("touchstart", _autoStart, true);
-          _autoStart = null;
-        }
-      }
-
-      btn.addEventListener("click", () => {
-        if (_playing) { _doStop(); _syncBtn(btn, false); }
-        else { _doStart(type); _syncBtn(btn, true); }
-      });
-
-      _autoStart = () => {
-        cleanListeners();
-        if (!_playing) { _doStart(type); _syncBtn(btn, true); }
-      };
-      document.addEventListener("click", _autoStart, true);
-      document.addEventListener("touchstart", _autoStart, { capture: true, passive: true });
-
-      setTimeout(() => {
-        if (!_playing) {
-          try {
-            _build(type);
-            if (_ctx && _ctx.state !== "suspended") {
-              _master.gain.cancelScheduledValues(_ctx.currentTime);
-              _master.gain.setValueAtTime(0, _ctx.currentTime);
-              _master.gain.linearRampToValueAtTime(0.08, _ctx.currentTime + 1.4);
-              _playing = true; _syncBtn(btn, true);
-            }
-          } catch (_e) {}
-        }
-      }, 600);
-
-      return {
-        pause() {
-          cleanListeners();
-          if (_playing) { _doStop(); _syncBtn(btn, false); }
-          setTimeout(() => {
-            if (_ctx) { try { _ctx.close(); } catch (_e) {} _ctx = null; _master = null; _nodes.length = 0; }
-          }, 800);
-        },
-        get src() { return ""; },
-        set src(_) {}
-      };
-    }
-
-    return { mount };
-  })();
-
   /* ---------------- header ---------------- */
   function header() {
     [["places", "#/"], ["plan", "#/plan"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
@@ -343,7 +116,6 @@
           </div>
           <div class="hero-dock">
             <a class="dock-btn" href="#/plan">${ico("plan")} ${t("actPlan")}</a>
-            <button class="dock-btn dock-btn--snd" id="sounds-btn">${ico("sound")} Ambience</button>
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
         </div>
@@ -492,8 +264,7 @@
       const cv = await LL.Share.certificate(name);
       LL.Share.deliver(cv, "lahore-legacy-certificate.png", t("certTitle"));
     });
-    const homeAmbi = Ambience.mount($("#sounds-btn"), "city");
-    return () => { clearInterval(cinemaT); stopRows(); if (homeAmbi) homeAmbi.pause(); };
+    return () => { clearInterval(cinemaT); stopRows(); };
   }
 
   /* tall photo tile used in the swipe rows */
@@ -898,7 +669,6 @@
             <div class="site__utils">
               <a class="btn btn--ghost btn--sm" href="#/map/${id}">${ico("map")} ${t("onMap")}</a>
               <button class="btn btn--ghost btn--sm" id="share-place">${ico("share")} ${t("sharePlace")}</button>
-              <button class="btn btn--ghost btn--sm sounds-btn" id="sounds-btn">${ico("sound")} Ambience</button>
             </div>
           </div>
         </header>
@@ -953,10 +723,7 @@
     if (vset) siteVid = LL.Motion.videoLoop(sp, [LL.Motion.pickClips(vset)], (c) => {
     });
     LL.Motion.parallax(sp);
-    const ambiT = /mosque|masjid|hammam|darbar/.test(id) ? "mosque"
-      : /garden|bagh|gulabi|park/.test(id) ? "garden"
-      : /fort|gate|minar|chauburji|haveli/.test(id) ? "fort" : "heritage";
-    const sfxAudio = Ambience.mount($("#sounds-btn"), ambiT);
+    const sfxAudio = null;
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
     LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .strip, .visit dl > div, .next");
     $("#next-media").appendChild(media(next.id, { width: 500 }));
@@ -1807,7 +1574,7 @@
     overlay.id = "ll-intro";
     overlay.setAttribute("role", "presentation");
     overlay.innerHTML =
-      '<canvas id="ll-intro-cv" aria-hidden="true"></canvas>' +
+      '<img class="ll-intro__globe" src="assets/globe.gif" alt="" aria-hidden="true">' +
       '<div class="ll-intro__copy">' +
         '<div class="ll-intro__city">LAHORE</div>' +
         '<div class="ll-intro__ur">لاہور کی وراثت</div>' +
@@ -1815,122 +1582,22 @@
       '</div>' +
       '<div class="ll-intro__tap">tap to enter ›</div>';
     document.body.appendChild(overlay);
-    const cv = document.getElementById("ll-intro-cv");
-    const ctx = cv.getContext("2d");
-    let W, H, R, cx, cy;
-    const stars = [];
-    function resize() {
-      W = cv.width = window.innerWidth;
-      H = cv.height = window.innerHeight;
-      R = Math.min(W, H) * 0.38;
-      cx = W / 2; cy = H / 2;
-      stars.length = 0;
-      for (let i = 0; i < 200; i++) {
-        let sx, sy;
-        do { sx = Math.random(); sy = Math.random(); }
-        while (Math.hypot(sx * W - cx, sy * H - cy) < R + 24);
-        stars.push({ x: sx, y: sy, r: Math.random() * 1.2 + 0.2, a: Math.random() * 0.55 + 0.3, ph: Math.random() * Math.PI * 2 });
-      }
-    }
-    resize();
-    window.addEventListener("resize", resize);
-    let rot = 0, fN = 0, exited = false, raf;
-    const DUR = 80;
-    function globe() {
-      ctx.clearRect(0, 0, W, H);
-      // Stars
-      stars.forEach(s => {
-        ctx.globalAlpha = s.a * (0.45 + 0.55 * (Math.sin(fN * 0.04 + s.ph) * 0.5 + 0.5));
-        ctx.fillStyle = "#fff";
-        ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2); ctx.fill();
-      });
-      ctx.globalAlpha = 1;
-      // Atmosphere outer glow
-      for (let i = 10; i >= 1; i--) {
-        ctx.beginPath(); ctx.arc(cx, cy, R + i * 3.5, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(50,130,220," + (0.1 / i) + ")"; ctx.lineWidth = 2.5; ctx.stroke();
-      }
-      // 3-D sphere base (radial gradient with offset highlight)
-      const sph = ctx.createRadialGradient(cx - R * 0.28, cy - R * 0.3, R * 0.08, cx, cy, R);
-      sph.addColorStop(0, "rgba(60,88,160,0.95)");
-      sph.addColorStop(0.3, "rgba(22,36,88,0.97)");
-      sph.addColorStop(0.7, "rgba(8,14,42,0.98)");
-      sph.addColorStop(1, "rgba(2,4,14,1)");
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = sph; ctx.fill();
-      // Grid lines clipped to sphere
-      ctx.save();
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
-      for (let lat = -75; lat <= 75; lat += 15) {
-        const phi = lat * Math.PI / 180;
-        const cosP = Math.cos(phi), sinP = Math.sin(phi);
-        const ey = cy - sinP * R, rx = cosP * R;
-        if (rx < 2) continue;
-        ctx.beginPath(); ctx.ellipse(cx, ey, rx, rx * 0.28, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(70,155,255,0.22)"; ctx.lineWidth = 0.5; ctx.stroke();
-      }
-      ctx.beginPath(); ctx.ellipse(cx, cy, R, R * 0.28, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(90,180,255,0.5)"; ctx.lineWidth = 1; ctx.stroke();
-      for (let lon = 0; lon < 180; lon += 20) {
-        const a = (lon + rot) * Math.PI / 180;
-        const cosA = Math.cos(a), rx = Math.abs(cosA) * R;
-        ctx.beginPath(); ctx.ellipse(cx, cy, rx, R, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = cosA > 0 ? "rgba(70,155,255,0.42)" : "rgba(70,155,255,0.08)";
-        ctx.lineWidth = cosA > 0 ? 0.65 : 0.25; ctx.stroke();
-      }
-      ctx.restore();
-      // Sphere outline
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(80,170,255,0.55)"; ctx.lineWidth = 1.3; ctx.stroke();
-      // Specular highlight
-      const spec = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.32, 0, cx - R * 0.2, cy - R * 0.2, R * 0.55);
-      spec.addColorStop(0, "rgba(255,255,255,0.14)"); spec.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = spec; ctx.fill();
-      // Lahore marker (lat 31.5°N, lon 74.3°E)
-      const lPhi = 31.5 * Math.PI / 180;
-      const lTheta = (74.3 + rot) * Math.PI / 180;
-      const lz = Math.cos(lPhi) * Math.cos(lTheta);
-      const lx = cx + Math.cos(lPhi) * Math.sin(lTheta) * R;
-      const ly = cy - Math.sin(lPhi) * R;
-      if (lz > -0.1) {
-        const aa = Math.max(0.1, (lz + 0.1) / 1.1);
-        const pulse = (Math.sin(fN * 0.09) + 1) * 0.5;
-        for (let i = 1; i <= 3; i++) {
-          ctx.beginPath(); ctx.arc(lx, ly, 5 + i * (8 + pulse * 4), 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(255,100,40," + (aa * 0.2 / i) + ")"; ctx.lineWidth = 1; ctx.stroke();
-        }
-        ctx.beginPath(); ctx.arc(lx, ly, 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,100,40," + aa + ")"; ctx.fill();
-        ctx.beginPath(); ctx.arc(lx, ly, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,220,170," + aa + ")"; ctx.fill();
-      }
+    let exited = false;
+    function exit() {
+      if (exited) return; exited = true;
+      overlay.classList.add("ll-intro--out");
+      setTimeout(() => { overlay.remove(); onDone(); }, 450);
     }
     function setOp(sel, op) {
       const e = overlay.querySelector(sel);
       if (e) e.style.opacity = op;
     }
-    function tick() {
-      if (exited) return;
-      rot += 0.3; fN++;
-      globe();
-      const p = Math.min(1, fN / DUR);
-      if (p > 0.14) setOp(".ll-intro__city", Math.min(1, (p - 0.14) * 9));
-      if (p > 0.30) setOp(".ll-intro__ur", Math.min(1, (p - 0.30) * 9));
-      if (p > 0.46) setOp(".ll-intro__tag", Math.min(1, (p - 0.46) * 9));
-      if (p > 0.72) setOp(".ll-intro__tap", Math.min(1, (p - 0.72) * 12));
-      if (fN >= DUR) { exit(); return; }
-      raf = requestAnimationFrame(tick);
-    }
-    function exit() {
-      if (exited) return; exited = true;
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-      overlay.classList.add("ll-intro--out");
-      setTimeout(() => { overlay.remove(); onDone(); }, 450);
-    }
+    setTimeout(() => setOp(".ll-intro__city", 1), 350);
+    setTimeout(() => setOp(".ll-intro__ur", 1), 850);
+    setTimeout(() => setOp(".ll-intro__tag", 1), 1350);
+    setTimeout(() => setOp(".ll-intro__tap", 1), 1900);
+    setTimeout(exit, 4200);
     overlay.addEventListener("click", exit);
-    raf = requestAnimationFrame(tick);
   }
 
   function boot() {
