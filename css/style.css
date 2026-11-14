@@ -361,6 +361,10 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(23, 25,
 
 /* Place page */
 .site__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+.site__utils { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.9rem; }
+.site__photo-first { margin-bottom: 2rem; }
+.site__photo-first .strip { margin-bottom: 1rem; }
+.site__photo-first .site__actions { margin-top: 0; }
 .btn--sm { min-height: 40px; padding: 0 1.1em; font-size: 0.72rem; }
 .quick { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 0 2.4rem; border: 1px solid var(--line); border-radius: 8px; background: var(--navy); }
 .quick div { padding: 0.9rem 1rem; }
@@ -2125,10 +2129,10 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
    HOME HERO — full height, photo-first
    ========================================================================= */
 .hero--home { min-height: 90vh; min-height: 90svh; align-items: end; }
-.hero--home::before { background: linear-gradient(90deg,rgba(10,7,4,0.84),rgba(10,7,4,0.38) 55%,rgba(10,7,4,0.06)),linear-gradient(to top,rgba(10,7,4,0.92) 8%,transparent 52%) !important; }
+.hero--home::before { background: linear-gradient(90deg,rgba(10,7,4,0.40),rgba(10,7,4,0.16) 55%,rgba(10,7,4,0.04)),linear-gradient(to top,rgba(10,7,4,0.58) 8%,transparent 52%) !important; }
 @media (max-width: 700px) {
   .hero--home { min-height: 85vh; min-height: 85svh; }
-  .hero--home::before { background:linear-gradient(to top,rgba(10,7,4,0.96) 15%,rgba(10,7,4,0.55) 55%,rgba(10,7,4,0.3)) !important; }
+  .hero--home::before { background:linear-gradient(to top,rgba(10,7,4,0.68) 15%,rgba(10,7,4,0.35) 55%,rgba(10,7,4,0.14)) !important; }
 }
 .hero--home h1 { font-size:clamp(2.6rem,8vw,5.2rem); margin-bottom:0.25em; }
 .hero--home .lead { font-size:clamp(1.05rem,2.4vw,1.3rem); margin-bottom:1rem; }
@@ -2150,5 +2154,5 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .hero-progress-fill { height:100%; width:0; background:linear-gradient(90deg,var(--gold,#d49a2a),rgba(212,154,42,0.6)); border-radius:0 1px 1px 0; }
 
 /* Ken Burns on each slide */
-.hero--home .hero__photo .slide.is-on img { animation:ckb 3.6s ease-out both !important; }
+.hero--home .hero__photo .slide.is-on img { animation:ckb 2.0s ease-out both !important; }
 @keyframes ckb { from{transform:scale(1.08) translate(0.5%,0.5%)} to{transform:scale(1) translate(0,0)} }
