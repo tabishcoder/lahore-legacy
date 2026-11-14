@@ -124,19 +124,20 @@
         <div class="row__scroll" data-ids="${now.ids.join(",")}"></div>
       </section>
 
-      <section class="row">
-        <header class="row__head wrap"><div><h2>${t("sitesTitle")}</h2><p>${t("sitesLead")}</p></div></header>
-        <div class="row__scroll" data-ids="${LL.SITES.filter((s) => s.top).map((s) => s.id).join(",")}"></div>
-      </section>
-
-      ${LL.AREAS.map((a) => `
-      <section class="row">
-        <header class="row__head wrap">
-          <div><h2>${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span></h2><p>${esc(a.line.en)} · ${t("placesCount", LL.SITES.filter((s) => s.area === a.id).length)}</p></div>
-          <a class="row__more" href="#/map/area-${a.id}">${ico("map")} ${t("onMap")}</a>
+      <section class="all-sites wrap" id="all-sites">
+        <header class="all-sites__head rv">
+          <h2>${t("sitesTitle")}</h2>
+          <p>${t("sitesLead")}</p>
         </header>
-        <div class="row__scroll" data-ids="${LL.SITES.filter((s) => s.area === a.id).map((s) => s.id).join(",")}"></div>
-      </section>`).join("")}
+        ${LL.AREAS.map((a) => {
+          const areaSites = LL.SITES.filter((s) => s.area === a.id);
+          if (!areaSites.length) return "";
+          return `<div class="all-sites__group">
+            <h3 class="all-sites__area rv">${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span> <small>${t("placesCount", areaSites.length)}</small></h3>
+            <div class="sites-grid" data-ids="${areaSites.map((s) => s.id).join(",")}"></div>
+          </div>`;
+        }).join("")}
+      </section>
 
       ${stamps >= CERT_AT ? `<section class="wrap"><div class="band band--cert">
         <div><p class="eyebrow">✓ ${stamps}/${TOTAL()}</p><h2>${t("certTitle")}</h2><p>${t("certLead")}</p></div>
@@ -202,7 +203,7 @@
     LL.Motion.parallax(heroBox);
 
     // swipe rows
-    main().querySelectorAll(".row__scroll").forEach((row) => {
+    main().querySelectorAll(".row__scroll, .sites-grid").forEach((row) => {
       row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(tile(s)); });
     });
     LL.Ease && LL.Ease.rowArrows(main());
@@ -213,7 +214,7 @@
     $(".hero__cue").addEventListener("click", (e) => { e.preventDefault(); $("#explore").scrollIntoView({ behavior: "smooth", block: "start" }); });
     const back = LL.Motion.lastMorph();
     if (back) { const c = main().querySelector(`.tile[href="#/site/${back}"] .media`); if (c) c.style.viewTransitionName = "hero-photo"; }
-    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .trailband, .discover-section");
+    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .trailband, .discover-section, .all-sites__head, .all-sites__area, .sites-grid .tile");
 
     // search
     const q = $("#q"), res = $("#results");

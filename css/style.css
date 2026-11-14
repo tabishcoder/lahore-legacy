@@ -882,6 +882,21 @@ small, .hint { font-size: max(0.82rem, 13px); }
 .row__more { flex: none; display: inline-flex; align-items: center; gap: 0.35rem; min-height: 42px; padding: 0 0.9rem; border-radius: 99px; border: 1px solid var(--line-2); color: var(--ivory); font-size: 0.85rem; font-weight: 700; text-decoration: none !important; }
 .row__more .ico { width: 16px; height: 16px; color: var(--gold-2); }
 .row__scroll { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(200px, 62vw, 270px); gap: 0.8rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0.3rem max(16px, calc((100vw - var(--wrap, 1180px)) / 2 + 20px)) 1rem; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; overscroll-behavior-x: contain; }
+
+/* All 24 sites unified grid */
+.all-sites { margin-top: 2.5rem; padding-bottom: 1rem; }
+.all-sites__head { margin-bottom: 2rem; }
+.all-sites__head h2 { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 400; margin: 0 0 0.3rem; color: var(--ink); }
+.all-sites__head p { margin: 0; color: var(--dim); font-size: 0.9rem; }
+.all-sites__group { margin-bottom: 2.5rem; }
+.all-sites__area { font-size: max(0.78rem, 12px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); font-weight: 700; margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 0.6rem; }
+.all-sites__area span[lang="ur"] { font-size: 1rem; letter-spacing: 0; text-transform: none; color: var(--sand); font-weight: 400; }
+.all-sites__area small { margin-inline-start: auto; font-size: max(0.72rem, 11px); color: var(--dim); font-weight: 400; letter-spacing: 0; text-transform: none; }
+.sites-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 0.8rem; }
+.sites-grid .tile { scroll-snap-align: none; }
+@media (min-width: 560px) { .sites-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 860px) { .sites-grid { grid-template-columns: repeat(4, 1fr); } }
+
 /* Place card: a paper card with the photo in a jharokha window on top and
    the name written underneath, so nothing covers the building. */
 .tile { position: relative; display: flex; flex-direction: column; scroll-snap-align: start; padding: 10px 10px 0; border-radius: 4px; background: var(--navy); border: 1px solid var(--line-2); box-shadow: var(--shadow); color: var(--ink); text-decoration: none !important; transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.3s; }
