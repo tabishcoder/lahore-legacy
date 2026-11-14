@@ -59,6 +59,16 @@
     sound: '<path d="M11 5L6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14"/>',
   };
   const ico = (n) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+  /* content block: renders Urdu by default with an inline EN toggle */
+  function cblk(enHtml, urHtml, cls) {
+    if (!urHtml) return cls ? `<div class="${cls}" lang="en">${enHtml}</div>` : enHtml;
+    const startEn = LL.I18N.mode === "en";
+    return `<div class="cblk${cls ? " " + cls : ""}" data-l="${startEn ? "en" : "ur"}">` +
+      `<div class="cblk__ur" lang="ur" dir="rtl"${startEn ? " hidden" : ""}>${urHtml}</div>` +
+      `<div class="cblk__en" lang="en"${startEn ? "" : " hidden"}>${enHtml}</div>` +
+      `<button class="cblk__tog" aria-label="Toggle language">${startEn ? "اردو" : "EN"}</button>` +
+      `</div>`;
+  }
   let cleanup = null;
 
   /* ---------------- header ---------------- */
@@ -128,7 +138,7 @@
           const areaSites = LL.SITES.filter((s) => s.area === a.id);
           if (!areaSites.length) return "";
           return `<div class="all-sites__group">
-            <h3 class="all-sites__area rv">${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span> <small>${t("placesCount", areaSites.length)}</small></h3>
+            <h3 class="all-sites__area rv">${esc(a.name.en)} <small>${t("placesCount", areaSites.length)}</small></h3>
             <div class="sites-grid" data-ids="${areaSites.map((s) => s.id).join(",")}"></div>
           </div>`;
         }).join("")}
@@ -202,8 +212,7 @@
       row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(homeCard(s)); });
     });
     LL.Ease && LL.Ease.rowArrows(main());
-    const mixNames = LL.I18N.mode === "mix";
-    LL.Delight.marquee($("#marquee"), LL.SITES.map((x, i) => (mixNames && i % 2 ? `<span lang="ur">${esc(x.name.ur)}</span>` : esc(x.name.en))));
+    LL.Delight.marquee($("#marquee"), LL.SITES.map((x) => esc(x.name.en)));
     const stopRows = LL.Delight.rows(main());
     LL.Delight.tiltCards(main());
     $(".hero__cue").addEventListener("click", (e) => { e.preventDefault(); $("#explore").scrollIntoView({ behavior: "smooth", block: "start" }); });
@@ -227,7 +236,7 @@
     const drawRes = () => {
       const list = find(q.value);
       res.hidden = !q.value.trim();
-      res.innerHTML = list.length ? list.map((s) => `<a class="sr-item" href="#/site/${s.id}" data-ph="${s.id}"><span><b>${esc(s.name.en)}</b> <span lang="ur">${esc(s.name.ur)}</span><small>${esc((area(s.area) || { name: { en: "" } }).name.en)} · ${esc(s.era.en)}</small></span></a>`).join("") : `<p class="sr-none">${t("noResults")}</p>`;
+      res.innerHTML = list.length ? list.map((s) => `<a class="sr-item" href="#/site/${s.id}" data-ph="${s.id}"><span><b>${esc(s.name.en)}</b><small>${esc((area(s.area) || { name: { en: "" } }).name.en)} · ${esc(s.era.en)}</small></span></a>`).join("") : `<p class="sr-none">${t("noResults")}</p>`;
       res.querySelectorAll("[data-ph]").forEach((el) => { const m = media(el.dataset.ph, { width: 330 }); m.classList.add("sr-ph"); el.prepend(m); });
     };
     q.addEventListener("input", drawRes);
@@ -256,7 +265,7 @@
     frame.insertAdjacentHTML("beforeend", `<span class="tile__top">${LL.Game.level(s.id) !== "new" ? statusChip(s.id) : ""}${d != null && d < 40000 ? `<span class="tile__dist">${fmtDist(d)}</span>` : ""}</span>`);
     a.appendChild(frame);
     a.insertAdjacentHTML("beforeend", `
-      <span class="tile__body"><small>${esc(s.era.en)}</small><b>${esc(s.name.en)}</b><span lang="ur">${esc(s.name.ur)}</span></span>`);
+      <span class="tile__body"><small>${esc(s.era.en)}</small><b>${esc(s.name.en)}</b></span>`);
     return a;
   }
   const fmtDist = (m) => (m < 950 ? `${Math.round(m / 50) * 50} m` : `${(m / 1000).toFixed(m < 9500 ? 1 : 0)} km`);
@@ -271,8 +280,8 @@
       ${LL.Game.level(s.id) !== "new" ? `<span class="card__stamp">${statusChip(s.id)}</span>` : ""}
       <div class="card__body">
         <p class="card__meta"><span>${esc(s.era.en)}</span><span>${t("min")}</span></p>
-        <h3>${esc(s.name.en)} <span class="card__ur" lang="ur">${esc(s.name.ur)}</span></h3>
-        <p class="card__line" ${U()}>${fx(pick(s.line))}</p>
+        <h3>${esc(s.name.en)}</h3>
+        <p class="card__line">${esc(s.line.en)}</p>
       </div>`);
     return a;
   }
@@ -313,8 +322,8 @@
     a.insertAdjacentHTML("beforeend", `<div class="mini__body">
       <p class="mini__meta">${esc(s.era.en)}</p>
       ${statusChip(s.id)}
-      <h4>${esc(s.name.en)} <span lang="ur">${esc(s.name.ur)}</span></h4>
-      <p class="mini__line" ${U()}>${fx(pick(s.line))}</p></div>`);
+      <h4>${esc(s.name.en)}</h4>
+      <p class="mini__line">${esc(s.line.en)}</p></div>`);
     return a;
   }
 
@@ -340,8 +349,10 @@
     const s = site(id);
     if (!s) return go("#/");
 
-    const facts = pick(s.facts) || [];
-    const look = pick(s.look) || [];
+    const facts_en = (s.facts && s.facts.en) || [];
+    const facts_ur = (s.facts && s.facts.ur) || [];
+    const look_en = (s.look && s.look.en) || [];
+    const look_ur = (s.look && s.look.ur) || [];
     const spots = LL.PHOTO_SPOTS && LL.PHOTO_SPOTS[id] || [];
     const O = LL.OFFICIAL;
 
@@ -350,7 +361,6 @@
         <header class="learn__header wrap-narrow">
           <a class="back" href="#/site/${id}">← Back to ${esc(s.name.en)}</a>
           <h1 class="learn__h1">${esc(s.name.en)}</h1>
-          <p class="learn__ur" lang="ur" dir="rtl">${esc(s.name.ur)}</p>
           <p class="learn__line">${esc(s.line.en)}</p>
         </header>
 
@@ -358,40 +368,47 @@
 
           <section class="learn__section">
             <h2 class="learn__h2">The story</h2>
-            <div class="learn__story" ${U()}>${fx(pick(s.story)).split(/\n+/).map((p) => `<p>${p}</p>`).join("")}</div>
+            ${cblk(
+              fx(s.story && s.story.en || "").split(/\n+/).map(p => `<p>${p}</p>`).join(""),
+              s.story && s.story.ur ? fx(s.story.ur).split(/\n+/).map(p => `<p>${p}</p>`).join("") : null,
+              "learn__story"
+            )}
           </section>
 
-          ${(s.history && pick(s.history) && pick(s.history).length) ? pick(s.history).map((sec) => `
-          <section class="learn__section">
-            <h2 class="learn__h2">${esc(sec.heading)}</h2>
-            <div class="learn__story">${fx(sec.body).split(/\n+/).map((p) => `<p>${p}</p>`).join("")}</div>
-          </section>`).join("") : ""}
+          ${(s.history && s.history.en && s.history.en.length) ? s.history.en.map((sec, i) => {
+            const urSec = s.history.ur && s.history.ur[i];
+            const enHtml = fx(sec.body || "").split(/\n+/).map(p => `<p>${p}</p>`).join("");
+            const urHtml = urSec ? fx(urSec.body || "").split(/\n+/).map(p => `<p>${p}</p>`).join("") : null;
+            return `<section class="learn__section">
+              <h2 class="learn__h2">${esc(sec.heading || "")}</h2>
+              ${cblk(enHtml, urHtml, "learn__story")}
+            </section>`;
+          }).join("") : ""}
 
-          ${facts.length ? `<section class="learn__section">
+          ${facts_en.length ? `<section class="learn__section">
             <h2 class="learn__h2">Key facts</h2>
-            <ol class="learn__facts" ${U()}>${facts.map((f, i) => `
-              <li class="learn__fact rv">
-                <span class="learn__fact-num">${i + 1}</span>
-                <p>${fx(f)}</p>
-              </li>`).join("")}
-            </ol>
+            ${cblk(
+              `<ol class="learn__facts" lang="en">${facts_en.map((f, i) => `<li class="learn__fact rv"><span class="learn__fact-num">${i + 1}</span><p>${fx(f)}</p></li>`).join("")}</ol>`,
+              facts_ur.length ? `<ol class="learn__facts" lang="ur" dir="rtl">${facts_ur.map((f, i) => `<li class="learn__fact rv"><span class="learn__fact-num">${i + 1}</span><p>${fx(f)}</p></li>`).join("")}</ol>` : null
+            )}
           </section>` : ""}
 
-          ${(s.secrets && pick(s.secrets) && pick(s.secrets).length) ? `
+          ${(s.secrets && s.secrets.en && s.secrets.en.length) ? `
           <section class="learn__section learn__section--secrets">
             <h2 class="learn__h2">Hidden facts &amp; lesser-known history</h2>
-            <ul class="learn__secrets">${pick(s.secrets).map((sec, i) => `
-              <li class="learn__secret rv">
-                <span class="learn__fact-num learn__secret-icon">${i + 1}</span>
-                <p>${fx(sec)}</p>
-              </li>`).join("")}
-            </ul>
+            ${cblk(
+              `<ul class="learn__secrets" lang="en">${s.secrets.en.map((sec, i) => `<li class="learn__secret rv"><span class="learn__fact-num learn__secret-icon">${i + 1}</span><p>${fx(sec)}</p></li>`).join("")}</ul>`,
+              s.secrets.ur && s.secrets.ur.length ? `<ul class="learn__secrets" lang="ur" dir="rtl">${s.secrets.ur.map((sec, i) => `<li class="learn__secret rv"><span class="learn__fact-num learn__secret-icon">${i + 1}</span><p>${fx(sec)}</p></li>`).join("")}</ul>` : null
+            )}
           </section>` : ""}
 
-          ${look.length ? `<section class="learn__section">
+          ${look_en.length ? `<section class="learn__section">
             <h2 class="learn__h2">What to look for</h2>
             <p class="hint">Things worth noticing when you visit.</p>
-            <ul class="learn__look" ${U()}>${look.map((l) => `<li class="rv"><span>${fx(l)}</span></li>`).join("")}</ul>
+            ${cblk(
+              `<ul class="learn__look" lang="en">${look_en.map(l => `<li class="rv"><span>${fx(l)}</span></li>`).join("")}</ul>`,
+              look_ur.length ? `<ul class="learn__look" lang="ur" dir="rtl">${look_ur.map(l => `<li class="rv"><span>${fx(l)}</span></li>`).join("")}</ul>` : null
+            )}
           </section>` : ""}
 
           ${spots.length ? `<section class="learn__section">
@@ -473,7 +490,7 @@
           ${(LL.MYTHS || []).map((m) => `
             <div class="myth-card myth-card--${m.category} rv" data-id="${m.id}" data-verdict="${m.verdict}">
               <span class="myth-cat myth-cat--${m.category}">${m.category}</span>
-              <p class="myth-claim" ${u}>${esc(pick(m.claim))}</p>
+              ${cblk(esc(m.claim && m.claim.en || ""), m.claim && m.claim.ur ? esc(m.claim.ur) : null, "myth-claim")}
               <div class="myth-vote-row">
                 <button class="myth-btn myth-btn--truth" data-v="truth">✓ Truth</button>
                 <button class="myth-btn myth-btn--myth" data-v="myth">✗ Myth</button>
@@ -481,7 +498,7 @@
               </div>
               <div class="myth-reveal" hidden>
                 <span class="myth-verdict mv--${m.verdict}">${m.verdict === "truth" ? "✓ True!" : m.verdict === "myth" ? "✗ Myth!" : "⟡ Legend"}</span>
-                <p class="myth-exp" ${u}>${esc(pick(m.explanation))}</p>
+                ${cblk(esc(m.explanation && m.explanation.en || ""), m.explanation && m.explanation.ur ? esc(m.explanation.ur) : null, "myth-exp")}
               </div>
             </div>`).join("")}
         </div>
@@ -597,11 +614,19 @@
         ${stories.map((s, i) => `
           <article class="story-1947 rv" id="story-${s.id}">
             <header class="story-header">
-              <span class="story-loc" ${u}>${esc(pick(s.location))}</span>
-              <h2 ${u}>${esc(pick(s.title))}</h2>
+              <span class="story-loc">${esc(s.location && s.location.en || "")}</span>
+              <h2>${esc(s.title && s.title.en || "")}</h2>
             </header>
-            <blockquote class="pull-quote" ${u}>"${esc(pick(s.pullQuote))}"</blockquote>
-            <div class="story-body" ${u}>${pick(s.story).split(/\n\n/).map((p) => `<p>${storyHtml(p)}</p>`).join("")}</div>
+            ${cblk(
+              `"${esc(s.pullQuote && s.pullQuote.en || "")}"`,
+              s.pullQuote && s.pullQuote.ur ? `"${esc(s.pullQuote.ur)}"` : null,
+              "pull-quote"
+            )}
+            ${cblk(
+              (s.story && s.story.en || "").split(/\n\n/).map(p => `<p>${storyHtml(p)}</p>`).join(""),
+              s.story && s.story.ur ? (s.story.ur).split(/\n\n/).map(p => `<p>${storyHtml(p)}</p>`).join("") : null,
+              "story-body"
+            )}
           </article>
           ${i < stories.length - 1 ? '<div class="story-divider wrap-narrow" aria-hidden="true"><span>✦ ✦ ✦</span></div>' : ""}`).join("")}
       </div>`;
@@ -627,7 +652,6 @@
             <a class="back" href="#/">← ${t("back")}</a>
             <p class="eyebrow">${esc(s.era.en)}${area(s.area) ? ` · ${esc(area(s.area).name.en)}` : ""}${LL.ME && LL.GEO[id] && LL.Game.distance(LL.ME, LL.GEO[id]) < 40000 ? ` · <b class="dist">${fmtDist(LL.Game.distance(LL.ME, LL.GEO[id]))} ${t("away")}</b>` : ""}</p>
             <h1>${esc(s.name.en)}</h1>
-            <p class="site__ur" lang="ur">${esc(s.name.ur)}</p>
             <div class="site__utils">
               <a class="btn btn--ghost btn--sm" href="#/map/${id}">${ico("map")} ${t("onMap")}</a>
               <button class="btn btn--ghost btn--sm" id="share-place">${ico("share")} ${t("sharePlace")}</button>
@@ -645,7 +669,7 @@
             </div>
           </section>
 
-          <dl class="quick">${(LL.QUICK[id] || []).map(([k, v]) => `<div><dt>${t("quick")[k]}</dt><dd ${U()}>${fx(pick(v))}</dd></div>`).join("")}</dl>
+          <dl class="quick">${(LL.QUICK[id] || []).map(([k, v]) => `<div><dt>${t("quick")[k]}</dt><dd>${fx(v && typeof v === "object" ? v.en : v || "")}</dd></div>`).join("")}</dl>
 
           <section class="been" id="been"></section>
 
@@ -662,7 +686,7 @@
 
           <section class="block visit">
             <h2>${t("visit")}</h2>
-            <dl ${U()}>${pick(s.visit).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
+            <dl>${(s.visit && s.visit.en ? s.visit.en : (s.visit || [])).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
             <p><a class="btn btn--ghost btn--sm" href="${maps(s.name.en + ", Lahore")}" target="_blank" rel="noopener">${ico("pin")} ${t("directions")} ↗</a></p>
             <p class="hint">${t("directionsNote")}. ${t("visitNote")}</p>
           </section>
@@ -866,9 +890,14 @@
     const idx = LL.SITES.indexOf(s);
     const prev = LL.SITES[idx - 1], next = LL.SITES[idx + 1];
     const cfg = LL.ASSETS.locations[s.id];
-    const story = pick(s.story);
-    const teaser = story.split(/(?<=[.۔])\s+/).slice(0, 2).join(" ");
-    const fact = pick(s.facts)[0];
+    const story_en = (s.story && s.story.en) || "";
+    const story_ur = (s.story && s.story.ur) || "";
+    const teaser_en = story_en.split(/(?<=[.۔])\s+/).slice(0, 2).join(" ");
+    const teaser_ur = story_ur ? story_ur.split(/(?<=[.۔])\s+/).slice(0, 2).join(" ") : "";
+    const facts_en = (s.facts && s.facts.en) || [];
+    const facts_ur = (s.facts && s.facts.ur) || [];
+    const fact_en = facts_en[0] || "";
+    const fact_ur = facts_ur[0] || "";
     let viewer = null, views = [], cur = 0, token = 0;
 
     main().innerHTML = `
@@ -886,9 +915,9 @@
         <aside class="tour__panel">
           <div class="tour__dots">${LL.SITES.map((x, i) => `<a href="#/tour/${x.id}" class="${i === idx ? "on" : LL.Progress.state.seen[x.id] ? "half" : ""}" aria-label="${esc(x.name.en)}"></a>`).join("")}</div>
           <p class="eyebrow">${t("tourEyebrow", idx + 1, LL.SITES.length)}${area(s.area) ? ` · ${esc(area(s.area).name.en)}` : ""}</p>
-          <h1>${esc(s.name.en)} <span class="tour__ur" lang="ur">${esc(s.name.ur)}</span></h1>
-          <p class="tour__teaser" ${U()}>${fx(teaser)}</p>
-          <p class="tour__fact" ${U()}><b>${LL.I18N.mode === "mix" ? "کیا آپ جانتے ہیں؟" : t("didYouKnow")}</b> ${fx(fact)}</p>
+          <h1>${esc(s.name.en)}</h1>
+          ${cblk(fx(teaser_en), teaser_ur ? fx(teaser_ur) : null, "tour__teaser")}
+          ${cblk(`<b>${t("didYouKnow")}</b> ${fx(fact_en)}`, fact_ur ? `<b>کیا آپ جانتے ہیں؟</b> ${fx(fact_ur)}` : null, "tour__fact")}
           <div class="tour__nav">
             ${prev ? `<a class="btn btn--ghost btn--sm" href="#/tour/${prev.id}">← ${t("prev")}</a>` : "<span></span>"}
             ${next ? `<a class="btn btn--gold btn--sm" href="#/tour/${next.id}">${t("next")} →</a>` : `<a class="btn btn--gold btn--sm" href="#/tour/done">${t("next")} →</a>`}
@@ -965,17 +994,17 @@
     if (id === "shahi-hammam") {
       const h = O.hammam;
       return `<section class="block official">
-        <h2>${esc(pick(h.title))}</h2>
-        <p class="lead" ${U()}>${fx(pick(h.lead))}</p>
-        <ol class="saga">${h.steps.map((x) => `<li><b class="saga__year">${esc(x.year)}</b><p ${U()}>${fx(pick(x))}</p></li>`).join("")}</ol>
+        <h2>${esc(h.title && h.title.en || "")}</h2>
+        ${cblk(fx(h.lead && h.lead.en || ""), h.lead && h.lead.ur ? fx(h.lead.ur) : null, "lead")}
+        <ol class="saga">${h.steps.map((x) => `<li><b class="saga__year">${esc(x.year)}</b>${cblk(fx(x.en || ""), x.ur ? fx(x.ur) : null)}</li>`).join("")}</ol>
         <div class="story-grid" data-box="story">${(LL.HAMMAM_STORY || []).map((g, i) => `<button class="story-grid__item${i < 4 ? " is-board" : ""}" data-i="${i}"><img src="${g.small}" alt="${esc(cap(g))}" loading="lazy" width="${g.w}" height="${g.h}"><span>${fx(cap(g))}</span></button>`).join("")}</div>
       </section>`;
     }
     if (id === "lahore-museum") {
       const m = O.museum;
       return `<section class="block official">
-        <h2>${esc(pick(m.title))}</h2>
-        <p class="lead" ${U()}>${fx(pick(m.lead))}</p>
+        <h2>${esc(m.title && m.title.en || "")}</h2>
+        ${cblk(fx(m.lead && m.lead.en || ""), m.lead && m.lead.ur ? fx(m.lead.ur) : null, "lead")}
         <div class="collection" data-box="museum">${(LL.MUSEUM_HIGHLIGHTS || []).map((g, i) => `<button class="collection__item" data-i="${i}"><span class="collection__img"><img src="${g.small}" alt="${esc(g.caption)}" loading="lazy"></span><b>${esc(g.caption)}</b><small>${esc(g.note)}</small></button>`).join("")}</div>
         <p><a class="btn btn--ghost btn--sm" href="${m.vr.url}" target="_blank" rel="noopener">${ico("tour")} ${esc(m.vr.label.en)} ↗</a></p>
       </section>`;
@@ -983,9 +1012,15 @@
     if (id === "lahore-fort" || id === "shalimar-gardens") {
       const f = id === "lahore-fort" ? O.fort : O.shalimar;
       return `<section class="block official">
-        <h2>${esc(pick(f.title))}</h2>
-        <ul class="official__facts" ${U()}>${f.facts.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul>
-        ${f.access ? `<div class="access"><h3>${ico("me")} ${esc(pick(f.access.title))}</h3><ul ${U()}>${f.access.items.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul></div>` : ""}
+        <h2>${esc(f.title && f.title.en || "")}</h2>
+        ${cblk(
+          `<ul class="official__facts" lang="en">${f.facts.map(x => `<li>${fx(x && x.en || "")}</li>`).join("")}</ul>`,
+          f.facts.some(x => x && x.ur) ? `<ul class="official__facts" lang="ur" dir="rtl">${f.facts.map(x => `<li>${fx(x && x.ur || x.en || "")}</li>`).join("")}</ul>` : null
+        )}
+        ${f.access ? `<div class="access"><h3>${ico("me")} ${esc(f.access.title && f.access.title.en || "")}</h3>${cblk(
+          `<ul lang="en">${f.access.items.map(x => `<li>${fx(x && x.en || "")}</li>`).join("")}</ul>`,
+          f.access.items.some(x => x && x.ur) ? `<ul lang="ur" dir="rtl">${f.access.items.map(x => `<li>${fx(x && x.ur || x.en || "")}</li>`).join("")}</ul>` : null
+        )}</div>` : ""}
       </section>`;
     }
     return "";
@@ -1002,8 +1037,8 @@
     const T = LL.OFFICIAL && LL.OFFICIAL.tours;
     if (!T) return "";
     return `<section class="wcla-tours">
-      <h2>${esc(pick(T.title))}</h2>
-      <p ${U()}>${fx(pick(T.lead))}</p>
+      <h2>${esc(T.title && T.title.en || "")}</h2>
+      ${cblk(fx(T.lead && T.lead.en || ""), T.lead && T.lead.ur ? fx(T.lead.ur) : null)}
       <ul>${T.list.map(([n, slug]) => `<li><a href="${T.base}${slug}/" target="_blank" rel="noopener">${ico("flag")} ${esc(n)} <span aria-hidden="true">↗</span></a></li>`).join("")}</ul>
     </section>`;
   }
@@ -1034,8 +1069,8 @@
                    : `<a class="btn btn--gold" href="#/tour/${LL.SITES[0].id}">${t("tourStart")} →</a>`}
           </div>
           ${done ? "" : trailBand("trailband--intro")}
-          ${LL.AREAS.map((a) => `<h3 class="tour-area">${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span></h3>
-          <ol class="tour-list">${LL.SITES.map((s, i) => (s.area !== a.id ? "" : `<li><a href="#/tour/${s.id}"><span class="n">${i + 1}</span>${esc(s.name.en)} <span lang="ur">${esc(s.name.ur)}</span>${LL.Progress.state.seen[s.id] ? '<span class="seen">✓</span>' : ""}</a></li>`)).join("")}</ol>`).join("")}
+          ${LL.AREAS.map((a) => `<h3 class="tour-area">${esc(a.name.en)}</h3>
+          <ol class="tour-list">${LL.SITES.map((s, i) => (s.area !== a.id ? "" : `<li><a href="#/tour/${s.id}"><span class="n">${i + 1}</span>${esc(s.name.en)}${LL.Progress.state.seen[s.id] ? '<span class="seen">✓</span>' : ""}</a></li>`)).join("")}</ol>`).join("")}
         </div>
       </section>`;
     $("#ti-photo").appendChild(media(done ? "minar-e-pakistan" : "lahore-fort", { width: innerWidth > 900 ? 1920 : 960, eager: true, start: done ? 0 : 3 }));
@@ -1077,7 +1112,7 @@
       cardHtml: (pin) => {
         const x = site(pin.id), d = distOf(x.id);
         return `<p class="lmap__era">${esc(x.era.en)}${d != null && d < 40000 ? ` · <b>${fmtDist(d)}</b>` : ""}</p>
-          <b class="lmap__name">${esc(x.name.en)} <span lang="ur">${esc(x.name.ur)}</span></b>
+          <b class="lmap__name">${esc(x.name.en)}</b>
           ${statusChip(x.id)}
           <div class="lmap__acts">
             <a class="btn btn--gold btn--sm" href="#/site/${x.id}">${t("open")} →</a>
@@ -1162,7 +1197,7 @@
             <span class="rank__icon">${ico("crown")}</span>
             <div class="rank__body">
               <small>${rk.points} pts</small>
-              <b>${esc(rk.en)} <span lang="ur">${esc(rk.ur)}</span></b>
+              <b>${esc(rk.en)}</b>
               <span class="bar"><i style="width:${Math.round(rk.pct * 100)}%"></i></span>
               <small>${rk.next ? t("ptsTo", rk.toNext, esc(rk.next.en)) : t("maxRank")}</small>
             </div>
@@ -1190,7 +1225,7 @@
         <div class="areas-prog">${LL.AREAS.map((a) => {
           const g = G.area(a.id), list = LL.SITES.filter((x) => x.area === a.id);
           return `<div class="ap">
-            <div class="ap__top"><b>${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span></b><span>${g.have}/${g.need}</span></div>
+            <div class="ap__top"><b>${esc(a.name.en)}</b><span>${g.have}/${g.need}</span></div>
             <span class="bar"><i style="width:${(g.have / g.need) * 100}%"></i></span>
             <div class="ap__thumbs">${list.map((x) => `<a href="#/site/${x.id}" class="ap__t is-${G.level(x.id)}" data-ph="${x.id}" title="${esc(x.name.en)}" aria-label="${esc(x.name.en)}"></a>`).join("")}</div>
           </div>`;
@@ -1201,7 +1236,7 @@
           const [h, n] = b.prog(), got = P.state.badges[b.id] || (h >= n);
           return `<div class="badge ${got ? "is-on" : ""}">
             <span class="badge__icon">${ico(b.icon)}</span>
-            <b>${esc(b.en)}</b><span class="badge__ur" lang="ur">${esc(b.ur)}</span>
+            <b>${esc(b.en)}</b>
             <p>${esc(b.how)}</p>
             ${got ? `<small class="badge__got">${ico("check")} ${P.state.badges[b.id] ? t("badgeEarned", P.state.badges[b.id]) : ""}</small>` : `<span class="bar"><i style="width:${(h / n) * 100}%"></i></span><small>${h}/${n}</small>`}
           </div>`;
@@ -1261,7 +1296,7 @@
         <div id="plan-body"></div>
         <details class="tips">
           <summary>${t("tipsTitle")}</summary>
-          <div class="tips__grid">${LL.TIPS.map((x) => `<div class="tip"><span class="tip__icon">${ico(x.icon)}</span><div><b>${esc(x.title)}</b><p ${U()}>${fx(pick(x.text))}</p></div></div>`).join("")}</div>
+          <div class="tips__grid">${LL.TIPS.map((x) => `<div class="tip"><span class="tip__icon">${ico(x.icon)}</span><div><b>${esc(x.title)}</b><p>${fx(x.text && typeof x.text === "object" ? x.text.en : x.text || "")}</p></div></div>`).join("")}</div>
           <p class="hint">${t("visitNote")}</p>
         </details>
         ${toursBlock()}
@@ -1277,7 +1312,7 @@
       body.innerHTML = `
         <div class="plan__top">
           <h2>${esc(p.title.en)}</h2>
-          <p class="plan__intro" ${U()}>${fx(pick(p.intro))}</p>
+          ${cblk(fx(p.intro && p.intro.en || ""), p.intro && p.intro.ur ? fx(p.intro.ur) : null, "plan__intro")}
           <div class="plan__bar">
             <button class="btn btn--gold" id="start">${ico("foot")} ${nDone && nDone < stops.length ? t("continueWalk") : t("startWalk")}</button>
             <a class="btn btn--ghost" href="${routeUrl(stops)}" target="_blank" rel="noopener">${ico("route")} ${t("routeAll")}</a>
@@ -1295,7 +1330,7 @@
               <div class="stop__body">
                 <p class="stop__time">${st.time ? esc(st.time) : t("stop", i + 1)}</p>
                 <b>${esc(st.name.en)}</b>
-                <p class="stop__note" ${U()}>${fx(pick(st.note))}</p>
+                ${cblk(fx(st.note && st.note.en || ""), st.note && st.note.ur ? fx(st.note.ur) : null, "stop__note")}
                 <div class="stop__acts">
                   <a class="btn btn--gold btn--sm" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")}</a>
                   ${st.id ? `<a class="btn btn--ghost btn--sm" href="#/site/${st.id}">${t("open")}</a>` : ""}
@@ -1340,8 +1375,8 @@
           <div class="walkmode__card">
             <div class="walkmode__prog"><span>${t("stopOf", i + 1, stops.length)}</span><span class="bar"><i style="width:${(done().length / stops.length) * 100}%"></i></span></div>
             ${st.time ? `<p class="stop__time">${esc(st.time)}</p>` : ""}
-            <h2>${esc(st.name.en)} <span lang="ur">${esc(st.name.ur)}</span></h2>
-            <p class="walkmode__note" ${U()}>${fx(pick(st.note))}</p>
+            <h2>${esc(st.name.en)}</h2>
+            ${cblk(fx(st.note && st.note.en || ""), st.note && st.note.ur ? fx(st.note.ur) : null, "walkmode__note")}
             ${st.leg && i > 0 ? `<p class="hint">${ico("foot")} ${t("walkMin", st.leg)} ${t("fromLast")}</p>` : ""}
             <a class="btn btn--ghost walkmode__nav" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")}</a>
             <button class="btn btn--gold walkmode__here" id="here">${ico("check")} ${isDone ? (last ? t("finishWalk") : t("nextStop")) : last ? t("hereFinish") : t("hereNext")}</button>
@@ -1666,6 +1701,18 @@
   }
 
   function boot() {
+    // content-block language toggle (EN ↔ اردو per block)
+    document.addEventListener("click", (e) => {
+      const tog = e.target.closest(".cblk__tog");
+      if (!tog) return;
+      const cb = tog.closest(".cblk");
+      if (!cb) return;
+      const toEn = cb.dataset.l === "ur";
+      cb.dataset.l = toEn ? "en" : "ur";
+      cb.querySelector(".cblk__ur").hidden = toEn;
+      cb.querySelector(".cblk__en").hidden = !toEn;
+      tog.textContent = toEn ? "اردو" : "EN";
+    });
     // language choice (on the Me page)
     document.addEventListener("click", (e) => {
       const b = e.target.closest("[data-lang]");
