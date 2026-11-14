@@ -1510,10 +1510,10 @@ h1, h2, h3, h4, p, li, dd, b, a { overflow-wrap: break-word; }
 
 /* place cards on phones */
 @media (max-width: 640px) {
-  .row__scroll { grid-auto-columns: clamp(170px, 52vw, 230px); }
+  .row__scroll { grid-auto-columns: clamp(200px, 70vw, 260px); }
   .tile { padding: 8px 8px 0; }
-  .tile__body { padding: 0.6rem 0.2rem 0.8rem; }
-  .tile__body b { font-size: clamp(1.12rem, 5vw, 1.3rem); }
+  .tile__body { padding: 0.65rem 0.3rem 0.9rem; }
+  .tile__body b { font-size: clamp(1.15rem, 5vw, 1.35rem); }
   .tile__body small { font-size: 0.85rem !important; }
   .tile__body [lang="ur"] { font-size: 0.95rem; }
 }
@@ -1787,11 +1787,11 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* at a glance: numbers that count up */
-.glance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 2.2rem; border: 1px solid var(--line-2); border-radius: 4px; background: var(--navy); box-shadow: var(--shadow); outline: 1px solid var(--line); outline-offset: -6px; }
-.glance > div { padding: 1.3rem 1rem 1.2rem; text-align: center; }
-.glance > div + div { border-inline-start: 1px dotted var(--line-2); }
-.glance b { display: block; font-family: var(--sans); font-weight: 500; font-variant-numeric: lining-nums tabular-nums; font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: 1; color: var(--gold); }
-.glance span { display: block; margin-top: 0.3rem; font-variant-caps: small-caps; letter-spacing: 0.06em; font-weight: 600; color: var(--dim); }
+.glance { display: flex; flex-wrap: wrap; gap: 0.3rem 1.4rem; margin-top: 1.4rem; padding: 0.7rem 0; border-top: 1px dotted var(--line-2); border-bottom: 1px dotted var(--line-2); background: none; box-shadow: none; border-radius: 0; }
+.glance > div { padding: 0; display: flex; align-items: baseline; gap: 0.35rem; }
+.glance > div + div { border-inline-start: none; }
+.glance b { display: inline; font-family: var(--sans); font-weight: 600; font-variant-numeric: lining-nums tabular-nums; font-size: clamp(1.1rem, 2.6vw, 1.4rem); line-height: 1; color: var(--gold); }
+.glance span { display: inline; margin-top: 0; font-variant-caps: small-caps; letter-spacing: 0.04em; font-weight: 500; font-size: max(0.78rem, 12px); color: var(--dim); }
 
 /* cards are dealt in, then the row drifts */
 .row__scroll:not(.is-dealt) .tile { opacity: 0; }
@@ -1827,9 +1827,7 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 @media (max-width: 640px) {
   .marquee__track > span { font-size: 1.2rem; }
   .marquee__track > i { margin: 0 1.1rem; }
-  .glance { grid-template-columns: 1fr 1fr; margin-top: 1.6rem; }
-  .glance > div:nth-child(3) { border-inline-start: 0; }
-  .glance > div:nth-child(n+3) { border-top: 1px dotted var(--line-2); }
+  .glance { margin-top: 1.2rem; gap: 0.25rem 1.1rem; }
   .hero__cue { display: none; }
   .hero--short .hero__progress { margin-inline-start: 0; }
 }
@@ -1859,10 +1857,7 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 
 /* numbers: a small pop when they finish running */
 .glance b { display: inline-block; transition: transform 0.4s var(--ease), color 0.4s; }
-.glance b.is-done { transform: scale(1.14); color: var(--kashi); }
-.glance > div { position: relative; overflow: hidden; }
-.glance > div::after { content: ""; position: absolute; left: 20%; right: 20%; bottom: 8px; height: 2px; background: var(--haldi); transform: scaleX(0); transition: transform 1.6s var(--ease) 0.2s; }
-.glance > div.in::after { transform: scaleX(1); }
+.glance b.is-done { transform: scale(1.1); color: var(--kashi); }
 
 /* section headings slide in from the side */
 .row__head.rv { transform: translateX(-14px); }
@@ -1887,7 +1882,7 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 @keyframes wordInLite { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }
 @media (max-width: 640px) {
   .marquee__track { animation-duration: calc(var(--dur, 70s) * 0.75); }
-  .glance b { font-size: 2.8rem; }
+  .glance b { font-size: clamp(1.0rem, 4vw, 1.3rem); }
 }
 @media (prefers-reduced-motion: reduce) { .row__scroll.is-gliding .row__track { animation: none; } }
 .row__scroll.has-track { scroll-snap-type: none; scroll-behavior: auto; }
