@@ -99,14 +99,12 @@
         <div class="hero__inner">
           <p class="eyebrow">${t("heroEyebrow")}</p>
           <h1>${t("heroTitle")}</h1>
-          <p class="lead">${t("heroLead", TOTAL())}</p>
           <div class="search" role="search">
             <span class="search__icon">${ico("search")}</span>
             <input id="q" type="search" autocomplete="off" placeholder="${t("searchPh", TOTAL())}" aria-label="${t("searchPh", TOTAL())}">
             <div class="search__results" id="results" hidden></div>
           </div>
           <div class="hero-dock">
-            <a class="dock-btn" href="#/map/near">${ico("pin")} ${t("actNear")}</a>
             <a class="dock-btn" href="#/plan">${ico("plan")} ${t("actPlan")}</a>
             <a class="dock-btn" href="#/tour">${ico("tour")} ${t("actTour")}</a>
           </div>
@@ -217,10 +215,10 @@
       if (hNameEl) hNameEl.textContent = s.name.en;
       if (hEraEl)  hEraEl.textContent  = s.era.en;
       if (hCntEl)  hCntEl.textContent  = String(si + 1).padStart(2, "0") + " / " + String(hSlides.length).padStart(2, "0");
-      if (hPbar) { hPbar.style.transition = "none"; hPbar.style.width = "0"; requestAnimationFrame(() => { hPbar.style.transition = "width 3.2s linear"; hPbar.style.width = "100%"; }); }
+      if (hPbar) { hPbar.style.transition = "none"; hPbar.style.width = "0"; requestAnimationFrame(() => { hPbar.style.transition = "width 1.8s linear"; hPbar.style.width = "100%"; }); }
     }
     cinemaGo(0);
-    const cinemaT = setInterval(() => cinemaGo(si + 1), 3200);
+    const cinemaT = setInterval(() => cinemaGo(si + 1), 1800);
     LL.Motion.parallax(heroBox);
 
     // swipe rows
@@ -515,9 +513,7 @@
             <p class="eyebrow">${esc(s.era.en)}${area(s.area) ? ` · ${esc(area(s.area).name.en)}` : ""}${LL.ME && LL.GEO[id] && LL.Game.distance(LL.ME, LL.GEO[id]) < 40000 ? ` · <b class="dist">${fmtDist(LL.Game.distance(LL.ME, LL.GEO[id]))} ${t("away")}</b>` : ""}</p>
             <h1>${esc(s.name.en)}</h1>
             <p class="site__ur" lang="ur">${esc(s.name.ur)}</p>
-            <div class="site__actions">
-              <button class="btn btn--gold btn--sm" id="see-photos">${ico("eye")} ${t("seePhotos")}</button>
-              <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("tour")} ${t("virtualView")}</a>
+            <div class="site__utils">
               <a class="btn btn--ghost btn--sm" href="#/map/${id}">${ico("map")} ${t("onMap")}</a>
               <button class="btn btn--ghost btn--sm" id="share-place">${ico("share")} ${t("sharePlace")}</button>
               <button class="btn btn--ghost btn--sm sounds-btn" id="sounds-btn" hidden>${ico("sound")} Ambience</button>
@@ -526,6 +522,14 @@
         </header>
 
         <div class="site__body wrap-narrow">
+          <section class="site__photo-first">
+            <div class="strip" id="strip"></div>
+            <div class="site__actions">
+              <button class="btn btn--gold btn--sm" id="see-photos">${ico("eye")} ${t("seePhotos")}</button>
+              <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("tour")} ${t("virtualView")}</a>
+            </div>
+          </section>
+
           <dl class="quick">${(LL.QUICK[id] || []).map(([k, v]) => `<div><dt>${t("quick")[k]}</dt><dd ${U()}>${fx(pick(v))}</dd></div>`).join("")}</dl>
 
           <section class="been" id="been"></section>
@@ -548,11 +552,6 @@
           ${photoSpotsHtml(id)}
 
           <section class="block" id="thennow" hidden></section>
-
-          <section class="block">
-            <h2>${t("gallery")}</h2>
-            <div class="strip" id="strip"></div>
-          </section>
 
           ${officialBlock(id)}
 
