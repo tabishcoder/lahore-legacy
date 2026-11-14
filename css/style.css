@@ -2249,3 +2249,170 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .tour__teaser.cblk > .cblk__en,
 .tour__fact.cblk > .cblk__ur,
 .tour__fact.cblk > .cblk__en { padding-top: 1.4rem; }
+
+/* =========================================================================
+   HEAVY RESPONSIVE PASS — every element, every screen (320px and up)
+   ========================================================================= */
+
+/* --- universal media clamp --- */
+img, video, iframe, canvas, svg, embed, object { max-width: 100%; height: auto; }
+video { display: block; }
+iframe { border: 0; }
+
+/* --- overflow guard --- */
+html, body { overflow-x: hidden; }
+.wrap, .wrap-narrow { overflow-x: visible; }
+
+/* --- fluid text: never smaller than 15px --- */
+body { font-size: clamp(15px, 2.4vw, 18px); }
+p, li, dd, .story, .lead { max-width: 72ch; }
+
+/* --- buttons: always at least 44×44 tap target --- */
+.btn, .pill, .tool, .nav a, .chips button, .seg button,
+.lmap__tools button, .lightbox__close, .lightbox__nav { touch-action: manipulation; }
+
+/* --- Ambience button: always visible, never hidden --- */
+#sounds-btn { display: inline-flex !important; }
+#sounds-btn.is-playing { border-color: var(--gold-2); color: var(--gold-2); }
+
+/* --- hero sections: scale down on narrow screens --- */
+.hero--home h1 { font-size: clamp(2rem, 9vw, 5.2rem); }
+.hero--short h1 { font-size: clamp(1.9rem, 8.5vw, 4.4rem); }
+.site__title h1 { font-size: clamp(1.9rem, 7.5vw, 4rem); }
+.hero__inner { max-width: min(700px, 100%); }
+
+/* --- virtual tour panorama (360°) --- */
+.tour { max-width: 100vw; }
+.tour__stage { min-height: 0; }
+.tour__panel { word-break: break-word; overflow-wrap: break-word; }
+
+/* --- 360° trail --- */
+.trail { max-width: 100vw; }
+.trail__pano { touch-action: none; }
+.trail__bar { max-width: 100%; }
+.trail__hint { white-space: normal; text-align: center; word-break: break-word; }
+
+/* --- photo strips (horizontal scroll) --- */
+.strip { -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+.strip__item { scroll-snap-align: start; }
+
+/* --- cards grid: never overflow --- */
+.cards, .minis, .tips__grid, .badges, .stats { width: 100%; }
+
+/* --- compare slider: fully fluid --- */
+.compare { width: 100%; }
+.compare img { max-width: none; width: 100%; }
+
+/* --- lightbox: safe on all sizes --- */
+.lightbox img { max-height: calc(100dvh - 120px); }
+
+/* --- footer logo: scale down --- */
+.foot__logo { max-width: 160px; height: auto; }
+
+/* ---- tablet (769px – 1024px) ---- */
+@media (max-width: 1024px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .story-grid { grid-template-columns: repeat(3, 1fr); }
+  .tour-list { grid-template-columns: 1fr; }
+  .band--cert { grid-template-columns: 1fr; }
+  .duo { grid-template-columns: 1fr; }
+}
+
+/* ---- standard phones (≤ 640px) already has many rules; add missing ones ---- */
+@media (max-width: 640px) {
+  /* videos in hero: fill but don't overflow */
+  .bgvideo { width: 100%; height: 100%; object-fit: cover; }
+
+  /* panorama / tour */
+  .tour { grid-template-rows: 55svh auto; }
+  .tour__stage { height: 55svh; }
+  .tour__thumbs { left: 8px; right: 8px; gap: 4px; }
+  .tour__thumbs button { width: 60px; height: 42px; }
+  .tour__tools { right: 8px; gap: 0.25rem; }
+  .tool { width: 38px; height: 38px; }
+  .chip { font-size: 0.6rem; padding: 0.25em 0.55em; }
+
+  /* trail 360° */
+  .trail { grid-template-rows: 55svh auto; }
+  .trail-hot { max-width: calc(100vw - 32px); overflow: hidden; }
+  .trail-hot span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 120px; }
+
+  /* site page actions */
+  .site__utils { gap: 0.35rem; flex-wrap: wrap; }
+  .site__utils .btn { flex: 1 1 auto; min-width: 0; }
+
+  /* comparison images */
+  .compare { aspect-ratio: 4 / 3; }
+
+  /* facts grid */
+  .facts li { grid-template-columns: 1.8rem 1fr; gap: 0.4rem; }
+  .facts li::before { font-size: 1.2rem; }
+
+  /* visit dl */
+  .visit dl div { gap: 0.1rem; }
+
+  /* plan itinerary */
+  .itin__stop { grid-template-columns: 50px 1fr; gap: 0.8rem; }
+
+  /* walk grid map */
+  .walk__grid { gap: 1.5rem; }
+  .map { padding: 0.6rem; }
+
+  /* search results */
+  .search__results { max-height: 50svh; }
+
+  /* quick info grid */
+  .quick { grid-template-columns: 1fr 1fr; }
+  .quick div + div { border-inline-start: 1px solid var(--line); border-top: 0; }
+
+  /* footer */
+  .foot__inner { gap: 0.75rem; }
+  .foot { font-size: 0.84rem; }
+
+  /* next place card */
+  .next { grid-template-columns: 1fr 80px; }
+  .next__name { font-size: 1.2rem; }
+
+  /* dialog */
+  .dialog { max-height: 92svh; overflow-y: auto; }
+}
+
+/* ---- very small phones (≤ 390px) ---- */
+@media (max-width: 390px) {
+  body { font-size: 15px; }
+  .hero--home h1 { font-size: clamp(1.8rem, 11vw, 2.4rem); }
+  .site__title h1 { font-size: clamp(1.7rem, 10vw, 2.4rem); }
+  .nav a { font-size: 0.72rem; }
+  .nav a .ico { width: 19px; height: 19px; }
+  .tour__thumbs button { width: 52px; height: 38px; }
+  .cards { grid-template-columns: 1fr; }
+  .quick { grid-template-columns: 1fr; }
+  .quick div + div { border-inline-start: 0; border-top: 1px solid var(--line); }
+  .site__actions { grid-template-columns: 1fr; }
+  .site__utils .btn { width: 100%; }
+  .answers { grid-template-columns: 1fr; }
+  .lightbox img { max-height: calc(100dvh - 100px); }
+}
+
+/* ---- landscape phones (height ≤ 500px) ---- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero--home, .site__hero { min-height: 100vw; }
+  .tour { grid-template-rows: 100svh auto; }
+  .trail { grid-template-rows: 100svh; grid-template-columns: 1fr 320px; }
+  .trail__panel { overflow-y: auto; }
+  .nav { padding-block: 0.2rem; }
+}
+
+/* ---- safe areas (notch / home bar) ---- */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .nav { padding-bottom: calc(0.4rem + env(safe-area-inset-bottom)); }
+  .trail__bar { bottom: calc(12px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(56px + env(safe-area-inset-bottom)); }
+}
+
+/* ---- performance: reduce heavy CSS on low-power devices ---- */
+@media (prefers-reduced-motion: reduce) {
+  .bgvideo { display: none; }
+  .hero__photo .slide img { animation: none !important; }
+  .trailband__strip img { animation: none !important; }
+}
