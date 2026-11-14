@@ -289,7 +289,7 @@
     const a = document.createElement("a");
     a.className = "hc";
     a.href = `#/site/${s.id}`;
-    a.appendChild(media(s.id, { width: 700 }));
+    a.appendChild(media(s.id, { width: 700, start: 1 }));
     const seen = LL.Game.level(s.id) !== "new";
     a.insertAdjacentHTML("beforeend", `
       <div class="hc__overlay" aria-hidden="true"></div>

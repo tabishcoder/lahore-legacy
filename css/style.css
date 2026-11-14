@@ -905,7 +905,7 @@ small, .hint { font-size: max(0.82rem, 13px); }
 .hc:hover { transform: translateY(-4px); box-shadow: 0 20px 44px -10px rgba(20,8,2,0.7), 0 0 0 1.5px var(--gold); }
 .hc .media { position: absolute; inset: 0; }
 .hc .media img { object-position: center 25%; }
-.hc__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,8,2,0.96) 0%, rgba(18,8,2,0.45) 45%, transparent 100%); pointer-events: none; }
+.hc__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,4,0,0.88) 0%, rgba(10,4,0,0.0) 42%, transparent 100%); pointer-events: none; }
 .hc__body { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.1rem 1.1rem 1rem; }
 .hc__era { font-size: max(0.7rem, 11px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 0 0 0.25rem; }
 .hc__name { display: block; font-family: var(--serif); font-size: clamp(1.05rem, 2.5vw, 1.3rem); font-weight: 400; color: #F1E6D0; line-height: 1.2; margin: 0; }
