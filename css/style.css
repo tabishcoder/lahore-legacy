@@ -2185,3 +2185,8 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .learn__look { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
 .learn__look li { padding: 0.8rem 1rem; background: var(--navy); border-radius: 10px; border: 1px solid var(--line); font-size: 0.95rem; color: var(--ink); line-height: 1.55; }
 .learn__back-cta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 2.4rem; border-top: 1px solid var(--line); }
+.learn__section--secrets .learn__h2 { color: var(--gold); }
+.learn__secrets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+.learn__secret { display: grid; grid-template-columns: 3rem 1fr; gap: 0.6rem 1rem; align-items: start; padding: 1.1rem 1.2rem; background: var(--navy); border-radius: 12px; border: 1px solid var(--line); }
+.learn__secret p { margin: 0; font-size: 0.95rem; line-height: 1.65; color: var(--ink); padding-top: 0.4rem; }
+.learn__secret-icon { color: var(--gold); font-family: var(--serif); font-size: 1.5rem; }
