@@ -2416,3 +2416,90 @@ p, li, dd, .story, .lead { max-width: 72ch; }
   .hero__photo .slide img { animation: none !important; }
   .trailband__strip img { animation: none !important; }
 }
+
+/* =========================================================================
+   RESPONSIVE PASS 2 — targeted image & video polish
+   Every image/video should look full, beautiful and unbroken on all screens.
+   ========================================================================= */
+
+/* --- absolutely-positioned fills must not be max-width clamped ---
+   .media img already has height:100% via specificity; re-assert for safety */
+.bgvideo,
+.hero__photo .media img,
+.hc .media img,
+.tile .media img,
+.site__photo .media img,
+.walk__photo .media img,
+.tour-intro__photo .media img,
+.band__media .media img,
+.walkmode__ph .media img { max-width: none; width: 100%; height: 100%; }
+
+/* --- band-photo hero: too tall on small phones, reduce to something tasteful --- */
+@media (max-width: 640px) {
+  .band--photo    { min-height: 240px; }
+  .site__hero     { min-height: 56svh; }
+
+  /* wider strip photos so the image fills more of the screen */
+  .strip__item    { flex: 0 0 83%; }
+
+  /* walkmode photo: without explicit height the absolute media is invisible */
+  .walkmode__ph   { height: 55svh; min-height: 220px; }
+
+  /* next-place card thumb: a bit taller so face of place shows */
+  .next__media    { min-height: 90px; }
+
+  /* tour-intro full-height on phone: cap so text is reachable */
+  .tour-intro     { min-height: 60svh; }
+}
+
+@media (max-width: 390px) {
+  .band--photo    { min-height: 200px; }
+  .site__hero     { min-height: 52svh; }
+  .strip__item    { flex: 0 0 90%; }
+  .walkmode__ph   { height: 50svh; }
+}
+
+/* --- lightbox: crisp, centered, never cropped on any screen --- */
+.lightbox {
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+}
+.lightbox img {
+  max-width : min(calc(100vw - 48px), 1200px);
+  max-height: calc(100dvh - 120px);
+  width     : auto;
+  height    : auto;
+  object-fit: contain;
+}
+@media (max-width: 390px) {
+  .lightbox img { max-height: calc(100dvh - 90px); }
+}
+
+/* --- compare slider: touch-friendly on all devices --- */
+.compare { touch-action: none; }
+.compare input[type="range"] { touch-action: none; cursor: ew-resize; }
+
+/* --- hero backgrounds: always cover, never overflow --- */
+.hero__photo .media,
+.site__photo .media,
+.walk__photo .media,
+.tour-intro__photo .media,
+.band__media .media { overflow: hidden; }
+
+/* --- fluid video embeds (YouTube iframes etc.) --- */
+.video-wrap {
+  position      : relative;
+  padding-bottom: 56.25%;
+  height        : 0;
+  overflow      : hidden;
+  border-radius : 6px;
+}
+.video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* --- nav header: never overflow on ultra-narrow phones --- */
+@media (max-width: 320px) {
+  .top     { gap: 0.3rem; }
+  .brand span { display: none; }
+  .nav a   { font-size: 0.65rem; }
+}
