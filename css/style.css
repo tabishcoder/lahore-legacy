@@ -2105,11 +2105,11 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 #ll-intro { position:fixed; inset:0; z-index:9999; background:#0a0806; display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 #ll-intro canvas { position:absolute; inset:0; width:100%; height:100%; }
 .ll-intro__copy { position:relative; z-index:1; text-align:center; pointer-events:none; user-select:none; }
-.ll-intro__city { font-family:"IM Fell English",Georgia,serif; font-size:clamp(3rem,12vw,8rem); color:#d49a2a; letter-spacing:0.25em; line-height:1; opacity:0; transition:opacity 0.8s ease; text-shadow:0 0 60px rgba(212,154,42,0.4),0 0 120px rgba(212,154,42,0.15); }
-.ll-intro__ur { font-family:"Noto Naskh Arabic",Georgia,serif; font-size:clamp(0.9rem,3vw,1.7rem); color:rgba(255,240,200,0.75); margin-top:0.5em; opacity:0; transition:opacity 0.8s ease; direction:rtl; letter-spacing:0.05em; }
-.ll-intro__tag { font-size:clamp(0.55rem,1.5vw,0.8rem); color:rgba(255,255,255,0.3); letter-spacing:0.6em; text-transform:uppercase; margin-top:1.4em; opacity:0; transition:opacity 0.8s ease; }
-.ll-intro__tap { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.28); font-size:0.72rem; letter-spacing:0.3em; text-transform:uppercase; opacity:0; transition:opacity 0.6s ease; pointer-events:none; white-space:nowrap; }
-#ll-intro.ll-intro--out { animation:ll-intro-exit 0.85s cubic-bezier(0.4,0,1,1) forwards; }
+.ll-intro__city { font-family:"IM Fell English",Georgia,serif; font-size:clamp(3rem,12vw,8rem); color:#d49a2a; letter-spacing:0.25em; line-height:1; opacity:0; transition:opacity 0.45s ease; text-shadow:0 0 60px rgba(212,154,42,0.4),0 0 120px rgba(212,154,42,0.15); }
+.ll-intro__ur { font-family:"Noto Naskh Arabic",Georgia,serif; font-size:clamp(0.9rem,3vw,1.7rem); color:rgba(255,240,200,0.75); margin-top:0.5em; opacity:0; transition:opacity 0.45s ease; direction:rtl; letter-spacing:0.05em; }
+.ll-intro__tag { font-size:clamp(0.55rem,1.5vw,0.8rem); color:rgba(255,255,255,0.3); letter-spacing:0.6em; text-transform:uppercase; margin-top:1.4em; opacity:0; transition:opacity 0.45s ease; }
+.ll-intro__tap { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.28); font-size:0.72rem; letter-spacing:0.3em; text-transform:uppercase; opacity:0; transition:opacity 0.35s ease; pointer-events:none; white-space:nowrap; }
+#ll-intro.ll-intro--out { animation:ll-intro-exit 0.45s cubic-bezier(0.4,0,1,1) forwards; }
 @keyframes ll-intro-exit { 0%{opacity:1;transform:scale(1)} 25%{opacity:1;transform:scale(1.04)} 100%{opacity:0;transform:scale(1.12)} }
 
 /* =========================================================================
