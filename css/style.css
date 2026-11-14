@@ -2171,6 +2171,8 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .dock-btn { display:inline-flex; align-items:center; gap:0.45em; padding:0.52rem 1.15rem; border:1px solid rgba(244,239,229,0.28); border-radius:999px; color:var(--ivory); text-decoration:none !important; font-size:0.88rem; font-weight:500; backdrop-filter:blur(10px); background:rgba(8,6,3,0.45); transition:background 0.22s,border-color 0.22s,transform 0.22s; white-space:nowrap; }
 .dock-btn:hover { background:rgba(212,154,42,0.22); border-color:rgba(212,154,42,0.65); transform:translateY(-2px); color:var(--ivory); }
 .dock-btn .ico { width:14px; height:14px; flex-shrink:0; }
+.dock-btn--snd { padding:0.42rem 0.9rem; font-size:0.82rem; }
+.dock-btn--snd.is-playing { background:rgba(212,154,42,0.18); border-color:rgba(212,154,42,0.65); color:var(--gold-2); }
 
 /* =========================================================================
    CINEMA HERO — site label + progress bar
@@ -2389,7 +2391,7 @@ p, li, dd, .story, .lead { max-width: 72ch; }
   .quick { grid-template-columns: 1fr; }
   .quick div + div { border-inline-start: 0; border-top: 1px solid var(--line); }
   .site__actions { grid-template-columns: 1fr; }
-  .site__utils .btn { width: 100%; }
+  .site__utils .btn { flex: 1 1 auto; }
   .answers { grid-template-columns: 1fr; }
   .lightbox img { max-height: calc(100dvh - 100px); }
 }
@@ -2581,10 +2583,9 @@ p, li, dd, .story, .lead { max-width: 72ch; }
    ========================================================================= */
 @media (max-width: 480px) {
   .site__utils {
-    display              : grid;
-    grid-template-columns: 1fr 1fr;
-    gap                  : 0.5rem;
+    display  : flex;
+    flex-wrap: nowrap;
+    gap      : 0.3rem;
   }
-  /* Ambience button spans full width on very small phones */
-  .site__utils .sounds-btn { grid-column: 1 / -1; }
+  .site__utils .btn { flex: 1 1 0; min-width: 0; font-size: 0.72rem; padding: 0.4rem 0.5rem; }
 }
