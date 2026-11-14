@@ -351,6 +351,12 @@
             <div class="learn__story" ${U()}>${fx(pick(s.story)).split(/\n+/).map((p) => `<p>${p}</p>`).join("")}</div>
           </section>
 
+          ${(s.history && pick(s.history) && pick(s.history).length) ? pick(s.history).map((sec) => `
+          <section class="learn__section">
+            <h2 class="learn__h2">${esc(sec.heading)}</h2>
+            <div class="learn__story">${fx(sec.body).split(/\n+/).map((p) => `<p>${p}</p>`).join("")}</div>
+          </section>`).join("") : ""}
+
           ${facts.length ? `<section class="learn__section">
             <h2 class="learn__h2">Key facts</h2>
             <ol class="learn__facts" ${U()}>${facts.map((f, i) => `
@@ -359,6 +365,17 @@
                 <p>${fx(f)}</p>
               </li>`).join("")}
             </ol>
+          </section>` : ""}
+
+          ${(s.secrets && pick(s.secrets) && pick(s.secrets).length) ? `
+          <section class="learn__section learn__section--secrets">
+            <h2 class="learn__h2">Hidden facts &amp; lesser-known history</h2>
+            <ul class="learn__secrets">${pick(s.secrets).map((sec, i) => `
+              <li class="learn__secret rv">
+                <span class="learn__fact-num learn__secret-icon">${i + 1}</span>
+                <p>${fx(sec)}</p>
+              </li>`).join("")}
+            </ul>
           </section>` : ""}
 
           ${look.length ? `<section class="learn__section">
@@ -396,7 +413,7 @@
         </div>
       </div>`;
 
-    LL.Motion.reveal(main(), ".learn__fact, .learn__look li, .spot-tip, .learn__back-cta");
+    LL.Motion.reveal(main(), ".learn__fact, .learn__secret, .learn__look li, .spot-tip, .learn__back-cta");
 
     const strip = $("#learn-strip");
     LL.Photos.candidates(id, 500).forEach((g, i) => {
