@@ -322,6 +322,105 @@ LL.ASSETS = {
       old: [{ file: "Chauburji from British Library.jpg", caption: "Historic view", ur: "پرانی تصویر" }],
       pano: { src: "" },
     },
+
+    /* ---- Phase 1 additions ---- */
+    "gurdwara-dera-sahib": {
+      name: "Gurdwara Dera Sahib",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Gurdwara Dera Sahib - Lahore.jpg", caption: "Gurdwara Dera Sahib", ur: "گوردوارہ ڈیرہ صاحب" },
+        { file: "Gurdwara Dera Sahib (3).jpg", caption: "The white domes", ur: "سفید گنبد" },
+        { file: "Samadhi of Ranjit Singh, Badshahi Mosque, Gurdwara Dera Sabid, located in Iqbal Park, Lahore by Damn Cruze.jpg", caption: "With the Samadhi and mosque", ur: "سمادھی اور مسجد کے ساتھ" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
+    "roshnai-gate": {
+      name: "Roshnai Gate",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Roshnai Gate, Lahore.jpg", caption: "Roshnai Gate", ur: "روشنائی دروازہ" },
+        { file: "Roshanai Gate Lahore.jpg", caption: "The Gate of Light", ur: "روشنی کا دروازہ" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
+    "mariam-zamani-mosque": {
+      name: "Mariam Zamani Mosque",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Begum Shahi Mosque, Lahore.jpg", caption: "Mariam Zamani Mosque", ur: "مسجدِ مریم زمانی" },
+        { file: "Masjid Mariam Zamani.jpg", caption: "The prayer courtyard", ur: "نماز کا صحن" },
+        { file: "Begum Shahi Masjid lahore.jpg", caption: "Facade", ur: "سامنے کا حصہ" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
+    "bhati-gate": {
+      name: "Bhati Gate",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Bhati Gate, Lahore.jpg", caption: "Bhati Gate", ur: "بھاٹی دروازہ" },
+        { file: "Bhatti Gate Lahore.jpg", caption: "The western gate", ur: "مغربی دروازہ" },
+        { file: "Bhati gate lahore (1).jpg", caption: "The arch", ur: "محراب" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
+    "niween-masjid": {
+      name: "Niween Masjid",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Niween Masjid, Lahore.jpg", caption: "Niween Masjid", ur: "نیویں مسجد" },
+        { file: "Nivin Mosque Lahore.jpg", caption: "The oldest mosque in Lahore", ur: "لاہور کی سب سے پرانی مسجد" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
+    "fakir-khana": {
+      name: "Fakir Khana Museum",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Fakir Khana Museum Lahore.jpg", caption: "Fakir Khana Museum", ur: "فقیر خانہ میوزیم" },
+        { file: "Fakir Khana Museum, Lahore.jpg", caption: "The haveli entrance", ur: "حویلی کا داخلہ" },
+        { file: "Fakir Khana Museum (2).jpg", caption: "Part of the collection", ur: "مجموعے کا حصہ" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
+    "zamzammah": {
+      name: "Zam Zammah",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Zamzama Gun 8.jpg", caption: "Zam Zammah — Kim's Gun", ur: "زمزمہ توپ" },
+        { file: "Zamzam gun - panoramio.jpg", caption: "Zam Zammah in front of the museum", ur: "عجائب گھر کے سامنے زمزمہ" },
+        { file: "Kim's Gun, Lahore.jpg", caption: "The great bronze cannon", ur: "بڑی کانسی کی توپ" },
+      ],
+      old: [{ file: "Zam Zammeh 1921.JPG", caption: "Zam Zammah, 1921", ur: "زمزمہ، 1921" }],
+      pano: { src: "" },
+    },
+    "shah-jamal": {
+      name: "Shah Jamal Shrine",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Shrine of Shah Jamal, Lahore.jpg", caption: "Shrine of Shah Jamal", ur: "مزار شاہ جمال" },
+        { file: "Shah Jamal dargah lahore.jpg", caption: "The shrine complex", ur: "مزار کا احاطہ" },
+        { file: "Shah Jamal Thursday dhol.jpg", caption: "Thursday night dhol session", ur: "جمعرات کی رات ڈھول" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
+    "kamrans-baradari": {
+      name: "Kamran's Baradari",
+      photo: { src: "", by: "" },
+      gallery: [
+        { file: "Kamran's Baradari (Lahore).jpg", caption: "Kamran's Baradari", ur: "کامران کی بارہ دری" },
+        { file: "Kamran Baradari, Lahore.jpg", caption: "The river pavilion", ur: "دریائی محل" },
+        { file: "Kamran's Baradari lahore.jpg", caption: "The arched facade", ur: "محراب دار سامنے کا حصہ" },
+      ],
+      old: [],
+      pano: { src: "" },
+    },
   },
 
   /* Walled City photos (walk page + homepage). */
