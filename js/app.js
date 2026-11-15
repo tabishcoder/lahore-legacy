@@ -1662,9 +1662,8 @@
     overlay.innerHTML =
       '<img class="ll-intro__globe" src="assets/globe.gif" alt="" aria-hidden="true">' +
       '<div class="ll-intro__copy">' +
-        '<div class="ll-intro__city">LAHORE</div>' +
+        '<div class="ll-intro__brand">Lahore Legacy</div>' +
         '<div class="ll-intro__ur">لاہور کی وراثت</div>' +
-        '<div class="ll-intro__tag">A&nbsp;LIVING&nbsp;MUSEUM</div>' +
       '</div>' +
       '<div class="ll-intro__tap">tap to enter ›</div>';
     document.body.appendChild(overlay);
@@ -1678,10 +1677,9 @@
       const e = overlay.querySelector(sel);
       if (e) e.style.opacity = op;
     }
-    setTimeout(() => setOp(".ll-intro__city", 1), 350);
+    setTimeout(() => setOp(".ll-intro__brand", 1), 350);
     setTimeout(() => setOp(".ll-intro__ur", 1), 850);
-    setTimeout(() => setOp(".ll-intro__tag", 1), 1350);
-    setTimeout(() => setOp(".ll-intro__tap", 1), 1900);
+    setTimeout(() => setOp(".ll-intro__tap", 1), 1400);
     setTimeout(exit, 4200);
     overlay.addEventListener("click", exit);
   }
