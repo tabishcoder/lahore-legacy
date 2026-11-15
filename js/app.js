@@ -682,7 +682,6 @@
           <section class="been" id="been"></section>
 
           ${trailCard(id)}
-          ${vtourBlock(id)}
 
           <a class="deepread rv" href="#/learn/${id}">
             <span class="deepread__icon">${ico("book")}</span>
@@ -756,30 +755,6 @@
         <span>${t("trailCardText")}</span>
         <span class="btn btn--gold btn--sm">${t("trailCardCta")} →</span>
       </span></a>`;
-  }
-
-  /* 360° virtual tour cards for a site, sourced from official.js vtours */
-  function vtourBlock(id) {
-    const tours = LL.OFFICIAL && LL.OFFICIAL.vtours && LL.OFFICIAL.vtours[id];
-    if (!tours || !tours.length) return "";
-    const items = tours.map((tour) => {
-      const frame = tour.embed
-        ? `<div class="vtour__frame"><iframe src="${tour.embed}" title="${esc(tour.label.en)}" frameborder="0" allowfullscreen allow="xr-spatial-tracking gyroscope accelerometer" loading="lazy"></iframe></div>`
-        : `<div class="vtour__thumb">${ico("tour")}</div>`;
-      return `<div class="vtour__item">
-        ${frame}
-        <div class="vtour__foot">
-          <span class="vtour__name">${esc(tour.label.en)}</span>
-          <a class="btn btn--ghost btn--sm" href="${tour.url}" target="_blank" rel="noopener noreferrer">${ico("tour")} Open ↗</a>
-        </div>
-        <small class="vtour__src">${esc(tour.source)}</small>
-      </div>`;
-    }).join("");
-    return `<section class="block vtours">
-      <h2>${ico("tour")} 360° Virtual Tours</h2>
-      <p class="hint">Explore these places from anywhere — drag to look around.</p>
-      <div class="vtours__list">${items}</div>
-    </section>`;
   }
 
   /* a handful of other places nearby, so there is always somewhere else to go */
