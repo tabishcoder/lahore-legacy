@@ -10,13 +10,13 @@ window.LL = window.LL || {};
 LL.QUICK = {
   "badshahi-mosque": [
     ["time", { en: "45 min", ur: "45 منٹ" }],
-    ["entry", { en: "Free for Pakistanis", ur: "پاکستانیوں کے لیے مفت" }],
-    ["best", { en: "Early morning", ur: "صبح سویرے" }],
+    ["entry", { en: "Free", ur: "مفت" }],
+    ["best", { en: "Early morning or sunset (red sandstone glows)", ur: "صبح سویرے یا غروبِ آفتاب — سرخ پتھر دمکتا ہے" }],
   ],
   "lahore-fort": [
     ["time", { en: "2–3 hours", ur: "2 سے 3 گھنٹے" }],
-    ["entry", { en: "Rs 100 day · Rs 1,000 night tour", ur: "دن میں 100 روپے · رات کا ٹور 1000 روپے" }],
-    ["best", { en: "Morning, or the 7–11 pm night tour", ur: "صبح، یا شام 7 سے 11 بجے کا رات والا ٹور" }],
+    ["entry", { en: "Rs 100 (locals) · Rs 1,000 (foreigners) · Night tour Rs 2,000", ur: "100 روپے (مقامی) · 1,000 (غیر ملکی) · رات کا ٹور 2,000 روپے" }],
+    ["best", { en: "Morning (Oct–Mar), or Sat night tour 9–11 pm", ur: "صبح (اکتوبر تا مارچ)، یا ہفتے کی رات 9–11 بجے" }],
   ],
   "wazir-khan-mosque": [
     ["time", { en: "45 min", ur: "45 منٹ" }],
@@ -25,17 +25,17 @@ LL.QUICK = {
   ],
   "shalimar-gardens": [
     ["time", { en: "1–1.5 hours", ur: "ایک سے ڈیڑھ گھنٹہ" }],
-    ["entry", { en: "Night tour Rs 1,000", ur: "رات کا ٹور 1000 روپے" }],
-    ["best", { en: "Evening, when it is lit up", ur: "شام کو، جب روشنیاں جلتی ہیں" }],
+    ["entry", { en: "Rs 100 (locals) · Rs 300 (foreigners) · Night show Rs 1,000", ur: "100 روپے (مقامی) · 300 (غیر ملکی) · رات کا شو 1,000 روپے" }],
+    ["best", { en: "Oct–Mar, morning or evening light show", ur: "اکتوبر تا مارچ — صبح یا شام کا لائٹ شو" }],
   ],
   "minar-e-pakistan": [
     ["time", { en: "30–45 min", ur: "30 سے 45 منٹ" }],
-    ["entry", { en: "Inside Greater Iqbal Park", ur: "گریٹر اقبال پارک کے اندر" }],
-    ["best", { en: "Evening", ur: "شام کو" }],
+    ["entry", { en: "Free (inside Greater Iqbal Park)", ur: "مفت (گریٹر اقبال پارک کے اندر)" }],
+    ["best", { en: "Evening, for the fountains and lights", ur: "شام کو — فوارے اور روشنیوں کے لیے" }],
   ],
   "iqbal-park": [
     ["time", { en: "About 1 hour", ur: "تقریباً ایک گھنٹہ" }],
-    ["entry", { en: "Open roughly 6 am–8 pm", ur: "تقریباً صبح 6 سے رات 8 بجے تک" }],
+    ["entry", { en: "Free · opens 6 am–8 pm", ur: "مفت · صبح 6 سے رات 8 بجے تک" }],
     ["best", { en: "Evening, for the fountains", ur: "شام کو، فواروں کے لیے" }],
   ],
 };
