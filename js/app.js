@@ -101,7 +101,6 @@
   function home() {
     const P = LL.Progress;
     const seen = P.seenCount(), stamps = P.stampCount(), rk = LL.Game.rank();
-    const now = rightNow();
     main().innerHTML = `
       <section class="hero hero--home">
         <div class="hero__photo" id="hero-photo"></div>
@@ -141,10 +140,6 @@
         <div><b data-count="${TOTAL()}">${TOTAL()}</b><span>${t("glPlaces")}</span></div>
         <div><b data-count="${LL.PLANS.length}">${LL.PLANS.length}</b><span>${t("glPlans")}</span></div>
         <div><b data-count="${LL.AREAS.length}">${LL.AREAS.length}</b><span>${t("glAreas")}</span></div>
-      </section>
-
-      <section class="wrap home-highlights">
-        <div class="sites-grid" data-ids="${now.ids.join(",")}"></div>
       </section>
 
       <section class="all-sites wrap" id="all-sites">
@@ -318,7 +313,7 @@
       <div class="hc__overlay" aria-hidden="true"></div>
       ${seen ? `<span class="hc__seen" aria-label="Visited">✓</span>` : ""}
       <div class="hc__body">
-        <p class="hc__era">${esc(s.era.en)}</p>
+        <span class="hc__gem" aria-hidden="true">◆</span>
         <b class="hc__name">${esc(s.name.en)}</b>
         <span class="hc__cta">Explore <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>`);
