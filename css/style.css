@@ -1934,6 +1934,20 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .trailcard__body > span:not(.btn) { color: var(--dim); font-size: 0.9rem; }
 .trailcard__body .btn { justify-self: start; margin-top: 0.2rem; }
 
+/* Virtual tour section */
+.vtours { }
+.vtours h2 { display: flex; align-items: center; gap: 0.5rem; }
+.vtours h2 .ico { width: 20px; height: 20px; color: var(--gold-2); }
+.vtours__list { display: flex; flex-direction: column; gap: 1rem; }
+.vtour__item { border: 1px solid var(--line-2); border-radius: 10px; overflow: hidden; background: var(--navy); }
+.vtour__frame { background: #000; }
+.vtour__frame iframe { display: block; width: 100%; height: 300px; border: none; }
+.vtour__thumb { display: flex; align-items: center; justify-content: center; height: 140px; background: var(--navy-2); color: var(--dim); }
+.vtour__thumb .ico { width: 48px; height: 48px; }
+.vtour__foot { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.75rem 1rem; flex-wrap: wrap; }
+.vtour__name { font-weight: 500; font-size: 0.9rem; }
+.vtour__src { display: block; padding: 0 1rem 0.6rem; color: var(--dim); font-size: 0.72rem; }
+
 .nearby .row__scroll { padding: 0.3rem 0 1rem; grid-auto-columns: clamp(170px, 42vw, 220px); }
 
 @media (max-width: 640px) {

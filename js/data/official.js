@@ -93,6 +93,43 @@ LL.OFFICIAL = {
     source: { name: "lahoremuseum.punjab.gov.pk", url: "https://lahoremuseum.punjab.gov.pk/" },
   },
 
+  /* ---------- 360° virtual tours per site ---------- */
+  vtours: {
+    "lahore-fort": [
+      { label: { en: "Lahore Fort — Alamgiri Gate", ur: "لاہور قلعہ — عالمگیری دروازہ" },
+        url: "https://artsandculture.google.com/streetview/lahore-fort-alamgiri-gate/XAEIZxAZnY5rPw",
+        source: "Google Arts & Culture × WCLA" },
+      { label: { en: "Sheesh Mahal — Palace of Mirrors", ur: "شیش محل" },
+        url: "https://www.360cities.net/image/sheesh-mahal-palace-of-mirrors-lahore-fort",
+        embed: "https://www.360cities.net/embed_iframe/sheesh-mahal-palace-of-mirrors-lahore-fort",
+        source: "360cities" },
+    ],
+    "wazir-khan-mosque": [
+      { label: { en: "Wazir Khan Mosque — Forecourt", ur: "مسجد وزیر خان — صحن" },
+        url: "https://artsandculture.google.com/streetview/forecourt-of-the-wazir-khan-mosque-lahore/CgHygEcxcuAoaw",
+        source: "Google Arts & Culture × WCLA" },
+      { label: { en: "Wazir Khan Mosque — Entrance", ur: "مسجد وزیر خان — داخلہ" },
+        url: "https://artsandculture.google.com/streetview/walled-city-of-lahore-entrance-of-masjid-wazir-khan/8QEmWqzo1gtnGg",
+        source: "Google Arts & Culture × WCLA" },
+    ],
+    "badshahi-mosque": [
+      { label: { en: "Badshahi Mosque — Main Gate", ur: "بادشاہی مسجد — مرکزی دروازہ" },
+        url: "https://www.360cities.net/image/the-badshahi-mosque-urdu-imperial-mosque-in-lahore-pakistan-entry-main-gate",
+        embed: "https://www.360cities.net/embed_iframe/the-badshahi-mosque-urdu-imperial-mosque-in-lahore-pakistan-entry-main-gate",
+        source: "360cities" },
+    ],
+    "iqbal-park": [
+      { label: { en: "Allama Iqbal's Tomb", ur: "مزارِ علامہ اقبال" },
+        url: "https://artsandculture.google.com/streetview/allama-iqbal-s-tomb-lahore/zwFwU_EqDr1fjA",
+        source: "Google Arts & Culture × WCLA" },
+    ],
+    "delhi-gate": [
+      { label: { en: "Walled City — Historic Gates", ur: "اندرون شہر — تاریخی دروازے" },
+        url: "https://artsandculture.google.com/streetview/walled-city-of-lahore-gates/eQFOVbaF-erZZA",
+        source: "Google Arts & Culture × WCLA" },
+    ],
+  },
+
   /* ---------- guided walks run by WCLA ---------- */
   tours: {
     title: { en: "Guided tours by the Walled City Authority", ur: "والڈ سٹی اتھارٹی کے گائیڈڈ ٹور" },
