@@ -59,7 +59,7 @@
     sound: '<path d="M11 5L6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14"/>',
   };
   const ico = (n) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
-  /* content block: renders Urdu by default with an inline EN toggle */
+  /* content block: starts in English (follows global mode) */
   function cblk(enHtml, urHtml, cls) {
     if (!urHtml) return cls ? `<div class="${cls}" lang="en">${enHtml}</div>` : enHtml;
     const startEn = LL.I18N.mode === "en";
@@ -69,6 +69,17 @@
       `<button class="cblk__tog" aria-label="Toggle language">${startEn ? "اردو" : "EN"}</button>` +
       `</div>`;
   }
+  /* paragraph block: always starts in Urdu with an inline EN toggle */
+  function cblkUr(enHtml, urHtml, cls) {
+    if (!urHtml) return cls ? `<div class="${cls}" lang="en">${enHtml}</div>` : enHtml;
+    return `<div class="cblk${cls ? " " + cls : ""}" data-l="ur">` +
+      `<div class="cblk__ur" lang="ur" dir="rtl">${urHtml}</div>` +
+      `<div class="cblk__en" lang="en" hidden>${enHtml}</div>` +
+      `<button class="cblk__tog" aria-label="Toggle language">EN</button>` +
+      `</div>`;
+  }
+  /* always pick Urdu (for quiz) */
+  const pickUr = (obj) => (obj ? (obj.ur != null ? obj.ur : obj.en) : "");
   let cleanup = null;
 
   /* ---------------- header ---------------- */
@@ -76,7 +87,7 @@
     [["places", "#/"], ["plan", "#/plan"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
-    $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
+    $("#footer-lang").textContent = "";
     const n = LL.Progress.stampCount(), rk = LL.Game.rank();
     const pct = Math.round(rk.pct * 100);
     const toNextTxt = rk.next ? ` · ${rk.toNext} pts to ${rk.next.en}` : "";
@@ -377,7 +388,7 @@
 
           <section class="learn__section">
             <h2 class="learn__h2">The story</h2>
-            ${cblk(
+            ${cblkUr(
               fx(s.story && s.story.en || "").split(/\n+/).map(p => `<p>${p}</p>`).join(""),
               s.story && s.story.ur ? fx(s.story.ur).split(/\n+/).map(p => `<p>${p}</p>`).join("") : null,
               "learn__story"
@@ -390,7 +401,7 @@
             const urHtml = urSec ? fx(urSec.body || "").split(/\n+/).map(p => `<p>${p}</p>`).join("") : null;
             return `<section class="learn__section">
               <h2 class="learn__h2">${esc(sec.heading || "")}</h2>
-              ${cblk(enHtml, urHtml, "learn__story")}
+              ${cblkUr(enHtml, urHtml, "learn__story")}
             </section>`;
           }).join("") : ""}
 
@@ -626,12 +637,12 @@
               <span class="story-loc">${esc(s.location && s.location.en || "")}</span>
               <h2>${esc(s.title && s.title.en || "")}</h2>
             </header>
-            ${cblk(
+            ${cblkUr(
               `"${esc(s.pullQuote && s.pullQuote.en || "")}"`,
               s.pullQuote && s.pullQuote.ur ? `"${esc(s.pullQuote.ur)}"` : null,
               "pull-quote"
             )}
-            ${cblk(
+            ${cblkUr(
               (s.story && s.story.en || "").split(/\n\n/).map(p => `<p>${storyHtml(p)}</p>`).join(""),
               s.story && s.story.ur ? (s.story.ur).split(/\n\n/).map(p => `<p>${storyHtml(p)}</p>`).join("") : null,
               "story-body"
@@ -849,9 +860,9 @@
     const draw = () => {
       if (i >= qs.length) return finish();
       const q = qs[i];
-      const opts = shuffle(pick(q.a).map((a, k) => ({ a, k })));
+      const opts = shuffle(pickUr(q.a).map((a, k) => ({ a, k })));
       box.innerHTML = `<h2>${t("check")}</h2><p class="hint">${t("checkLead")} · ${t("qOf", i + 1, qs.length)}</p>
-        <div ${U()}><p class="q">${fx(pick(q.q))}</p>
+        <div lang="ur" dir="rtl"><p class="q">${fx(pickUr(q.q))}</p>
         <div class="answers">${opts.map((o) => `<button class="answer" data-k="${o.k}">${fx(o.a)}</button>`).join("")}</div></div>
         <p class="feedback" aria-live="polite"></p>`;
       box.querySelectorAll(".answer").forEach((b) => b.addEventListener("click", () => {
@@ -859,7 +870,7 @@
         if (ok) right++;
         box.querySelectorAll(".answer").forEach((x) => { x.disabled = true; if (+x.dataset.k === q.c) x.classList.add("is-right"); });
         if (!ok) b.classList.add("is-wrong");
-        box.querySelector(".feedback").innerHTML = ok ? t("correct") : `${t("wrong")}: <span ${U()}>${fx(pick(q.a)[q.c])}</span>`;
+        box.querySelector(".feedback").innerHTML = ok ? t("correct") : `${t("wrong")}: <span lang="ur" dir="rtl">${fx(pickUr(q.a)[q.c])}</span>`;
         i++;
         setTimeout(draw, ok ? 700 : 1600);
       }));
@@ -1204,13 +1215,6 @@
           <div><b>${P.visitedCount()}</b><span>${t("statVisited")}</span></div>
           <div><b>${earnedN}</b><small>/${G.BADGES.length}</small><span>${t("statBadges")}</span></div>
         </div>
-        <div class="langpick" role="group" aria-label="${t("langTitle")}">
-          <div><b>${t("langTitle")}</b><small>${t("langHint")}</small></div>
-          <div class="langpick__opts">
-            <button data-lang="mix" aria-pressed="${LL.I18N.mode === "mix"}">${t("langMix")}</button>
-            <button data-lang="en" aria-pressed="${LL.I18N.mode === "en"}">${t("langEn")}</button>
-          </div>
-        </div>
         <div class="me__links">
           <a class="btn btn--gold" href="#/map">${ico("map")} ${t("openMap")}</a>
           <a class="btn btn--ghost" href="#/quiz">${ico("quiz")} ${t("quizTitle")}</a>
@@ -1552,9 +1556,9 @@
         <div id="qbox"></div></section>`;
       const draw = () => {
         const q = qs[i % qs.length];
-        const opts = shuffle(pick(q.a).map((a, k) => ({ a, k })));
+        const opts = shuffle(pickUr(q.a).map((a, k) => ({ a, k })));
         $("#qbox").innerHTML = `<p class="eyebrow">${esc(site(q.s).name.en)}</p>
-          <div ${U()}><p class="q q--big">${fx(pick(q.q))}</p>
+          <div lang="ur" dir="rtl"><p class="q q--big">${fx(pickUr(q.q))}</p>
           <div class="answers">${opts.map((o) => `<button class="answer" data-k="${o.k}">${fx(o.a)}</button>`).join("")}</div></div>
           <p class="feedback" aria-live="polite"></p>`;
         $("#qbox").querySelectorAll(".answer").forEach((b) => b.addEventListener("click", () => {
@@ -1565,7 +1569,7 @@
           $("#sc").textContent = right;
           $("#qbox").querySelectorAll(".answer").forEach((x) => { x.disabled = true; if (+x.dataset.k === q.c) x.classList.add("is-right"); });
           if (!ok) b.classList.add("is-wrong");
-          $("#qbox .feedback").innerHTML = ok ? (streak >= 3 ? `${t("correct")} · ${streak}×` : t("correct")) : `${t("wrong")}: <span ${U()}>${fx(pick(q.a)[q.c])}</span>`;
+          $("#qbox .feedback").innerHTML = ok ? (streak >= 3 ? `${t("correct")} · ${streak}×` : t("correct")) : `${t("wrong")}: <span lang="ur" dir="rtl">${fx(pickUr(q.a)[q.c])}</span>`;
           i++;
           setTimeout(() => left > 0 && draw(), ok ? 450 : 1100);
         }));

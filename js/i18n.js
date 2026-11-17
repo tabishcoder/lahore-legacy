@@ -147,8 +147,8 @@ LL.I18N = (function () {
     pointsRows: [["Open a place", 10], ["Earn its stamp", 25], ["Visit it in person", 40], ["Verified by location", 15], ["Each quiz point (best score)", 3]],
   };
 
-  let mode = "mix";
-  try { if (localStorage.getItem("lahoreLegacy.mode") === "en") mode = "en"; } catch (e) {}
+  let mode = "en";
+  try { const m = localStorage.getItem("lahoreLegacy.mode"); if (m === "mix" || m === "en") mode = m; } catch (e) {}
 
   function apply() {
     document.documentElement.lang = "en";
