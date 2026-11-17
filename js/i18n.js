@@ -11,7 +11,7 @@ window.LL = window.LL || {};
 
 LL.I18N = (function () {
   const STR = {
-    places: "Places", tour: "Tour", plan: "Plan", quiz: "Quiz",
+    places: "Places", tour: "Tour", plan: "Plan", quiz: "Quiz", myths: "Myths",
     toEnglish: "English only", toMix: "اردو + English",
     toEnglishTitle: "Show everything in English", toMixTitle: "Read history and visitor info in Urdu",
     heroEyebrow: "Lahore Lahore Aye!",
