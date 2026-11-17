@@ -32,6 +32,15 @@ LL.GEO = {
   "shalimar-gardens": [31.58583, 74.38194],
   "gulabi-bagh": [31.57861, 74.36389],
   "chauburji": [31.554, 74.3048],
+  "gurdwara-dera-sahib": [31.5901, 74.3105],  // ≈ beside Ranjit Singh Samadhi
+  "roshnai-gate": [31.5876, 74.3098],          // ≈ south side of Hazuri Bagh
+  "mariam-zamani-mosque": [31.5831, 74.3194],  // ≈ inside Masti Gate, Walled City
+  "bhati-gate": [31.5793, 74.3047],
+  "niween-masjid": [31.5825, 74.3205],         // ≈ Walled City lanes
+  "fakir-khana": [31.5790, 74.3058],           // ≈ near Bhati Gate
+  "zamzammah": [31.5682, 74.3082],             // in front of Lahore Museum
+  "shah-jamal": [31.5497, 74.3236],
+  "kamrans-baradari": [31.5947, 74.2900],      // ≈ Baghbanpura, near River Ravi
 };
 
 /* Stops in the plans that are not place pages. */

@@ -425,6 +425,206 @@ LL.AREAS = [
         ur: [["داخلہ", "مفت — یہ چوک کے بیچ ہے۔"], ["کہاں", "چوبرجی چوک، ملتان روڈ۔"], ["وقت", "10 منٹ۔"]],
       },
     }),
+
+    /* ---------------- Phase 1 additions ---------------- */
+    S({
+      id: "gurdwara-dera-sahib", area: "fort",
+      name: { en: "Gurdwara Dera Sahib", ur: "گوردوارہ ڈیرہ صاحب" },
+      era: { en: "Sikh · 17th–19th century", ur: "سکھ دور · سترھویں تا انیسویں صدی" },
+      line: { en: "One of the holiest Sikh shrines, marking where Guru Arjan Dev was martyred.", ur: "سکھوں کے مقدس ترین مقامات میں سے ایک، جہاں گرو ارجن دیو کی شہادت ہوئی۔" },
+      story: {
+        en: "Guru Arjan Dev, the fifth Sikh Guru and the compiler of the Adi Granth — the Sikh holy scripture — was martyred here in 1606 on the orders of Emperor Jahangir. A gurdwara was raised on the spot to mark his sacrifice. The structure you see was largely built or rebuilt under Maharaja Ranjit Singh in the early 19th century. It stands next door to his own Samadhi and the Badshahi Mosque, in one of the most striking clusters of monuments in the city.",
+        ur: "سکھوں کے پانچویں گرو، گرو ارجن دیو — جنہوں نے آدی گرنتھ، سکھوں کی مقدس کتاب، مرتب کی — 1606 میں بادشاہ جہانگیر کے حکم پر یہاں شہید ہوئے۔ ان کی قربانی کی یاد میں اسی جگہ یہ گوردوارہ بنایا گیا۔ جو عمارت آج نظر آتی ہے، وہ زیادہ تر مہاراجہ رنجیت سنگھ کے دور میں بنی یا دوبارہ بنائی گئی۔ یہ ان کی اپنی سمادھی اور بادشاہی مسجد کے بالکل ساتھ ہے۔",
+      },
+      facts: {
+        en: ["Guru Arjan Dev compiled the Adi Granth, the Sikh scripture, in 1604.", "He was the first Sikh Guru to be martyred.", "The gurdwara is managed by the Evacuee Trust Property Board of Pakistan and is open to Sikh pilgrims."],
+        ur: ["گرو ارجن دیو نے 1604 میں آدی گرنتھ مرتب کی۔", "وہ پہلے سکھ گرو ہیں جنہوں نے شہادت پائی۔", "گوردوارہ پاکستان کے متروکہ وقف املاک بورڈ کے انتظام میں ہے اور سکھ یاتریوں کے لیے کھلا ہے۔"],
+      },
+      look: {
+        en: ["The white domes and arched verandahs.", "The view from outside: the gurdwara, Ranjit Singh's Samadhi and the Badshahi Mosque all in one line."],
+        ur: ["سفید گنبد اور محراب دار برآمدے۔", "باہر سے نظارہ: گوردوارہ، رنجیت سنگھ کی سمادھی اور بادشاہی مسجد ایک ہی قطار میں۔"],
+      },
+      visit: {
+        en: [["Entry", "Open to Sikh pilgrims. Non-Sikhs need prior permission."], ["See it from", "Hazuri Bagh — the whole cluster is visible."], ["Nearby", "Samadhi of Ranjit Singh and Badshahi Mosque are right next door."]],
+        ur: [["داخلہ", "سکھ یاتریوں کے لیے کھلا ہے۔ دوسروں کو پہلے اجازت لینی ہوگی۔"], ["کہاں سے دیکھیں", "حضوری باغ سے — سارا احاطہ نظر آتا ہے۔"], ["قریب", "سمادھی رنجیت سنگھ اور بادشاہی مسجد بالکل ساتھ ہیں۔"]],
+      },
+    }),
+    S({
+      id: "roshnai-gate", area: "fort",
+      name: { en: "Roshnai Gate", ur: "روشنائی دروازہ" },
+      era: { en: "Mughal · 16th century", ur: "مغل دور · سولھویں صدی" },
+      line: { en: "The Gate of Light — lit up for royal processions, now beside Hazuri Bagh.", ur: "روشنی کا دروازہ — شاہی جلوسوں میں روشن رہتا تھا، اب حضوری باغ کے ساتھ کھڑا ہے۔" },
+      story: {
+        en: "Roshnai means 'light' in Urdu and Persian. This gate was traditionally illuminated every evening with lamps and torches, guiding travellers and lighting the way for royal processions entering from the direction of the Badshahi Mosque. It is one of the 13 original gates of Lahore, standing on the south side of Hazuri Bagh between the Fort and the mosque. During the Mughal era, it was one of the main ceremonial entrances to the Walled City.",
+        ur: "روشنائی کا مطلب ہے روشنی۔ یہ دروازہ روایتی طور پر ہر شام چراغوں اور مشعلوں سے روشن کیا جاتا تھا — مسافروں کی رہنمائی کے لیے اور بادشاہی مسجد کی طرف سے آنے والے شاہی جلوسوں کے لیے۔ یہ لاہور کے 13 اصل دروازوں میں سے ایک ہے اور حضوری باغ کے جنوب میں، قلعے اور مسجد کے درمیان کھڑا ہے۔ مغل دور میں یہ اندرونِ شہر کے اہم تقریباتی دروازوں میں سے تھا۔",
+      },
+      facts: {
+        en: ["The name means 'radiance' or 'light' — it was lit every evening.", "It stands between the Fort and the Badshahi Mosque, on the south edge of Hazuri Bagh.", "It is one of Lahore's 13 original gates, most of which were demolished by the British after 1857."],
+        ur: ["نام کا مطلب ہے روشنی — یہ ہر شام جلایا جاتا تھا۔", "یہ قلعے اور بادشاہی مسجد کے درمیان، حضوری باغ کے جنوب میں ہے۔", "یہ لاہور کے 13 اصل دروازوں میں سے ایک ہے، جن میں سے زیادہ تر 1857 کے بعد انگریزوں نے گرا دیے۔"],
+      },
+      look: {
+        en: ["The old arch and brickwork.", "Its position between the Fort and the mosque — this was once the city's most ceremonial corner."],
+        ur: ["پرانی محراب اور اینٹوں کا کام۔", "قلعے اور مسجد کے درمیان اس کی جگہ — یہ کبھی شہر کا سب سے تقریباتی کونا تھا۔"],
+      },
+      visit: {
+        en: [["Entry", "Free — on the street, south side of Hazuri Bagh."], ["Combine with", "Hazuri Bagh, Lahore Fort, Badshahi Mosque — all within walking distance."], ["Time", "10 minutes."]],
+        ur: [["داخلہ", "مفت — سڑک پر، حضوری باغ کے جنوب میں۔"], ["ساتھ دیکھیں", "حضوری باغ، شاہی قلعہ، بادشاہی مسجد — سب پیدل فاصلے پر۔"], ["وقت", "10 منٹ۔"]],
+      },
+    }),
+    S({
+      id: "mariam-zamani-mosque", area: "walled",
+      name: { en: "Mariam Zamani Mosque", ur: "مسجدِ مریم زمانی" },
+      era: { en: "Mughal · 1614", ur: "مغل دور · 1614" },
+      line: { en: "Built by Jahangir to honour his mother — also called the Begum Shahi Mosque.", ur: "جہانگیر نے اپنی والدہ کی یاد میں بنوائی — بیگم شاہی مسجد بھی کہتے ہیں۔" },
+      story: {
+        en: "Emperor Jahangir built this mosque in 1614 to honour his mother, Mariam-uz-Zamani — a Rajput princess whose Hindu name was Heer Kunwari, and who was also the grandmother of Shah Jahan. The mosque stands inside Masti Gate in the Walled City and is one of the oldest Mughal mosques in Lahore, pre-dating the more famous Wazir Khan Mosque by about twenty years. It is also known as the Begum Shahi Masjid — the Royal Lady's Mosque.",
+        ur: "بادشاہ جہانگیر نے یہ مسجد 1614 میں اپنی والدہ مریم زمانی کی یاد میں بنوائی — جو ایک راجپوت شہزادی تھیں، جن کا ہندو نام ہیر کنواری تھا، اور جو شاہجہان کی دادی بھی تھیں۔ یہ مسجد اندرونِ شہر میں مستی گیٹ کے اندر ہے، اور لاہور کی قدیم ترین مغل مساجد میں سے ایک ہے — مشہور مسجد وزیر خان سے تقریباً بیس سال پہلے بنی۔ اسے بیگم شاہی مسجد یعنی شاہی بیگم کی مسجد بھی کہتے ہیں۔",
+      },
+      facts: {
+        en: ["Mariam-uz-Zamani was Emperor Akbar's wife and Jahangir's mother.", "The mosque is said to be one of the earliest brick mosques of the Mughal period in Lahore.", "It was partially restored in recent years; older frescoes survive inside."],
+        ur: ["مریم زمانی بادشاہ اکبر کی بیوی اور جہانگیر کی والدہ تھیں۔", "یہ لاہور میں مغل دور کی ابتدائی اینٹوں کی مساجد میں سے ایک سمجھی جاتی ہے۔", "حال ہی میں جزوی مرمت ہوئی؛ اندر پرانی تصویریں ابھی بھی موجود ہیں۔"],
+      },
+      look: {
+        en: ["The old brick facade and arched gateway.", "Any surviving painted plasterwork inside the prayer hall."],
+        ur: ["پرانی اینٹوں والا سامنے کا حصہ اور محراب دار دروازہ۔", "نماز ہال کے اندر باقی بچی پلاسٹر کی تصویریں۔"],
+      },
+      visit: {
+        en: [["Entry", "Free; shoes off."], ["Where", "Inside Masti Gate, Walled City — ask for 'Begum Shahi Mosque'."], ["Dress", "Modest clothes; women may want a scarf."]],
+        ur: [["داخلہ", "مفت؛ جوتے اتاریں۔"], ["کہاں", "اندرونِ شہر، مستی گیٹ کے اندر — 'بیگم شاہی مسجد' پوچھیں۔"], ["لباس", "سادہ لباس؛ خواتین چاہیں تو دوپٹہ لیں۔"]],
+      },
+    }),
+    S({
+      id: "bhati-gate", area: "walled",
+      name: { en: "Bhati Gate", ur: "بھاٹی دروازہ" },
+      era: { en: "Mughal origin · 11th–12th c.", ur: "مغل بنیاد · گیارھویں تا بارھویں صدی" },
+      line: { en: "The western gate of the Walled City, closest to the shrine of Data Ganj Bakhsh.", ur: "اندرونِ شہر کا مغربی دروازہ، داتا گنج بخشؒ کے مزار کے سب سے قریب۔" },
+      story: {
+        en: "Bhati Gate is the western gate of Lahore's Walled City, one of the original 13 gates. The name comes from the Bhatti tribe who lived in the area, though some say it derives from bhaat (barley), once sold here. The gate faces west, and just outside it stands Data Darbar — the shrine of Lahore's patron saint, Ali Hujwiri. This makes Bhati Gate one of the most spiritually charged spots in the city, a threshold where pilgrims, traders and travellers have passed for a thousand years.",
+        ur: "بھاٹی دروازہ اندرونِ شہر کا مغربی دروازہ ہے، 13 اصل دروازوں میں سے ایک۔ نام بھٹی قبیلے کے نام پر ہے جو یہاں رہتا تھا، کچھ لوگ کہتے ہیں کہ نام 'بھاٹ' یعنی جو سے آیا۔ دروازہ مغرب کی طرف ہے، اور بالکل باہر داتا دربار ہے — لاہور کے سرپرست بزرگ علی ہجویریؒ کا مزار۔ یہ شہر کی سب سے روحانی جگہوں میں سے ایک ہے، جہاں سے ہزار سال سے زائد عرصے تک زائرین، سوداگر اور مسافر گزرتے رہے ہیں۔",
+      },
+      facts: {
+        en: ["Lahore had 13 original gates; Bhati Gate is among the best preserved.", "Data Darbar stands just outside it — Bhati Gate is the route pilgrims take to the shrine.", "WCLA has included Bhati Gate in its ongoing restoration of the Walled City walls."],
+        ur: ["لاہور کے 13 اصل دروازوں میں سے بھاٹی دروازہ بہترین حال میں ہے۔", "داتا دربار بالکل باہر ہے — زائرین مزار تک بھاٹی دروازے سے ہو کر جاتے ہیں۔", "والڈ سٹی اتھارٹی نے بھاٹی دروازے کو اندرونِ شہر کی دیوار کی بحالی میں شامل کیا ہے۔"],
+      },
+      look: {
+        en: ["The arch and old brickwork of the gate itself.", "Step outside and turn left: Data Darbar's white minarets are visible."],
+        ur: ["دروازے کی محراب اور پرانی اینٹوں کا کام۔", "باہر نکل کر بائیں مڑیں: داتا دربار کے سفید مینار نظر آتے ہیں۔"],
+      },
+      visit: {
+        en: [["Entry", "Free — it is a public street."], ["Combine with", "Data Darbar is right outside, and Fakir Khana Museum is a short walk inside."], ["Time", "15 minutes."]],
+        ur: [["داخلہ", "مفت — یہ عام راستہ ہے۔"], ["ساتھ دیکھیں", "داتا دربار بالکل باہر، اور فقیر خانہ میوزیم اندر تھوڑی دور۔"], ["وقت", "15 منٹ۔"]],
+      },
+    }),
+    S({
+      id: "niween-masjid", area: "walled",
+      name: { en: "Niween Masjid", ur: "نیویں مسجد" },
+      era: { en: "Pre-Mughal · c. 1460", ur: "قبل از مغل · تقریباً 1460" },
+      line: { en: "Possibly the oldest standing mosque in Lahore, built before the Mughals arrived.", ur: "لاہور کی ممکنہ طور پر سب سے پرانی مسجد، مغلوں سے پہلے بنی۔" },
+      story: {
+        en: "Niween means 'low' or 'humble' in Punjabi — a fitting name for a small, plain mosque that has stood in the Walled City for over five and a half centuries. Built around 1460 during the Lodi Sultanate, it predates Mughal rule in Lahore by nearly a hundred years, making it possibly the oldest surviving mosque in the city. It sits quietly in the maze of lanes inside the Walled City, known and venerated by locals but rarely visited by outsiders.",
+        ur: "نیویں کا مطلب ہے چھوٹی یا عاجزانہ — ایک سادہ چھوٹی مسجد کے لیے موزوں نام جو ساڑھے پانچ صدیوں سے اندرونِ شہر میں کھڑی ہے۔ تقریباً 1460 میں لودی سلطنت کے دور میں بنی، یہ لاہور میں مغل حکومت سے تقریباً سو سال پہلے کی ہے — اسے شہر کی سب سے پرانی باقی مسجد کہا جا سکتا ہے۔ یہ اندرونِ شہر کی گلیوں میں خاموشی سے بیٹھی ہے، مقامی لوگ اسے جانتے اور مانتے ہیں لیکن باہر سے کم لوگ آتے ہیں۔",
+      },
+      facts: {
+        en: ["Built around 1460 during the Lodi Sultanate — before the Mughal Empire.", "Its name, Niween, means 'low' or 'humble' in Punjabi.", "It is a protected monument under the Antiquities Act 1975."],
+        ur: ["تقریباً 1460 میں لودی سلطنت کے دور میں بنی — مغل سلطنت سے پہلے۔", "نیویں نام کا مطلب پنجابی میں 'چھوٹی' یا 'عاجزانہ' ہے۔", "یہ 1975 کے قانون کے تحت محفوظ یادگار ہے۔"],
+      },
+      look: {
+        en: ["The simple, unadorned structure — a contrast to the elaborate later mosques.", "Its setting deep in the lanes of the Walled City."],
+        ur: ["سادہ، بغیر آرائش کے ڈھانچہ — بعد کی آراستہ مساجد سے بالکل الگ۔", "اندرونِ شہر کی گلیوں میں اس کی جگہ۔"],
+      },
+      visit: {
+        en: [["Entry", "Free; shoes off."], ["Getting there", "Deep inside the Walled City — ask a local or join a guided heritage walk."], ["Tip", "Best visited on a guided tour that covers the lanes of the old city."]],
+        ur: [["داخلہ", "مفت؛ جوتے اتاریں۔"], ["کیسے جائیں", "اندرونِ شہر کی گہری گلیوں میں — مقامی لوگوں سے پوچھیں یا گائیڈڈ ٹور پر جائیں۔"], ["مشورہ", "پرانے شہر کی گلیوں والی گائیڈڈ سیر کے ساتھ جانا بہتر ہے۔"]],
+      },
+    }),
+    S({
+      id: "fakir-khana", area: "walled",
+      name: { en: "Fakir Khana Museum", ur: "فقیر خانہ میوزیم" },
+      era: { en: "Sikh/Mughal era collection · 18th–19th c.", ur: "سکھ/مغل دور کا مجموعہ · 18ویں تا 19ویں صدی" },
+      line: { en: "A family museum with 30,000+ objects — paintings, manuscripts, weapons — in a 200-year-old haveli.", ur: "ایک خاندانی میوزیم جس میں 30,000 سے زیادہ چیزیں — مصوری، مخطوطات، ہتھیار — 200 سال پرانی حویلی میں۔" },
+      story: {
+        en: "Near Bhati Gate stands the ancestral home of the Fakir family, one of the most remarkable private museums in South Asia. Fakir Nuruddin and his brothers served as advisors and ministers to Maharaja Ranjit Singh. The family collected paintings, miniatures, manuscripts, weapons, coins, armour and objects from across the Mughal and Sikh courts. Today the collection holds over 30,000 items, cared for across four generations. Access requires an appointment, but the experience of seeing Ranjit Singh-era miniatures inside the walls where the family lived is extraordinary.",
+        ur: "بھاٹی دروازے کے قریب فقیر خاندان کا آبائی گھر ہے — جنوبی ایشیا کے سب سے قابل ذکر نجی میوزیموں میں سے ایک۔ فقیر نورالدین اور ان کے بھائی مہاراجہ رنجیت سنگھ کے مشیر اور وزیر تھے۔ خاندان نے مغل اور سکھ دربار کی مصوری، تصویری نقاشی، مخطوطات، ہتھیار، سکے، زرہ بکتر اور بہت کچھ جمع کیا۔ آج مجموعے میں 30,000 سے زیادہ چیزیں ہیں، چار نسلوں سے سنبھالی جا رہی ہیں۔ آنے کے لیے پہلے سے وقت لینا پڑتا ہے، لیکن اس حویلی میں جہاں یہ خاندان رہتا تھا رنجیت سنگھ کے دور کی تصویریں دیکھنا ایک غیرمعمولی تجربہ ہے۔",
+      },
+      facts: {
+        en: ["Fakir Syed Aijazuddin wrote the definitive books on Sikh-era miniature paintings.", "The haveli is about 200 years old and is still the family residence.", "The collection includes items gifted to Ranjit Singh by European visitors and diplomats."],
+        ur: ["فقیر سید اعجازالدین نے سکھ دور کی تصویری نقاشی پر معیاری کتابیں لکھیں۔", "حویلی تقریباً 200 سال پرانی ہے اور ابھی بھی خاندان کی رہائش ہے۔", "مجموعے میں وہ چیزیں بھی ہیں جو یورپی مہمانوں اور سفیروں نے رنجیت سنگھ کو تحفے میں دیں۔"],
+      },
+      look: {
+        en: ["The Sikh-era miniature paintings, among the finest surviving examples.", "The old haveli rooms where the family has lived for two centuries."],
+        ur: ["سکھ دور کی تصویری نقاشی — بہترین باقی نمونوں میں سے۔", "حویلی کے پرانے کمرے جہاں خاندان دو صدیوں سے رہتا ہے۔"],
+      },
+      visit: {
+        en: [["Entry", "By appointment only — contact the museum in advance."], ["Where", "Near Bhati Gate, inside the Walled City."], ["Tip", "Heritage tour operators sometimes arrange access; check with WCLA-listed guides."]],
+        ur: [["داخلہ", "صرف پہلے سے وقت لے کر — میوزیم سے پہلے رابطہ کریں۔"], ["کہاں", "بھاٹی دروازے کے قریب، اندرونِ شہر میں۔"], ["مشورہ", "ہیریٹیج ٹور آپریٹر کبھی کبھی رسائی کا بندوبست کرتے ہیں — والڈ سٹی اتھارٹی کے گائیڈز سے پوچھیں۔"]],
+      },
+    }),
+    S({
+      id: "zamzammah", area: "british",
+      name: { en: "Zam Zammah — Kim's Gun", ur: "زمزمہ — کِم کی توپ" },
+      era: { en: "Mughal cannon · 1757", ur: "مغل توپ · 1757" },
+      line: { en: "The great bronze cannon from Kipling's novel Kim, standing in front of the Lahore Museum.", ur: "کپلنگ کے ناول 'کِم' والی مشہور کانسی کی توپ، لاہور عجائب گھر کے سامنے۔" },
+      story: {
+        en: "Cast in Lahore in 1757 by Shah Nazir, Zam Zammah is a massive bronze cannon more than four metres long and weighing about 7.5 tonnes. Its name means 'lion's roar.' It was used in the Third Battle of Panipat in 1761 and changed hands many times — from the Afghan Durranis to Sikh chiefs to the British, who kept it in front of the museum as a trophy. Rudyard Kipling's novel Kim, published in 1901, opens with its Irish boy hero sitting astride the cannon outside the museum — a scene known around the world.",
+        ur: "1757 میں لاہور میں شاہ نظیر نے ڈھالی گئی یہ کانسی کی بڑی توپ چار میٹر سے زیادہ لمبی اور تقریباً ساڑھے سات ٹن وزنی ہے۔ 'زمزمہ' کا مطلب ہے 'شیر کی دہاڑ'۔ یہ 1761 کی تیسری لڑائی پانی پت میں استعمال ہوئی اور کئی بار ہاتھ بدلی — افغان درانیوں سے سکھ سرداروں سے انگریزوں تک، جنہوں نے اسے عجائب گھر کے سامنے بطور غنیمت رکھا۔ رڈیارڈ کپلنگ کا ناول 'کِم' 1901 میں شائع ہوا اور اس کا آغاز کِم کے توپ پر بیٹھے ہونے کے اسی منظر سے ہوتا ہے — جو دنیا بھر میں مشہور ہے۔",
+      },
+      facts: {
+        en: ["Kipling's novel Kim opens: 'He sat, in defiance of municipal orders, astride the gun Zam-Zammah on her brick platform opposite the old Ajaib-Gher.'", "It was used at the decisive Third Battle of Panipat (1761), where the Afghan Ahmad Shah Durrani defeated the Marathas.", "It is sometimes called 'Fire-the-fire-eater' by locals."],
+        ur: ["کپلنگ کا ناول کِم شروع ہوتا ہے: 'وہ میونسپل احکام کی خلاف ورزی کرتے ہوئے اجائب گھر کے سامنے اینٹوں کے چبوترے پر رکھی توپ زمزمہ پر سوار بیٹھا تھا۔'", "یہ تیسری لڑائی پانی پت (1761) میں استعمال ہوئی، جہاں احمد شاہ درانی نے مرہٹوں کو شکست دی۔", "مقامی لوگ اسے 'آگ کھانے والا' بھی کہتے ہیں۔"],
+      },
+      look: {
+        en: ["The enormous barrel — imagine carrying this into battle.", "The inscription and decoration cast into the bronze.", "Look across to the museum's red brick facade behind it."],
+        ur: ["بڑی نال — سوچیں کہ یہ جنگ میں لے جانا کیسا ہوگا۔", "کانسی میں ڈھالی ہوئی تحریر اور سجاوٹ۔", "پیچھے عجائب گھر کی سرخ اینٹوں والی دیوار کی طرف دیکھیں۔"],
+      },
+      visit: {
+        en: [["Entry", "Free — on a platform outside the Lahore Museum."], ["Combine with", "The Lahore Museum is right behind it."], ["Where", "The Mall, in front of Lahore Museum."]],
+        ur: [["داخلہ", "مفت — لاہور عجائب گھر کے باہر چبوترے پر۔"], ["ساتھ دیکھیں", "لاہور عجائب گھر بالکل پیچھے ہے۔"], ["کہاں", "مال روڈ، لاہور عجائب گھر کے سامنے۔"]],
+      },
+    }),
+    S({
+      id: "shah-jamal", area: "british",
+      name: { en: "Shah Jamal Shrine", ur: "مزار شاہ جمال" },
+      era: { en: "Mughal-era Sufi · 17th century", ur: "مغل دور کا صوفی مزار · سترھویں صدی" },
+      line: { en: "A beloved Sufi shrine known for its Thursday-night dhol sessions.", ur: "پیارا صوفی مزار جو جمعرات کی رات کی ڈھول محفل کے لیے مشہور ہے۔" },
+      story: {
+        en: "Shah Jamal was a 17th-century Sufi mystic who settled in Lahore. His shrine in Gulberg is one of the most vibrant in the city — not for its architecture, but for what happens there every Thursday night. For decades, local devotees and musicians have gathered for a dhol session led by the famous Pappu Sain and his family, an ecstatic tradition of drumming that draws Sufis, students, musicians and visitors from across the city and beyond. The session combines devotion and music in a way that is unique to Lahore.",
+        ur: "شاہ جمال سترھویں صدی کے صوفی بزرگ تھے جو لاہور میں آباد ہوئے۔ گلبرگ میں ان کا مزار شہر کے سب سے زندہ مقامات میں سے ایک ہے — اپنی تعمیر کے لیے نہیں، بلکہ اس لیے کہ ہر جمعرات کی رات یہاں کیا ہوتا ہے۔ دہائیوں سے مقامی عقیدت مند اور موسیقار ایک ڈھول محفل کے لیے اکٹھے ہوتے ہیں، جس کی سربراہی مشہور پپو سائیں اور ان کے خاندان کرتا ہے — ڈھول بجانے کی ایک وجد آور روایت جو پورے شہر اور اس سے باہر سے صوفیوں، طالب علموں، موسیقاروں اور سیاحوں کو کھینچتی ہے۔",
+      },
+      facts: {
+        en: ["Pappu Sain's Thursday dhol sessions have continued for decades and are a living tradition.", "The sessions begin around 9–10 pm and continue until early morning.", "It draws both devout Sufis and curious visitors; respectful observers are welcome."],
+        ur: ["پپو سائیں کی جمعرات کی ڈھول محفل دہائیوں سے چل رہی ہے اور ایک زندہ روایت ہے۔", "محفل رات تقریباً 9 سے 10 بجے شروع ہوتی ہے اور صبح تک چلتی ہے۔", "عبادت گزار اور سیاح دونوں آتے ہیں؛ احترام سے دیکھنے والوں کا خیر مقدم ہے۔"],
+      },
+      look: {
+        en: ["The dhol players and the crowd of devotees.", "The faces of the musicians — this is a living tradition, not a performance for tourists."],
+        ur: ["ڈھول بجانے والے اور عقیدت مندوں کا ہجوم۔", "موسیقاروں کے چہرے — یہ ایک زندہ روایت ہے، سیاحوں کے لیے شو نہیں۔"],
+      },
+      visit: {
+        en: [["When to go", "Thursday night, from around 9–10 pm."], ["Respect", "This is a place of worship — dress modestly and behave respectfully."], ["Getting there", "Gulberg, Lahore — a short rickshaw ride from most hotels."]],
+        ur: [["کب جائیں", "جمعرات کی رات، تقریباً 9 سے 10 بجے سے۔"], ["احترام", "یہ عبادت کی جگہ ہے — سادہ لباس پہنیں اور احترام سے پیش آئیں۔"], ["کیسے جائیں", "گلبرگ، لاہور — زیادہ تر ہوٹلوں سے تھوڑی دور رکشے سے۔"]],
+      },
+    }),
+    S({
+      id: "kamrans-baradari", area: "gardens",
+      name: { en: "Kamran's Baradari", ur: "کامران کی بارہ دری" },
+      era: { en: "Mughal · 1540s", ur: "مغل دور · 1540 کی دہائی" },
+      line: { en: "A Mughal river pavilion on what was once an island in the Ravi, built by Babur's rebellious son.", ur: "مغل دور کا دریائی محل، کبھی راوی کے جزیرے پر، بابر کے باغی بیٹے نے بنوایا۔" },
+      story: {
+        en: "Prince Kamran, son of Emperor Babur and elder brother of Humayun, built this pavilion in the 1540s on an island in the River Ravi. The term baradari means a building with twelve doors, and these airy structures were summer retreats — perfect for catching river breezes. Kamran was a rebellious prince who battled his own brother Humayun for the Mughal throne; Humayun was at one point held captive here. By the 19th century the river had silted up, leaving the island connected to the bank. The baradari was later used by Ranjit Singh for gatherings, and stands today in a garden setting.",
+        ur: "شہزادہ کامران، بادشاہ بابر کے بیٹے اور ہمایوں کے بڑے بھائی، نے 1540 کی دہائی میں دریائے راوی کے ایک جزیرے پر یہ محل بنوایا۔ 'بارہ دری' کا مطلب ہے بارہ دروازوں والی عمارت، اور یہ ہوادار محل گرمیوں کی پناہ گاہ ہوتے تھے — دریا کی ہوا کے لیے بہترین۔ کامران ایک باغی شہزادہ تھا جس نے مغل تخت کے لیے اپنے بھائی ہمایوں سے لڑائی کی؛ ہمایوں ایک وقت یہاں قید رہا۔ انیسویں صدی تک دریا کے گاد نے جزیرے کو کنارے سے ملا دیا۔ بعد میں رنجیت سنگھ نے اسے محفلوں کے لیے استعمال کیا، اور آج یہ باغ کے ماحول میں کھڑا ہے۔",
+      },
+      facts: {
+        en: ["Kamran was Babur's eldest son but was blinded by Humayun as punishment for his rebellions.", "The baradari's island setting made it a cool summer retreat.", "It was restored in the late 20th century; Ranjit Singh's era saw it used for royal entertainments."],
+        ur: ["کامران بابر کا بڑا بیٹا تھا لیکن بغاوتوں کی سزا میں ہمایوں نے اسے اندھا کر دیا۔", "جزیرے پر ہونے کی وجہ سے یہ گرمیوں کی ٹھنڈی پناہ گاہ تھی۔", "بیسویں صدی کے آخر میں اس کی مرمت ہوئی؛ رنجیت سنگھ کے دور میں یہ شاہی تفریح کا مقام رہا۔"],
+      },
+      look: {
+        en: ["The double-storeyed arched structure, open on all sides.", "Imagine the Ravi flowing all around it — the garden was once an island."],
+        ur: ["دو منزلہ محراب دار ڈھانچہ، چاروں طرف سے کھلا۔", "تصور کریں کہ راوی چاروں طرف بہتا تھا — یہ باغ کبھی جزیرہ تھا۔"],
+      },
+      visit: {
+        en: [["Entry", "Ticketed. Check current prices at the gate."], ["Getting there", "Baghbanpura, near the Ravi riverbank — roughly 30–40 minutes from the Walled City."], ["Combine with", "Shalimar Gardens, also in Baghbanpura."]],
+        ur: [["داخلہ", "ٹکٹ لگتا ہے۔ قیمت دروازے پر پوچھیں۔"], ["کیسے جائیں", "باغبانپورہ، راوی کے کنارے کے قریب — اندرونِ شہر سے تقریباً 30 سے 40 منٹ۔"], ["ساتھ دیکھیں", "شالامار باغ، جو باغبانپورہ میں بھی ہے۔"]],
+      },
+    }),
   ];
 
   /* Area of the original six. */
@@ -434,11 +634,12 @@ LL.AREAS = [
 
   /* A sensible order (also the order of the virtual tour). */
   const ORDER = [
-    "badshahi-mosque", "lahore-fort", "wazir-khan-mosque", "shalimar-gardens", "minar-e-pakistan", "iqbal-park",
-    "jahangir-tomb", "lahore-museum", "shahi-hammam", "delhi-gate", "anarkali-tomb",
-    "data-darbar", "iqbal-tomb", "hazuri-bagh",
-    "sunehri-masjid", "asif-khan-tomb", "nur-jahan-tomb", "nau-nihal-haveli",
-    "railway-station", "quaid-library", "gulabi-bagh", "gcu", "chauburji",
+    "badshahi-mosque", "lahore-fort", "hazuri-bagh", "roshnai-gate", "wazir-khan-mosque", "iqbal-park", "minar-e-pakistan",
+    "gurdwara-dera-sahib", "delhi-gate", "shahi-hammam", "mariam-zamani-mosque", "bhati-gate", "niween-masjid", "fakir-khana", "sunehri-masjid", "nau-nihal-haveli",
+    "data-darbar", "iqbal-tomb", "anarkali-tomb",
+    "jahangir-tomb", "asif-khan-tomb", "nur-jahan-tomb",
+    "lahore-museum", "zamzammah", "gcu", "quaid-library", "railway-station", "shah-jamal",
+    "shalimar-gardens", "gulabi-bagh", "chauburji", "kamrans-baradari",
     "ranjit-samadhi",
   ];
   LL.SITES.sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
@@ -464,6 +665,15 @@ LL.AREAS = [
     "railway-station": q({ en: "15–20 min", ur: "15 سے 20 منٹ" }, { en: "Free outside", ur: "باہر سے مفت" }, { en: "Daytime", ur: "دن میں" }),
     "gulabi-bagh": q({ en: "15 min", ur: "15 منٹ" }, { en: "Free", ur: "مفت" }, { en: "With Shalimar", ur: "شالامار کے ساتھ" }),
     "chauburji": q({ en: "10 min", ur: "10 منٹ" }, { en: "Free", ur: "مفت" }, { en: "Morning, less traffic", ur: "صبح، ٹریفک کم" }),
+    "gurdwara-dera-sahib": q({ en: "15 min (outside)", ur: "15 منٹ (باہر سے)" }, { en: "Pilgrims only", ur: "صرف زائرین" }, { en: "With Fort visit", ur: "قلعے کے ساتھ" }),
+    "roshnai-gate": q({ en: "10 min", ur: "10 منٹ" }, { en: "Free", ur: "مفت" }, { en: "With Hazuri Bagh", ur: "حضوری باغ کے ساتھ" }),
+    "mariam-zamani-mosque": q({ en: "20 min", ur: "20 منٹ" }, { en: "Free", ur: "مفت" }, { en: "Morning, avoid prayer time", ur: "صبح، نماز کے وقت نہیں" }),
+    "bhati-gate": q({ en: "15 min", ur: "15 منٹ" }, { en: "Free", ur: "مفت" }, { en: "With Data Darbar", ur: "داتا دربار کے ساتھ" }),
+    "niween-masjid": q({ en: "15 min", ur: "15 منٹ" }, { en: "Free", ur: "مفت" }, { en: "On a guided heritage walk", ur: "ہیریٹیج ٹور کے ساتھ" }),
+    "fakir-khana": q({ en: "1–1.5 hours", ur: "ایک سے ڈیڑھ گھنٹہ" }, { en: "By appointment", ur: "وقت لے کر" }, { en: "Weekday morning", ur: "ہفتہ کے دن صبح" }),
+    "zamzammah": q({ en: "15 min", ur: "15 منٹ" }, { en: "Free", ur: "مفت" }, { en: "With Lahore Museum", ur: "لاہور عجائب گھر کے ساتھ" }),
+    "shah-jamal": q({ en: "2–3 hours", ur: "2 سے 3 گھنٹے" }, { en: "Free", ur: "مفت" }, { en: "Thursday night from 9 pm", ur: "جمعرات کی رات 9 بجے سے" }),
+    "kamrans-baradari": q({ en: "30–45 min", ur: "30 سے 45 منٹ" }, { en: "Ticketed", ur: "ٹکٹ" }, { en: "Morning", ur: "صبح" }),
   });
 
   /* Quiz: three questions per place (the place-page check uses them). */
@@ -523,6 +733,33 @@ LL.AREAS = [
     Q("chauburji", "What does Chauburji mean?", "چوبرجی کا مطلب کیا ہے؟", ["Four towers", "Four gates", "Four gardens", "Four domes"], ["چار برج", "چار دروازے", "چار باغ", "چار گنبد"]),
     Q("chauburji", "Chauburji was the gateway to a…", "چوبرجی کس چیز کا دروازہ تھا؟", ["Garden", "Fort", "Mosque", "City"], ["باغ", "قلعہ", "مسجد", "شہر"]),
     Q("chauburji", "What knocked down one of its minarets in 1846?", "1846 میں اس کا ایک مینار کس وجہ سے گرا؟", ["An earthquake", "A war", "A flood", "Lightning"], ["زلزلہ", "جنگ", "سیلاب", "بجلی"]),
+    Q("gurdwara-dera-sahib", "Which Sikh Guru was martyred at this site?", "یہاں کون سے سکھ گرو کی شہادت ہوئی؟", ["Guru Arjan Dev", "Guru Nanak", "Guru Gobind Singh", "Guru Tegh Bahadur"], ["گرو ارجن دیو", "گرو نانک", "گرو گوبند سنگھ", "گرو تیغ بہادر"]),
+    Q("gurdwara-dera-sahib", "Who ordered his execution?", "ان کو پھانسی کس نے دی؟", ["Emperor Jahangir", "Aurangzeb", "Akbar", "Ranjit Singh"], ["بادشاہ جہانگیر", "اورنگزیب", "اکبر", "رنجیت سنگھ"]),
+    Q("gurdwara-dera-sahib", "Which Sikh holy scripture did Guru Arjan Dev compile?", "گرو ارجن دیو نے کون سی مقدس کتاب مرتب کی؟", ["Adi Granth", "Guru Granth Sahib (later)", "Dasam Granth", "Janamsakhi"], ["آدی گرنتھ", "گرو گرنتھ صاحب", "دسم گرنتھ", "جنم ساکھی"]),
+    Q("roshnai-gate", "What does Roshnai mean?", "روشنائی کا مطلب کیا ہے؟", ["Light", "Royal", "Western", "Sacred"], ["روشنی", "شاہی", "مغربی", "مقدس"]),
+    Q("roshnai-gate", "On which side of Hazuri Bagh does Roshnai Gate stand?", "روشنائی دروازہ حضوری باغ کی کس طرف ہے؟", ["South", "North", "East", "West"], ["جنوب", "شمال", "مشرق", "مغرب"]),
+    Q("roshnai-gate", "How many original gates did Lahore's Walled City have?", "لاہور کے اندرونِ شہر کے کتنے اصل دروازے تھے؟", ["13", "7", "9", "21"], ["13", "7", "9", "21"]),
+    Q("mariam-zamani-mosque", "Who built the Mariam Zamani Mosque?", "مریم زمانی مسجد کس نے بنوائی؟", ["Emperor Jahangir", "Akbar", "Shah Jahan", "Aurangzeb"], ["بادشاہ جہانگیر", "اکبر", "شاہجہان", "اورنگزیب"]),
+    Q("mariam-zamani-mosque", "Who was Mariam-uz-Zamani?", "مریم زمانی کون تھیں؟", ["Jahangir's mother", "Akbar's sister", "Shah Jahan's wife", "Nur Jahan's daughter"], ["جہانگیر کی والدہ", "اکبر کی بہن", "شاہجہان کی بیوی", "نور جہاں کی بیٹی"]),
+    Q("mariam-zamani-mosque", "By what other name is the mosque known?", "مسجد کو اور کس نام سے جانا جاتا ہے؟", ["Begum Shahi Mosque", "Sunehri Mosque", "Wazir Khan Mosque", "Mariam Mosque"], ["بیگم شاہی مسجد", "سنہری مسجد", "مسجد وزیر خان", "مریم مسجد"]),
+    Q("bhati-gate", "In which direction does Bhati Gate face?", "بھاٹی دروازہ کس سمت میں ہے؟", ["West", "East", "North", "South"], ["مغرب", "مشرق", "شمال", "جنوب"]),
+    Q("bhati-gate", "Which famous shrine is just outside Bhati Gate?", "بھاٹی دروازے کے بالکل باہر کون سا مشہور مزار ہے؟", ["Data Darbar", "Shah Jamal", "Mian Mir", "Bulleh Shah"], ["داتا دربار", "شاہ جمال", "میاں میر", "بلھے شاہ"]),
+    Q("bhati-gate", "What does the name Bhati come from?", "بھاٹی نام کہاں سے آیا؟", ["The Bhatti tribe", "A king named Bhati", "A river called Bhati", "A word for temple"], ["بھٹی قبیلہ", "بھاٹی نامی بادشاہ", "بھاٹی نامی دریا", "مندر کا لفظ"]),
+    Q("niween-masjid", "What does Niween mean in Punjabi?", "پنجابی میں نیویں کا مطلب کیا ہے؟", ["Low / humble", "Ancient", "Holy", "Small tower"], ["چھوٹی / عاجزانہ", "قدیم", "مقدس", "چھوٹا مینار"]),
+    Q("niween-masjid", "During which dynasty was it built?", "یہ کس خاندان کے دور میں بنی؟", ["Lodi Sultanate", "Mughal Empire", "Sikh Empire", "British Raj"], ["لودی سلطنت", "مغل سلطنت", "سکھ سلطنت", "برطانوی راج"]),
+    Q("niween-masjid", "Why is Niween Masjid historically significant?", "نیویں مسجد تاریخی اعتبار سے اہم کیوں ہے؟", ["It may be the oldest mosque in Lahore", "It has the tallest minarets", "Allama Iqbal prayed here", "It was built by Ranjit Singh"], ["یہ لاہور کی سب سے پرانی مسجد ہو سکتی ہے", "اس کے مینار سب سے اونچے ہیں", "اقبال یہاں نماز پڑھتے تھے", "رنجیت سنگھ نے بنوائی"]),
+    Q("fakir-khana", "How many objects are in the Fakir Khana Museum?", "فقیر خانہ میوزیم میں کتنی چیزیں ہیں؟", ["Over 30,000", "About 500", "Over 1,000", "About 10,000"], ["30,000 سے زیادہ", "تقریباً 500", "1,000 سے زیادہ", "تقریباً 10,000"]),
+    Q("fakir-khana", "Who founded the Fakir Khana collection?", "فقیر خانہ کا مجموعہ کس نے شروع کیا؟", ["Fakir Nuruddin", "Maharaja Ranjit Singh", "Allama Iqbal", "Data Ganj Bakhsh"], ["فقیر نورالدین", "مہاراجہ رنجیت سنگھ", "علامہ اقبال", "داتا گنج بخش"]),
+    Q("fakir-khana", "How is Fakir Khana Museum different from most museums?", "فقیر خانہ زیادہ تر میوزیموں سے کیسے مختلف ہے؟", ["It is a private family museum", "It is in a palace", "It has no fee", "It was built by the British"], ["یہ ایک نجی خاندانی میوزیم ہے", "یہ محل میں ہے", "کوئی فیس نہیں", "انگریزوں نے بنوایا"]),
+    Q("zamzammah", "What does Zam Zammah mean?", "زمزمہ کا مطلب کیا ہے؟", ["Lion's roar", "Fire-eater", "River spirit", "Mighty cannon"], ["شیر کی دہاڑ", "آگ کھانے والا", "دریا کی روح", "طاقتور توپ"]),
+    Q("zamzammah", "In which novel does Kim sit on this gun?", "کون سے ناول میں کِم اس توپ پر بیٹھا ہے؟", ["Kim", "Jungle Book", "Plain Tales from the Hills", "The Man Who Would Be King"], ["کِم", "جنگل بک", "پلین ٹیلز فرام دی ہلز", "دی مین ہو وڈ بی کنگ"]),
+    Q("zamzammah", "In which year was Zam Zammah cast?", "زمزمہ کس سال ڈھالی گئی؟", ["1757", "1857", "1657", "1957"], ["1757", "1857", "1657", "1957"]),
+    Q("shah-jamal", "What happens at Shah Jamal every Thursday night?", "شاہ جمال میں ہر جمعرات کی رات کیا ہوتا ہے؟", ["A dhol session", "A qawwali concert", "A poetry recital", "A food festival"], ["ڈھول کی محفل", "قوالی کی محفل", "شاعری کی نشست", "کھانے کا میلہ"]),
+    Q("shah-jamal", "Who is associated with the famous dhol sessions?", "مشہور ڈھول محفل کس کے ساتھ منسوب ہے؟", ["Pappu Sain", "Nusrat Fateh Ali Khan", "Abida Parveen", "Rahat Fateh Ali Khan"], ["پپو سائیں", "نصرت فتح علی خان", "عابدہ پروین", "راحت فتح علی خان"]),
+    Q("shah-jamal", "In which area of Lahore is Shah Jamal?", "شاہ جمال لاہور کے کس علاقے میں ہے؟", ["Gulberg", "The Walled City", "Shahdara", "The Mall"], ["گلبرگ", "اندرونِ شہر", "شاہدرہ", "مال روڈ"]),
+    Q("kamrans-baradari", "Who built Kamran's Baradari?", "کامران کی بارہ دری کس نے بنوائی؟", ["Prince Kamran", "Emperor Babur", "Humayun", "Ranjit Singh"], ["شہزادہ کامران", "بادشاہ بابر", "ہمایوں", "رنجیت سنگھ"]),
+    Q("kamrans-baradari", "What was special about the site of the baradari?", "بارہ دری کی جگہ کے بارے میں خاص بات کیا تھی؟", ["It was on an island in the Ravi", "It was on a hill", "It was under a waterfall", "It was at the city gate"], ["یہ راوی کے جزیرے پر تھی", "یہ پہاڑی پر تھی", "یہ آبشار کے نیچے تھی", "یہ شہر کے دروازے پر تھی"]),
+    Q("kamrans-baradari", "What does baradari mean?", "بارہ دری کا مطلب کیا ہے؟", ["A building with 12 doors", "A royal garden", "A river crossing", "A summer camp"], ["بارہ دروازوں والی عمارت", "شاہی باغ", "دریا کا پار", "گرمیوں کا کیمپ"]),
   );
 
   /* Walk stops that now have their own page. */

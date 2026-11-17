@@ -59,23 +59,33 @@
     sound: '<path d="M11 5L6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14"/>',
   };
   const ico = (n) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+  /* content block: renders Urdu by default with an inline EN toggle */
+  function cblk(enHtml, urHtml, cls) {
+    if (!urHtml) return cls ? `<div class="${cls}" lang="en">${enHtml}</div>` : enHtml;
+    const startEn = LL.I18N.mode === "en";
+    return `<div class="cblk${cls ? " " + cls : ""}" data-l="${startEn ? "en" : "ur"}">` +
+      `<div class="cblk__ur" lang="ur" dir="rtl"${startEn ? " hidden" : ""}>${urHtml}</div>` +
+      `<div class="cblk__en" lang="en"${startEn ? "" : " hidden"}>${enHtml}</div>` +
+      `<button class="cblk__tog" aria-label="Toggle language">${startEn ? "اردو" : "EN"}</button>` +
+      `</div>`;
+  }
   let cleanup = null;
 
   /* ---------------- header ---------------- */
   function header() {
-    [["places", "#/"], ["plan", "#/plan"], ["tour", "#/tour"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
+    [["places", "#/"], ["plan", "#/plan"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
     $("#footer-lang").textContent = `${t("langTitle")}: ${LL.I18N.mode === "mix" ? t("langMix") : t("langEn")} · ${t("langChange")}`;
     const n = LL.Progress.stampCount(), rk = LL.Game.rank();
     const pct = Math.round(rk.pct * 100);
     const toNextTxt = rk.next ? ` · ${rk.toNext} pts to ${rk.next.en}` : "";
-    $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><b>${rk.points}</b><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
+    $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><span class="pill__score"><b>${rk.points}</b><small class="pill__pts-label">pts</small></span><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
     $("#progress-pill").title = `${rk.en} · ${rk.points} pts${toNextTxt} · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
     $("#progress-pill").classList.toggle("pill--near-rank", pct > 80 && !!rk.next);
     $("#footer-text").textContent = t("footer");
     const r = route();
-    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page === "trail" ? "tour" : r.page)));
+    document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page)));
   }
 
   /* ---------------- home ---------------- */
@@ -91,7 +101,6 @@
   function home() {
     const P = LL.Progress;
     const seen = P.seenCount(), stamps = P.stampCount(), rk = LL.Game.rank();
-    const now = rightNow();
     main().innerHTML = `
       <section class="hero hero--home">
         <div class="hero__photo" id="hero-photo"></div>
@@ -99,57 +108,50 @@
         <div class="hero__inner">
           <p class="eyebrow">${t("heroEyebrow")}</p>
           <h1>${t("heroTitle")}</h1>
-          <p class="lead">${t("heroLead", TOTAL())}</p>
           <div class="search" role="search">
             <span class="search__icon">${ico("search")}</span>
             <input id="q" type="search" autocomplete="off" placeholder="${t("searchPh", TOTAL())}" aria-label="${t("searchPh", TOTAL())}">
             <div class="search__results" id="results" hidden></div>
           </div>
           <div class="hero-dock">
-            <a class="dock-btn" href="#/map/near">${ico("pin")} ${t("actNear")}</a>
             <a class="dock-btn" href="#/plan">${ico("plan")} ${t("actPlan")}</a>
-            <a class="dock-btn" href="#/tour">${ico("tour")} ${t("actTour")}</a>
           </div>
           <a class="hero__cue" href="#explore" aria-label="${t("cue")}"><span>${t("cue")}</span><i></i></a>
-          ${seen ? `<a class="hero__progress" href="#/me">${ico("crown")} <b>${esc(rk.en)}</b> · ${rk.points} pts · ${t("stampsOf", stamps, TOTAL())} →</a>` : ""}
         </div>
-        <div class="hero-site-label" aria-hidden="true">
-          <span class="hero-site-count"></span>
-          <span class="hero-site-name"></span>
-          <span class="hero-site-era"></span>
+        <div class="hero__side" aria-label="Quick links">
+          <a class="hq" href="#/trail">
+            <span class="hq__icon">${ico("tour")}</span>
+            <div><b>360° Virtual Tour</b><span>Walk through the Walled City</span></div>
+          </a>
+          <a class="hq" href="#/plan">
+            <span class="hq__icon">${ico("plan")}</span>
+            <div><b>Tour Plans</b><span>Ready-made day itineraries</span></div>
+          </a>
+          <a class="hq" href="#/quiz">
+            <span class="hq__icon">${ico("quiz")}</span>
+            <div><b>Quick Quiz</b><span>60 seconds · test your knowledge</span></div>
+          </a>
         </div>
-        <div class="hero-progress-bar"><div class="hero-progress-fill" id="hero-pbar"></div></div>
       </section>
 
       <div class="marquee" id="marquee"></div>
 
       <section class="glance wrap" id="explore">
         <div><b data-count="${TOTAL()}">${TOTAL()}</b><span>${t("glPlaces")}</span></div>
-        <div><b data-count="${LL.TRAIL360.stops.length}">${LL.TRAIL360.stops.length}</b><span>${t("glStops")}</span></div>
         <div><b data-count="${LL.PLANS.length}">${LL.PLANS.length}</b><span>${t("glPlans")}</span></div>
         <div><b data-count="${LL.AREAS.length}">${LL.AREAS.length}</b><span>${t("glAreas")}</span></div>
       </section>
 
-      <section class="row">
-        <header class="row__head wrap"><div><h2>${t("now_" + now.k)}</h2><p>${t("nowLine_" + now.k)}</p></div></header>
-        <div class="row__scroll" data-ids="${now.ids.join(",")}"></div>
+      <section class="all-sites wrap" id="all-sites">
+        ${LL.AREAS.map((a) => {
+          const areaSites = LL.SITES.filter((s) => s.area === a.id);
+          if (!areaSites.length) return "";
+          return `<div class="all-sites__group">
+            <h3 class="all-sites__area rv">${esc(a.name.en)} <small>${t("placesCount", areaSites.length)}</small></h3>
+            <div class="sites-grid" data-ids="${areaSites.map((s) => s.id).join(",")}"></div>
+          </div>`;
+        }).join("")}
       </section>
-
-      <section class="row">
-        <header class="row__head wrap"><div><h2>${t("sitesTitle")}</h2><p>${t("sitesLead")}</p></div></header>
-        <div class="row__scroll" data-ids="${LL.SITES.filter((s) => s.top).map((s) => s.id).join(",")}"></div>
-      </section>
-
-      <section class="wrap">${trailBand()}</section>
-
-      ${LL.AREAS.map((a) => `
-      <section class="row">
-        <header class="row__head wrap">
-          <div><h2>${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span></h2><p>${esc(a.line.en)} · ${t("placesCount", LL.SITES.filter((s) => s.area === a.id).length)}</p></div>
-          <a class="row__more" href="#/map/area-${a.id}">${ico("map")} ${t("onMap")}</a>
-        </header>
-        <div class="row__scroll" data-ids="${LL.SITES.filter((s) => s.area === a.id).map((s) => s.id).join(",")}"></div>
-      </section>`).join("")}
 
       ${stamps >= CERT_AT ? `<section class="wrap"><div class="band band--cert">
         <div><p class="eyebrow">✓ ${stamps}/${TOTAL()}</p><h2>${t("certTitle")}</h2><p>${t("certLead")}</p></div>
@@ -205,37 +207,27 @@
       heroBox.appendChild(div);
       return { el: div, s };
     });
-    const hNameEl = main().querySelector(".hero-site-name");
-    const hEraEl  = main().querySelector(".hero-site-era");
-    const hCntEl  = main().querySelector(".hero-site-count");
-    const hPbar   = $("#hero-pbar");
     function cinemaGo(n) {
       hSlides[si].el.classList.remove("is-on");
       si = ((n % hSlides.length) + hSlides.length) % hSlides.length;
       hSlides[si].el.classList.add("is-on");
-      const s = hSlides[si].s;
-      if (hNameEl) hNameEl.textContent = s.name.en;
-      if (hEraEl)  hEraEl.textContent  = s.era.en;
-      if (hCntEl)  hCntEl.textContent  = String(si + 1).padStart(2, "0") + " / " + String(hSlides.length).padStart(2, "0");
-      if (hPbar) { hPbar.style.transition = "none"; hPbar.style.width = "0"; requestAnimationFrame(() => { hPbar.style.transition = "width 3.2s linear"; hPbar.style.width = "100%"; }); }
     }
     cinemaGo(0);
-    const cinemaT = setInterval(() => cinemaGo(si + 1), 3200);
+    const cinemaT = setInterval(() => cinemaGo(si + 1), 1800);
     LL.Motion.parallax(heroBox);
 
     // swipe rows
-    main().querySelectorAll(".row__scroll").forEach((row) => {
-      row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(tile(s)); });
+    main().querySelectorAll(".sites-grid").forEach((row) => {
+      row.dataset.ids.split(",").forEach((id) => { const s = site(id); if (s) row.appendChild(homeCard(s)); });
     });
     LL.Ease && LL.Ease.rowArrows(main());
-    const mixNames = LL.I18N.mode === "mix";
-    LL.Delight.marquee($("#marquee"), LL.SITES.map((x, i) => (mixNames && i % 2 ? `<span lang="ur">${esc(x.name.ur)}</span>` : esc(x.name.en))));
+    LL.Delight.marquee($("#marquee"), LL.SITES.map((x) => esc(x.name.en)));
     const stopRows = LL.Delight.rows(main());
     LL.Delight.tiltCards(main());
     $(".hero__cue").addEventListener("click", (e) => { e.preventDefault(); $("#explore").scrollIntoView({ behavior: "smooth", block: "start" }); });
     const back = LL.Motion.lastMorph();
     if (back) { const c = main().querySelector(`.tile[href="#/site/${back}"] .media`); if (c) c.style.viewTransitionName = "hero-photo"; }
-    LL.Motion.reveal(main(), ".row__head, .band, .glance > div, .trailband");
+    LL.Motion.reveal(main(), ".band, .glance > div, .discover-section, .all-sites__area, .sites-grid .hc");
 
     // search
     const q = $("#q"), res = $("#results");
@@ -253,7 +245,7 @@
     const drawRes = () => {
       const list = find(q.value);
       res.hidden = !q.value.trim();
-      res.innerHTML = list.length ? list.map((s) => `<a class="sr-item" href="#/site/${s.id}" data-ph="${s.id}"><span><b>${esc(s.name.en)}</b> <span lang="ur">${esc(s.name.ur)}</span><small>${esc((area(s.area) || { name: { en: "" } }).name.en)} · ${esc(s.era.en)}</small></span></a>`).join("") : `<p class="sr-none">${t("noResults")}</p>`;
+      res.innerHTML = list.length ? list.map((s) => `<a class="sr-item" href="#/site/${s.id}" data-ph="${s.id}"><span><b>${esc(s.name.en)}</b><small>${esc((area(s.area) || { name: { en: "" } }).name.en)} · ${esc(s.era.en)}</small></span></a>`).join("") : `<p class="sr-none">${t("noResults")}</p>`;
       res.querySelectorAll("[data-ph]").forEach((el) => { const m = media(el.dataset.ph, { width: 330 }); m.classList.add("sr-ph"); el.prepend(m); });
     };
     q.addEventListener("input", drawRes);
@@ -282,7 +274,7 @@
     frame.insertAdjacentHTML("beforeend", `<span class="tile__top">${LL.Game.level(s.id) !== "new" ? statusChip(s.id) : ""}${d != null && d < 40000 ? `<span class="tile__dist">${fmtDist(d)}</span>` : ""}</span>`);
     a.appendChild(frame);
     a.insertAdjacentHTML("beforeend", `
-      <span class="tile__body"><small>${esc(s.era.en)}</small><b>${esc(s.name.en)}</b><span lang="ur">${esc(s.name.ur)}</span></span>`);
+      <span class="tile__body"><small>${esc(s.era.en)}</small><b>${esc(s.name.en)}</b></span>`);
     return a;
   }
   const fmtDist = (m) => (m < 950 ? `${Math.round(m / 50) * 50} m` : `${(m / 1000).toFixed(m < 9500 ? 1 : 0)} km`);
@@ -297,8 +289,8 @@
       ${LL.Game.level(s.id) !== "new" ? `<span class="card__stamp">${statusChip(s.id)}</span>` : ""}
       <div class="card__body">
         <p class="card__meta"><span>${esc(s.era.en)}</span><span>${t("min")}</span></p>
-        <h3>${esc(s.name.en)} <span class="card__ur" lang="ur">${esc(s.name.ur)}</span></h3>
-        <p class="card__line" ${U()}>${fx(pick(s.line))}</p>
+        <h3>${esc(s.name.en)}</h3>
+        <p class="card__line">${esc(s.line.en)}</p>
       </div>`);
     return a;
   }
@@ -308,6 +300,24 @@
     if (lv === "new") return `<span class="status status--new">${t("stNew")}</span>`;
     const g = LL.Game.status(id);
     return `<span class="status status--${lv}">${lv === "visited" ? `${ico("check")} ${t(g.gps ? "stVerified" : "stVisited")}` : lv === "stamp" ? `★ ${t("stamped")}` : `${ico("eye")} ${t("stSeen")}`}</span>`;
+  }
+
+  /* large photo card for the home page 24-sites grid */
+  function homeCard(s) {
+    const a = document.createElement("a");
+    a.className = "hc";
+    a.href = `#/site/${s.id}`;
+    a.appendChild(media(s.id, { width: 700, start: 1 }));
+    const seen = LL.Game.level(s.id) !== "new";
+    a.insertAdjacentHTML("beforeend", `
+      <div class="hc__overlay" aria-hidden="true"></div>
+      ${seen ? `<span class="hc__seen" aria-label="Visited">✓</span>` : ""}
+      <div class="hc__body">
+        <span class="hc__gem" aria-hidden="true">◆</span>
+        <b class="hc__name">${esc(s.name.en)}</b>
+        <span class="hc__cta">Explore <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>`);
+    return a;
   }
 
   /* compact row card used in the "every place" list */
@@ -321,8 +331,8 @@
     a.insertAdjacentHTML("beforeend", `<div class="mini__body">
       <p class="mini__meta">${esc(s.era.en)}</p>
       ${statusChip(s.id)}
-      <h4>${esc(s.name.en)} <span lang="ur">${esc(s.name.ur)}</span></h4>
-      <p class="mini__line" ${U()}>${fx(pick(s.line))}</p></div>`);
+      <h4>${esc(s.name.en)}</h4>
+      <p class="mini__line">${esc(s.line.en)}</p></div>`);
     return a;
   }
 
@@ -343,6 +353,136 @@
     </section>`;
   }
 
+  /* ---- Learn / deep-read page ---- */
+  function learnPage(id) {
+    const s = site(id);
+    if (!s) return go("#/");
+
+    const facts_en = (s.facts && s.facts.en) || [];
+    const facts_ur = (s.facts && s.facts.ur) || [];
+    const look_en = (s.look && s.look.en) || [];
+    const look_ur = (s.look && s.look.ur) || [];
+    const spots = LL.PHOTO_SPOTS && LL.PHOTO_SPOTS[id] || [];
+    const O = LL.OFFICIAL;
+
+    main().innerHTML = `
+      <div class="learn-page">
+        <header class="learn__header wrap-narrow">
+          <a class="back" href="#/site/${id}">← Back to ${esc(s.name.en)}</a>
+          <h1 class="learn__h1">${esc(s.name.en)}</h1>
+          <p class="learn__line">${esc(s.line.en)}</p>
+        </header>
+
+        <div class="learn__body wrap-narrow">
+
+          <section class="learn__section">
+            <h2 class="learn__h2">The story</h2>
+            ${cblk(
+              fx(s.story && s.story.en || "").split(/\n+/).map(p => `<p>${p}</p>`).join(""),
+              s.story && s.story.ur ? fx(s.story.ur).split(/\n+/).map(p => `<p>${p}</p>`).join("") : null,
+              "learn__story"
+            )}
+          </section>
+
+          ${(s.history && s.history.en && s.history.en.length) ? s.history.en.map((sec, i) => {
+            const urSec = s.history.ur && s.history.ur[i];
+            const enHtml = fx(sec.body || "").split(/\n+/).map(p => `<p>${p}</p>`).join("");
+            const urHtml = urSec ? fx(urSec.body || "").split(/\n+/).map(p => `<p>${p}</p>`).join("") : null;
+            return `<section class="learn__section">
+              <h2 class="learn__h2">${esc(sec.heading || "")}</h2>
+              ${cblk(enHtml, urHtml, "learn__story")}
+            </section>`;
+          }).join("") : ""}
+
+          ${facts_en.length ? `<section class="learn__section">
+            <h2 class="learn__h2">Key facts</h2>
+            ${cblk(
+              `<ol class="learn__facts" lang="en">${facts_en.map((f, i) => `<li class="learn__fact rv"><span class="learn__fact-num">${i + 1}</span><p>${fx(f)}</p></li>`).join("")}</ol>`,
+              facts_ur.length ? `<ol class="learn__facts" lang="ur" dir="rtl">${facts_ur.map((f, i) => `<li class="learn__fact rv"><span class="learn__fact-num">${i + 1}</span><p>${fx(f)}</p></li>`).join("")}</ol>` : null
+            )}
+          </section>` : ""}
+
+          ${(s.secrets && s.secrets.en && s.secrets.en.length) ? `
+          <section class="learn__section learn__section--secrets">
+            <h2 class="learn__h2">Hidden facts &amp; lesser-known history</h2>
+            ${cblk(
+              `<ul class="learn__secrets" lang="en">${s.secrets.en.map((sec, i) => `<li class="learn__secret rv"><span class="learn__fact-num learn__secret-icon">${i + 1}</span><p>${fx(sec)}</p></li>`).join("")}</ul>`,
+              s.secrets.ur && s.secrets.ur.length ? `<ul class="learn__secrets" lang="ur" dir="rtl">${s.secrets.ur.map((sec, i) => `<li class="learn__secret rv"><span class="learn__fact-num learn__secret-icon">${i + 1}</span><p>${fx(sec)}</p></li>`).join("")}</ul>` : null
+            )}
+          </section>` : ""}
+
+          ${look_en.length ? `<section class="learn__section">
+            <h2 class="learn__h2">What to look for</h2>
+            <p class="hint">Things worth noticing when you visit.</p>
+            ${cblk(
+              `<ul class="learn__look" lang="en">${look_en.map(l => `<li class="rv"><span>${fx(l)}</span></li>`).join("")}</ul>`,
+              look_ur.length ? `<ul class="learn__look" lang="ur" dir="rtl">${look_ur.map(l => `<li class="rv"><span>${fx(l)}</span></li>`).join("")}</ul>` : null
+            )}
+          </section>` : ""}
+
+          ${spots.length ? `<section class="learn__section">
+            <h2 class="learn__h2">${ico("camera")} Photo spots</h2>
+            <p class="hint">Best angles and tips for photographing this place.</p>
+            <ul class="spots-list">${spots.map((sp) => `
+              <li class="spot-tip rv">
+                <b class="spot-angle">${esc(sp.angle)}</b>
+                <p class="spot-text">${esc(sp.tip)}</p>
+                <span class="spot-time">${ico("clock")} ${esc(sp.bestTime)}</span>
+              </li>`).join("")}
+            </ul>
+          </section>` : ""}
+
+          <section class="learn__section">
+            <h2 class="learn__h2">Then &amp; now</h2>
+            <div id="learn-thennow"><p class="hint">Loading comparison…</p></div>
+          </section>
+
+          <section class="learn__section">
+            <h2 class="learn__h2">Gallery</h2>
+            <div class="strip" id="learn-strip"></div>
+          </section>
+
+          <section class="block check" id="check"></section>
+
+          <div class="learn__back-cta">
+            <a class="btn btn--gold" href="#/site/${id}">${ico("back")} Back to ${esc(s.name.en)}</a>
+            <a class="btn btn--ghost" href="#/tour/${id}">${ico("tour")} 360° view</a>
+          </div>
+        </div>
+      </div>`;
+
+    LL.Motion.reveal(main(), ".learn__fact, .learn__secret, .learn__look li, .spot-tip, .learn__back-cta");
+    miniQuiz(id);
+
+    const strip = $("#learn-strip");
+    LL.Photos.candidates(id, 500).forEach((g, i) => {
+      const b = document.createElement("button");
+      b.className = "strip__item";
+      b.setAttribute("aria-label", cap(g));
+      b.appendChild(media(id, { width: 500, start: i, label: false }));
+      b.insertAdjacentHTML("beforeend", `<span>${fx(cap(g))}</span>`);
+      b.addEventListener("click", () => lightbox(id, i));
+      strip.appendChild(b);
+    });
+
+    Promise.all([LL.Photos.old(id, 960), LL.Photos.resolve(id, 960, 0)]).then(([oldP, nowP]) => {
+      const box = $("#learn-thennow");
+      if (!box || !oldP || !nowP) { if (box) box.innerHTML = "<p class='hint'>No historical photo available for this site.</p>"; return; }
+      box.innerHTML = `<p class="hint">${t("thenNowHint")}</p>
+        <div class="compare" style="--pos:50%">
+          <img src="${nowP.url}" alt="${t("now")}" draggable="false">
+          <img class="compare__old" src="${oldP.url}" alt="${t("then")}" draggable="false">
+          <span class="compare__line"></span>
+          <span class="compare__tag compare__tag--then">${t("then")}</span><span class="compare__tag compare__tag--now">${t("now")}</span>
+          <input type="range" min="0" max="100" value="50" aria-label="${t("thenNowHint")}">
+        </div>`;
+      const cmp = box.querySelector(".compare");
+      box.querySelector("input").addEventListener("input", (e) => cmp.style.setProperty("--pos", e.target.value + "%"));
+    });
+
+    if (O) wireOfficial(main());
+  }
+
   /* ---- Myths page ---- */
   function mythsPage() {
     const u = U();
@@ -359,7 +499,7 @@
           ${(LL.MYTHS || []).map((m) => `
             <div class="myth-card myth-card--${m.category} rv" data-id="${m.id}" data-verdict="${m.verdict}">
               <span class="myth-cat myth-cat--${m.category}">${m.category}</span>
-              <p class="myth-claim" ${u}>${esc(pick(m.claim))}</p>
+              ${cblk(esc(m.claim && m.claim.en || ""), m.claim && m.claim.ur ? esc(m.claim.ur) : null, "myth-claim")}
               <div class="myth-vote-row">
                 <button class="myth-btn myth-btn--truth" data-v="truth">✓ Truth</button>
                 <button class="myth-btn myth-btn--myth" data-v="myth">✗ Myth</button>
@@ -367,7 +507,7 @@
               </div>
               <div class="myth-reveal" hidden>
                 <span class="myth-verdict mv--${m.verdict}">${m.verdict === "truth" ? "✓ True!" : m.verdict === "myth" ? "✗ Myth!" : "⟡ Legend"}</span>
-                <p class="myth-exp" ${u}>${esc(pick(m.explanation))}</p>
+                ${cblk(esc(m.explanation && m.explanation.en || ""), m.explanation && m.explanation.ur ? esc(m.explanation.ur) : null, "myth-exp")}
               </div>
             </div>`).join("")}
         </div>
@@ -483,11 +623,19 @@
         ${stories.map((s, i) => `
           <article class="story-1947 rv" id="story-${s.id}">
             <header class="story-header">
-              <span class="story-loc" ${u}>${esc(pick(s.location))}</span>
-              <h2 ${u}>${esc(pick(s.title))}</h2>
+              <span class="story-loc">${esc(s.location && s.location.en || "")}</span>
+              <h2>${esc(s.title && s.title.en || "")}</h2>
             </header>
-            <blockquote class="pull-quote" ${u}>"${esc(pick(s.pullQuote))}"</blockquote>
-            <div class="story-body" ${u}>${pick(s.story).split(/\n\n/).map((p) => `<p>${storyHtml(p)}</p>`).join("")}</div>
+            ${cblk(
+              `"${esc(s.pullQuote && s.pullQuote.en || "")}"`,
+              s.pullQuote && s.pullQuote.ur ? `"${esc(s.pullQuote.ur)}"` : null,
+              "pull-quote"
+            )}
+            ${cblk(
+              (s.story && s.story.en || "").split(/\n\n/).map(p => `<p>${storyHtml(p)}</p>`).join(""),
+              s.story && s.story.ur ? (s.story.ur).split(/\n\n/).map(p => `<p>${storyHtml(p)}</p>`).join("") : null,
+              "story-body"
+            )}
           </article>
           ${i < stories.length - 1 ? '<div class="story-divider wrap-narrow" aria-hidden="true"><span>✦ ✦ ✦</span></div>' : ""}`).join("")}
       </div>`;
@@ -503,7 +651,6 @@
     const P = LL.Progress.state;
     const idx = LL.SITES.indexOf(s);
     const next = LL.SITES[(idx + 1) % LL.SITES.length];
-    const ticked = P.look[id] || [];
     const cfg = LL.ASSETS.locations[id];
 
     main().innerHTML = `
@@ -514,56 +661,43 @@
             <a class="back" href="#/">← ${t("back")}</a>
             <p class="eyebrow">${esc(s.era.en)}${area(s.area) ? ` · ${esc(area(s.area).name.en)}` : ""}${LL.ME && LL.GEO[id] && LL.Game.distance(LL.ME, LL.GEO[id]) < 40000 ? ` · <b class="dist">${fmtDist(LL.Game.distance(LL.ME, LL.GEO[id]))} ${t("away")}</b>` : ""}</p>
             <h1>${esc(s.name.en)}</h1>
-            <p class="site__ur" lang="ur">${esc(s.name.ur)}</p>
-            <div class="site__actions">
-              <button class="btn btn--gold btn--sm" id="see-photos">${ico("eye")} ${t("seePhotos")}</button>
-              <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("tour")} ${t("virtualView")}</a>
+            <div class="site__utils">
               <a class="btn btn--ghost btn--sm" href="#/map/${id}">${ico("map")} ${t("onMap")}</a>
               <button class="btn btn--ghost btn--sm" id="share-place">${ico("share")} ${t("sharePlace")}</button>
-              <button class="btn btn--ghost btn--sm sounds-btn" id="sounds-btn" hidden>${ico("sound")} Ambience</button>
             </div>
           </div>
         </header>
 
         <div class="site__body wrap-narrow">
-          <dl class="quick">${(LL.QUICK[id] || []).map(([k, v]) => `<div><dt>${t("quick")[k]}</dt><dd ${U()}>${fx(pick(v))}</dd></div>`).join("")}</dl>
+          <section class="site__photo-first">
+            <div class="strip" id="strip"></div>
+            <div class="site__actions">
+              <button class="btn btn--gold btn--sm" id="see-photos">${ico("eye")} ${t("seePhotos")}</button>
+              <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("tour")} ${t("virtualView")}</a>
+            </div>
+          </section>
+
+          <dl class="quick">${(LL.QUICK[id] || []).map(([k, v]) => `<div><dt>${t("quick")[k]}</dt><dd>${fx(v && typeof v === "object" ? v.en : v || "")}</dd></div>`).join("")}</dl>
 
           <section class="been" id="been"></section>
 
           ${trailCard(id)}
 
-          <p class="story" ${U()}>${fx(pick(s.story))}</p>
-
-          <section class="block">
-            <h2>${t("facts")}</h2>
-            <ol class="facts" ${U()}>${pick(s.facts).map((f) => `<li><span>${fx(f).replace(/<span dir="ltr" class="num">(\d{3,4})<\/span>/g, '<span dir="ltr" class="num count">$1</span>')}</span></li>`).join("")}</ol>
-          </section>
-
-          <section class="block">
-            <h2>${t("look")}</h2>
-            <p class="hint">${t("lookHint")}</p>
-            <ul class="look" ${U()}>${pick(s.look).map((l, i) => `<li><label><input type="checkbox" data-look="${i}" ${ticked.includes(i) ? "checked" : ""}><span>${fx(l)}</span></label></li>`).join("")}</ul>
-          </section>
-
-          ${photoSpotsHtml(id)}
-
-          <section class="block" id="thennow" hidden></section>
-
-          <section class="block">
-            <h2>${t("gallery")}</h2>
-            <div class="strip" id="strip"></div>
-          </section>
-
-          ${officialBlock(id)}
+          <a class="deepread rv" href="#/learn/${id}">
+            <span class="deepread__icon">${ico("book")}</span>
+            <span class="deepread__body">
+              <strong>Full history &amp; story</strong>
+              <span>Deep read: facts, what to look for, photo spots, sources &amp; more</span>
+            </span>
+            <span class="deepread__arrow">→</span>
+          </a>
 
           <section class="block visit">
             <h2>${t("visit")}</h2>
-            <dl ${U()}>${pick(s.visit).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
+            <dl>${(s.visit && s.visit.en ? s.visit.en : (s.visit || [])).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
             <p><a class="btn btn--ghost btn--sm" href="${maps(s.name.en + ", Lahore")}" target="_blank" rel="noopener">${ico("pin")} ${t("directions")} ↗</a></p>
             <p class="hint">${t("directionsNote")}. ${t("visitNote")}</p>
           </section>
-
-          <section class="block check" id="check"></section>
 
           <section class="block nearby" id="nearby" hidden><h2>${t("nearbyTitle")}</h2><div class="row__scroll" id="nearby-row"></div></section>
 
@@ -584,27 +718,12 @@
     if (vset) siteVid = LL.Motion.videoLoop(sp, [LL.Motion.pickClips(vset)], (c) => {
     });
     LL.Motion.parallax(sp);
-    let sfxAudio = null;
-    const soundsBtn = $("#sounds-btn");
-    if (soundsBtn) {
-      const au = new Audio();
-      au.loop = true;
-      au.addEventListener("canplaythrough", () => { soundsBtn.hidden = false; }, { once: true });
-      let sfxPlaying = false;
-      soundsBtn.addEventListener("click", () => {
-        if (sfxPlaying) { au.pause(); sfxPlaying = false; soundsBtn.classList.remove("is-playing"); soundsBtn.innerHTML = `${ico("sound")} Ambience`; }
-        else { au.play().then(() => { sfxPlaying = true; soundsBtn.classList.add("is-playing"); soundsBtn.innerHTML = `${ico("sound")} ◼ Playing`; }).catch(() => {}); }
-      });
-      au.src = `assets/audio/${id}.mp3`;
-      sfxAudio = au;
-    }
+    const sfxAudio = null;
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
-    LL.Motion.reveal(main(), ".quick > div, .been, .story, .block > h2, .facts li, .look li, .spot-tip, .strip, .visit dl > div, .next");
+    LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .strip, .visit dl > div, .next");
     $("#next-media").appendChild(media(next.id, { width: 500 }));
 
-    wireOfficial(main());
     const strip = $("#strip");
-    // every photo we have for this place: official sources first, then Wikimedia Commons
     LL.Photos.candidates(id, 500).forEach((g, i) => {
       const b = document.createElement("button");
       b.className = "strip__item";
@@ -615,27 +734,8 @@
       strip.appendChild(b);
     });
 
-    main().querySelectorAll("[data-look]").forEach((c) => c.addEventListener("change", () => LL.Progress.toggleLook(id, +c.dataset.look)));
-
-    Promise.all([LL.Photos.old(id, 960), LL.Photos.resolve(id, 960, 0)]).then(([oldP, nowP]) => {
-      const box = $("#thennow");
-      if (!box || !oldP || !nowP) return;
-      box.hidden = false;
-      box.innerHTML = `<h2>${t("thenNow")}</h2><p class="hint">${t("thenNowHint")}</p>
-        <div class="compare" style="--pos:50%">
-          <img src="${nowP.url}" alt="${t("now")}" draggable="false">
-          <img class="compare__old" src="${oldP.url}" alt="${t("then")}" draggable="false">
-          <span class="compare__line"></span>
-          <span class="compare__tag compare__tag--then">${t("then")}</span><span class="compare__tag compare__tag--now">${t("now")}</span>
-          <input type="range" min="0" max="100" value="50" aria-label="${t("thenNowHint")}">
-        </div>`;
-      const cmp = box.querySelector(".compare");
-      box.querySelector("input").addEventListener("input", (e) => cmp.style.setProperty("--pos", e.target.value + "%"));
-    });
-
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
     $("#see-photos").addEventListener("click", () => lightbox(id, 0));
-    miniQuiz(id);
     beenBox(id);
     nearbyBox(id);
     badgeNudge(id);
@@ -688,19 +788,31 @@
     box.appendChild(nudge);
   }
 
-  function beenBox(id) {
+  async function beenBox(id) {
     const box = $("#been");
     if (!box) return;
+    /* Check if geolocation permission is already denied so we can show the right UI */
+    let locDenied = false;
+    if (navigator.permissions) {
+      try {
+        const perm = await navigator.permissions.query({ name: "geolocation" });
+        locDenied = perm.state === "denied";
+        perm.onchange = () => beenBox(id);
+      } catch {}
+    }
     const st = LL.Game.status(id), G = LL.Game.PTS;
     if (st.visited) {
       box.className = "been is-done";
       box.innerHTML = `<span class="been__icon">${ico("check")}</span>
         <div><b>${t(st.gps ? "beenVerified" : "beenDone")}</b><p>${t("beenDate", LL.Progress.state.visited[id].d)}${st.gps ? "" : ` · <button class="linkish" data-a="gps">${t("beenVerify")}</button>`}${st.gps ? "" : ` · <button class="linkish" data-a="undo">${t("undo")}</button>`}</p></div>`;
     } else {
+      const gpsBtn = locDenied
+        ? `<button class="btn btn--ghost btn--sm been__loc-off" disabled title="${t("locDeniedTip")}">${ico("pin")} ${t("locDeniedBtn")}</button>`
+        : `<button class="btn btn--gold btn--sm" data-a="gps">${ico("pin")} ${t("beenGps")}</button>`;
       box.className = "been";
       box.innerHTML = `<span class="been__icon">${ico("pin")}</span>
-        <div><b>${t("beenQ")}</b><p>${t("beenLead", G.visited, G.gps)}</p></div>
-        <div class="been__btns"><button class="btn btn--gold btn--sm" data-a="gps">${ico("pin")} ${t("beenGps")}</button><button class="btn btn--ghost btn--sm" data-a="self">${t("beenSelf")}</button></div>`;
+        <div><b>${t("beenQ")}</b><p>${t("beenLead2", G.visited, G.gps)}</p></div>
+        <div class="been__btns">${gpsBtn}<button class="btn btn--ghost btn--sm" data-a="self">${t("beenSelf")}</button></div>`;
     }
     box.querySelectorAll("[data-a]").forEach((b) => b.addEventListener("click", async () => {
       const a = b.dataset.a;
@@ -713,7 +825,12 @@
           const d = LL.Game.distance(here, LL.GEO[id]);
           if (d <= LL.Game.CHECKIN_RADIUS) { LL.FX.points(b, G.visited + G.gps); LL.FX.confetti(); LL.Progress.visit(id, true); toast(t("beenVerified")); }
           else toast(t("tooFar", d < 10000 ? `${(d / 1000).toFixed(1)} km` : `${Math.round(d / 1000)} km`));
-        } catch (e) { toast(t("noLocation")); }
+        } catch (e) {
+          if (e && e.code === 1) toast(t("locPermDenied"));
+          else toast(t("noLocation"));
+          b.disabled = false;
+          b.innerHTML = `${ico("pin")} ${t("beenGps")}`;
+        }
       }
       beenBox(id);
     }));
@@ -768,9 +885,14 @@
     const idx = LL.SITES.indexOf(s);
     const prev = LL.SITES[idx - 1], next = LL.SITES[idx + 1];
     const cfg = LL.ASSETS.locations[s.id];
-    const story = pick(s.story);
-    const teaser = story.split(/(?<=[.۔])\s+/).slice(0, 2).join(" ");
-    const fact = pick(s.facts)[0];
+    const story_en = (s.story && s.story.en) || "";
+    const story_ur = (s.story && s.story.ur) || "";
+    const teaser_en = story_en.split(/(?<=[.۔])\s+/).slice(0, 2).join(" ");
+    const teaser_ur = story_ur ? story_ur.split(/(?<=[.۔])\s+/).slice(0, 2).join(" ") : "";
+    const facts_en = (s.facts && s.facts.en) || [];
+    const facts_ur = (s.facts && s.facts.ur) || [];
+    const fact_en = facts_en[0] || "";
+    const fact_ur = facts_ur[0] || "";
     let viewer = null, views = [], cur = 0, token = 0;
 
     main().innerHTML = `
@@ -788,9 +910,9 @@
         <aside class="tour__panel">
           <div class="tour__dots">${LL.SITES.map((x, i) => `<a href="#/tour/${x.id}" class="${i === idx ? "on" : LL.Progress.state.seen[x.id] ? "half" : ""}" aria-label="${esc(x.name.en)}"></a>`).join("")}</div>
           <p class="eyebrow">${t("tourEyebrow", idx + 1, LL.SITES.length)}${area(s.area) ? ` · ${esc(area(s.area).name.en)}` : ""}</p>
-          <h1>${esc(s.name.en)} <span class="tour__ur" lang="ur">${esc(s.name.ur)}</span></h1>
-          <p class="tour__teaser" ${U()}>${fx(teaser)}</p>
-          <p class="tour__fact" ${U()}><b>${LL.I18N.mode === "mix" ? "کیا آپ جانتے ہیں؟" : t("didYouKnow")}</b> ${fx(fact)}</p>
+          <h1>${esc(s.name.en)}</h1>
+          ${cblk(fx(teaser_en), teaser_ur ? fx(teaser_ur) : null, "tour__teaser")}
+          ${cblk(`<b>${t("didYouKnow")}</b> ${fx(fact_en)}`, fact_ur ? `<b>کیا آپ جانتے ہیں؟</b> ${fx(fact_ur)}` : null, "tour__fact")}
           <div class="tour__nav">
             ${prev ? `<a class="btn btn--ghost btn--sm" href="#/tour/${prev.id}">← ${t("prev")}</a>` : "<span></span>"}
             ${next ? `<a class="btn btn--gold btn--sm" href="#/tour/${next.id}">${t("next")} →</a>` : `<a class="btn btn--gold btn--sm" href="#/tour/done">${t("next")} →</a>`}
@@ -867,17 +989,17 @@
     if (id === "shahi-hammam") {
       const h = O.hammam;
       return `<section class="block official">
-        <h2>${esc(pick(h.title))}</h2>
-        <p class="lead" ${U()}>${fx(pick(h.lead))}</p>
-        <ol class="saga">${h.steps.map((x) => `<li><b class="saga__year">${esc(x.year)}</b><p ${U()}>${fx(pick(x))}</p></li>`).join("")}</ol>
+        <h2>${esc(h.title && h.title.en || "")}</h2>
+        ${cblk(fx(h.lead && h.lead.en || ""), h.lead && h.lead.ur ? fx(h.lead.ur) : null, "lead")}
+        <ol class="saga">${h.steps.map((x) => `<li><b class="saga__year">${esc(x.year)}</b>${cblk(fx(x.en || ""), x.ur ? fx(x.ur) : null)}</li>`).join("")}</ol>
         <div class="story-grid" data-box="story">${(LL.HAMMAM_STORY || []).map((g, i) => `<button class="story-grid__item${i < 4 ? " is-board" : ""}" data-i="${i}"><img src="${g.small}" alt="${esc(cap(g))}" loading="lazy" width="${g.w}" height="${g.h}"><span>${fx(cap(g))}</span></button>`).join("")}</div>
       </section>`;
     }
     if (id === "lahore-museum") {
       const m = O.museum;
       return `<section class="block official">
-        <h2>${esc(pick(m.title))}</h2>
-        <p class="lead" ${U()}>${fx(pick(m.lead))}</p>
+        <h2>${esc(m.title && m.title.en || "")}</h2>
+        ${cblk(fx(m.lead && m.lead.en || ""), m.lead && m.lead.ur ? fx(m.lead.ur) : null, "lead")}
         <div class="collection" data-box="museum">${(LL.MUSEUM_HIGHLIGHTS || []).map((g, i) => `<button class="collection__item" data-i="${i}"><span class="collection__img"><img src="${g.small}" alt="${esc(g.caption)}" loading="lazy"></span><b>${esc(g.caption)}</b><small>${esc(g.note)}</small></button>`).join("")}</div>
         <p><a class="btn btn--ghost btn--sm" href="${m.vr.url}" target="_blank" rel="noopener">${ico("tour")} ${esc(m.vr.label.en)} ↗</a></p>
       </section>`;
@@ -885,9 +1007,15 @@
     if (id === "lahore-fort" || id === "shalimar-gardens") {
       const f = id === "lahore-fort" ? O.fort : O.shalimar;
       return `<section class="block official">
-        <h2>${esc(pick(f.title))}</h2>
-        <ul class="official__facts" ${U()}>${f.facts.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul>
-        ${f.access ? `<div class="access"><h3>${ico("me")} ${esc(pick(f.access.title))}</h3><ul ${U()}>${f.access.items.map((x) => `<li>${fx(pick(x))}</li>`).join("")}</ul></div>` : ""}
+        <h2>${esc(f.title && f.title.en || "")}</h2>
+        ${cblk(
+          `<ul class="official__facts" lang="en">${f.facts.map(x => `<li>${fx(x && x.en || "")}</li>`).join("")}</ul>`,
+          f.facts.some(x => x && x.ur) ? `<ul class="official__facts" lang="ur" dir="rtl">${f.facts.map(x => `<li>${fx(x && x.ur || x.en || "")}</li>`).join("")}</ul>` : null
+        )}
+        ${f.access ? `<div class="access"><h3>${ico("me")} ${esc(f.access.title && f.access.title.en || "")}</h3>${cblk(
+          `<ul lang="en">${f.access.items.map(x => `<li>${fx(x && x.en || "")}</li>`).join("")}</ul>`,
+          f.access.items.some(x => x && x.ur) ? `<ul lang="ur" dir="rtl">${f.access.items.map(x => `<li>${fx(x && x.ur || x.en || "")}</li>`).join("")}</ul>` : null
+        )}</div>` : ""}
       </section>`;
     }
     return "";
@@ -904,8 +1032,8 @@
     const T = LL.OFFICIAL && LL.OFFICIAL.tours;
     if (!T) return "";
     return `<section class="wcla-tours">
-      <h2>${esc(pick(T.title))}</h2>
-      <p ${U()}>${fx(pick(T.lead))}</p>
+      <h2>${esc(T.title && T.title.en || "")}</h2>
+      ${cblk(fx(T.lead && T.lead.en || ""), T.lead && T.lead.ur ? fx(T.lead.ur) : null)}
       <ul>${T.list.map(([n, slug]) => `<li><a href="${T.base}${slug}/" target="_blank" rel="noopener">${ico("flag")} ${esc(n)} <span aria-hidden="true">↗</span></a></li>`).join("")}</ul>
     </section>`;
   }
@@ -936,8 +1064,8 @@
                    : `<a class="btn btn--gold" href="#/tour/${LL.SITES[0].id}">${t("tourStart")} →</a>`}
           </div>
           ${done ? "" : trailBand("trailband--intro")}
-          ${LL.AREAS.map((a) => `<h3 class="tour-area">${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span></h3>
-          <ol class="tour-list">${LL.SITES.map((s, i) => (s.area !== a.id ? "" : `<li><a href="#/tour/${s.id}"><span class="n">${i + 1}</span>${esc(s.name.en)} <span lang="ur">${esc(s.name.ur)}</span>${LL.Progress.state.seen[s.id] ? '<span class="seen">✓</span>' : ""}</a></li>`)).join("")}</ol>`).join("")}
+          ${LL.AREAS.map((a) => `<h3 class="tour-area">${esc(a.name.en)}</h3>
+          <ol class="tour-list">${LL.SITES.map((s, i) => (s.area !== a.id ? "" : `<li><a href="#/tour/${s.id}"><span class="n">${i + 1}</span>${esc(s.name.en)}${LL.Progress.state.seen[s.id] ? '<span class="seen">✓</span>' : ""}</a></li>`)).join("")}</ol>`).join("")}
         </div>
       </section>`;
     $("#ti-photo").appendChild(media(done ? "minar-e-pakistan" : "lahore-fort", { width: innerWidth > 900 ? 1920 : 960, eager: true, start: done ? 0 : 3 }));
@@ -979,7 +1107,7 @@
       cardHtml: (pin) => {
         const x = site(pin.id), d = distOf(x.id);
         return `<p class="lmap__era">${esc(x.era.en)}${d != null && d < 40000 ? ` · <b>${fmtDist(d)}</b>` : ""}</p>
-          <b class="lmap__name">${esc(x.name.en)} <span lang="ur">${esc(x.name.ur)}</span></b>
+          <b class="lmap__name">${esc(x.name.en)}</b>
           ${statusChip(x.id)}
           <div class="lmap__acts">
             <a class="btn btn--gold btn--sm" href="#/site/${x.id}">${t("open")} →</a>
@@ -1064,7 +1192,7 @@
             <span class="rank__icon">${ico("crown")}</span>
             <div class="rank__body">
               <small>${rk.points} pts</small>
-              <b>${esc(rk.en)} <span lang="ur">${esc(rk.ur)}</span></b>
+              <b>${esc(rk.en)}</b>
               <span class="bar"><i style="width:${Math.round(rk.pct * 100)}%"></i></span>
               <small>${rk.next ? t("ptsTo", rk.toNext, esc(rk.next.en)) : t("maxRank")}</small>
             </div>
@@ -1092,7 +1220,7 @@
         <div class="areas-prog">${LL.AREAS.map((a) => {
           const g = G.area(a.id), list = LL.SITES.filter((x) => x.area === a.id);
           return `<div class="ap">
-            <div class="ap__top"><b>${esc(a.name.en)} <span lang="ur">${esc(a.name.ur)}</span></b><span>${g.have}/${g.need}</span></div>
+            <div class="ap__top"><b>${esc(a.name.en)}</b><span>${g.have}/${g.need}</span></div>
             <span class="bar"><i style="width:${(g.have / g.need) * 100}%"></i></span>
             <div class="ap__thumbs">${list.map((x) => `<a href="#/site/${x.id}" class="ap__t is-${G.level(x.id)}" data-ph="${x.id}" title="${esc(x.name.en)}" aria-label="${esc(x.name.en)}"></a>`).join("")}</div>
           </div>`;
@@ -1103,7 +1231,7 @@
           const [h, n] = b.prog(), got = P.state.badges[b.id] || (h >= n);
           return `<div class="badge ${got ? "is-on" : ""}">
             <span class="badge__icon">${ico(b.icon)}</span>
-            <b>${esc(b.en)}</b><span class="badge__ur" lang="ur">${esc(b.ur)}</span>
+            <b>${esc(b.en)}</b>
             <p>${esc(b.how)}</p>
             ${got ? `<small class="badge__got">${ico("check")} ${P.state.badges[b.id] ? t("badgeEarned", P.state.badges[b.id]) : ""}</small>` : `<span class="bar"><i style="width:${(h / n) * 100}%"></i></span><small>${h}/${n}</small>`}
           </div>`;
@@ -1147,23 +1275,29 @@
   const stopUrl = (st, mode) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(st.q)}&travelmode=${mode}`;
 
   function planPage(param) {
-    const main3 = LL.PLANS.filter((p) => p.id !== "day2");
-    let active = param && LL.PLANS.some((p) => p.id === param) ? param : (LL.PLANS.find((p) => p.recommended) || LL.PLANS[0]).id;
+    const PLAN_ICONS = { short: "⚡", half: "🚶", full: "☀️", day2: "🏛️" };
+    let active = param && (LL.PLANS.some((p) => p.id === param) || param === "custom") ? param : (LL.PLANS.find((p) => p.recommended) || LL.PLANS[0]).id;
     let overlay = null;
+    let customPick = new Set();
+    let customBuilt = false;
     main().innerHTML = `
       <section class="plan wrap">
         <header class="plan__head">
           <p class="eyebrow">${t("planEyebrow")}</p>
           <h1>${t("planQ")}</h1>
-          <div class="choices">${main3.map((p) => `<button class="choice" data-plan="${p.id}">
+          <div class="choices">${LL.PLANS.map((p) => `<button class="choice" data-plan="${p.id}">
+              <span class="choice__icon" aria-hidden="true">${PLAN_ICONS[p.id] || "📍"}</span>
               <b>${esc(p.label)}</b><small>${t("stopsN", planStops(p).length)} · ${t(travelMode(planStops(p)) === "walking" ? "onFoot" : "byCar")}</small>
-              ${p.recommended ? `<em>${t("recommended")}</em>` : ""}</button>`).join("")}</div>
-          <button class="linkish plan__more" data-plan="day2">${t("moreDay2")} →</button>
+              ${p.recommended ? `<em>${t("recommended")}</em>` : ""}</button>`).join("")}
+            <button class="choice choice--custom" data-plan="custom">
+              <span class="choice__icon" aria-hidden="true">✏️</span>
+              <b>Build my own</b><small>Pick the places you want</small>
+            </button></div>
         </header>
         <div id="plan-body"></div>
         <details class="tips">
           <summary>${t("tipsTitle")}</summary>
-          <div class="tips__grid">${LL.TIPS.map((x) => `<div class="tip"><span class="tip__icon">${ico(x.icon)}</span><div><b>${esc(x.title)}</b><p ${U()}>${fx(pick(x.text))}</p></div></div>`).join("")}</div>
+          <div class="tips__grid">${LL.TIPS.map((x) => `<div class="tip"><span class="tip__icon">${ico(x.icon)}</span><div><b>${esc(x.title)}</b><p>${fx(x.text && typeof x.text === "object" ? x.text.en : x.text || "")}</p></div></div>`).join("")}</div>
           <p class="hint">${t("visitNote")}</p>
         </details>
         ${toursBlock()}
@@ -1171,20 +1305,27 @@
     const body = $("#plan-body");
 
     const draw = () => {
-      const p = LL.PLANS.find((x) => x.id === active);
-      const stops = planStops(p), mode = travelMode(stops);
+      if (active === "custom" && !customBuilt) { drawCustomPicker(); return; }
+      const p = active === "custom"
+        ? { id: "custom", title: { en: "My Route", ur: "میرا راستہ" }, intro: { en: "Your custom route through Lahore's heritage.", ur: "" } }
+        : LL.PLANS.find((x) => x.id === active);
+      const stops = active === "custom" ? customPlanStops([...customPick]) : planStops(p);
+      const mode = travelMode(stops);
       const done = LL.Progress.state.planDone[p.id] || [];
       const nDone = stops.filter((_, i) => done.includes(i)).length;
       document.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.plan === active)));
       body.innerHTML = `
         <div class="plan__top">
-          <h2>${esc(p.title.en)}</h2>
-          <p class="plan__intro" ${U()}>${fx(pick(p.intro))}</p>
+          <div class="plan__title-row">
+            <h2>${esc(p.title.en)}</h2>
+            ${active === "custom" ? `<button class="linkish plan__edit-picks" id="edit-picks">✏️ Edit places</button>` : ""}
+          </div>
+          ${cblk(fx(p.intro && p.intro.en || ""), p.intro && p.intro.ur ? fx(p.intro.ur) : null, "plan__intro")}
           <div class="plan__bar">
             <button class="btn btn--gold" id="start">${ico("foot")} ${nDone && nDone < stops.length ? t("continueWalk") : t("startWalk")}</button>
-            <a class="btn btn--ghost" href="${routeUrl(stops)}" target="_blank" rel="noopener">${ico("route")} ${t("routeAll")}</a>
-            <button class="btn btn--ghost" id="share">${ico("share")} ${t("sharePlan")}</button>
             <button class="btn btn--ghost" id="showmap">${ico("map")} ${t("showMap")}</button>
+            <button class="btn btn--ghost" id="share">${ico("share")} ${t("sharePlan")}</button>
+            <a class="plan__gmaps" href="${routeUrl(stops)}" target="_blank" rel="noopener">${ico("route")} Full route on Google Maps ↗</a>
           </div>
           <div class="plan__prog"><span>${t("stopsDone", nDone, stops.length)}</span><span class="bar"><i style="width:${(nDone / stops.length) * 100}%"></i></span>${nDone ? `<button class="linkish" id="reset">${t("reset")}</button>` : ""}</div>
         </div>
@@ -1197,23 +1338,101 @@
               <div class="stop__body">
                 <p class="stop__time">${st.time ? esc(st.time) : t("stop", i + 1)}</p>
                 <b>${esc(st.name.en)}</b>
-                <p class="stop__note" ${U()}>${fx(pick(st.note))}</p>
+                ${cblk(fx(st.note && st.note.en || ""), st.note && st.note.ur ? fx(st.note.ur) : null, "stop__note")}
                 <div class="stop__acts">
-                  <a class="btn btn--gold btn--sm" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")}</a>
-                  ${st.id ? `<a class="btn btn--ghost btn--sm" href="#/site/${st.id}">${t("open")}</a>` : ""}
+                  ${st.id ? `<a class="btn btn--gold btn--sm" href="#/site/${st.id}">${ico("eye")} ${t("open")}</a>` : ""}
+                  <a class="stop__gmaps" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")} ↗</a>
                 </div>
               </div>
             </li>`).join("")}
         </ol>`;
       body.querySelectorAll("[data-ph]").forEach((el) => el.appendChild(media(el.dataset.ph, { width: 330 })));
       body.querySelectorAll(".stop__tick").forEach((b) => b.addEventListener("click", () => tick(p, stops, +b.dataset.i, b)));
-      const r = $("#reset");
+      const r = body.querySelector("#reset");
       if (r) r.addEventListener("click", () => { LL.Progress.resetPlan(p.id); draw(); });
-      $("#start").addEventListener("click", () => walk(p, stops, mode));
-      $("#share").addEventListener("click", () => sharePlan(p, stops));
-      $("#showmap").addEventListener("click", () => mapOverlay(p, stops));
+      body.querySelector("#start").addEventListener("click", () => walk(p, stops, mode));
+      body.querySelector("#share").addEventListener("click", () => sharePlan(p, stops));
+      body.querySelector("#showmap").addEventListener("click", () => mapOverlay(p, stops));
+      const ep = body.querySelector("#edit-picks");
+      if (ep) ep.addEventListener("click", () => {
+        customBuilt = false; draw();
+        body.scrollIntoView({ behavior: LL.Motion.reduce() ? "auto" : "smooth", block: "start" });
+      });
       LL.Motion.reveal(body, ".stop, .leg");
     };
+
+    function nearestNeighborSort(ids) {
+      const withGeo = ids.filter((id) => LL.GEO[id]);
+      const noGeo = ids.filter((id) => !LL.GEO[id]);
+      if (withGeo.length <= 1) return ids;
+      const result = [withGeo[0]];
+      const rem = withGeo.slice(1);
+      while (rem.length) {
+        const lp = LL.GEO[result[result.length - 1]];
+        let bi = 0, bd = Infinity;
+        rem.forEach((id, j) => { const d = LL.Game.distance(lp, LL.GEO[id]); if (d < bd) { bd = d; bi = j; } });
+        result.push(...rem.splice(bi, 1));
+      }
+      return [...result, ...noGeo];
+    }
+
+    function customPlanStops(ids) {
+      return nearestNeighborSort(ids).map((id) => {
+        const sx = site(id);
+        if (!sx) return null;
+        const noteEn = sx.line ? (typeof sx.line === "object" ? sx.line.en : sx.line) : "";
+        const noteUr = sx.line && typeof sx.line === "object" ? sx.line.ur : "";
+        return { id: sx.id, photo: sx.id, at: LL.GEO[sx.id], name: sx.name, note: { en: noteEn, ur: noteUr }, time: null, q: sx.name.en + ", Lahore" };
+      }).filter(Boolean);
+    }
+
+    function drawCustomPicker() {
+      document.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.plan === "custom")));
+      body.innerHTML = `
+        <div class="custom-picker">
+          <p class="custom-picker__hint">Pick the places you want on your route. Select at least 2, then tap <b>Build My Route</b>.</p>
+          <div class="custom-picker__grid">
+            ${LL.SITES.map((sx) => `<button class="custom-site${customPick.has(sx.id) ? " is-picked" : ""}" data-site="${sx.id}" aria-pressed="${customPick.has(sx.id)}">
+              <div class="custom-site__ph" data-ph="${sx.id}"></div>
+              <span class="custom-site__name">${esc(sx.name.en)}</span>
+              <span class="custom-site__check" aria-hidden="true">${ico("check")}</span>
+            </button>`).join("")}
+          </div>
+          <div class="custom-picker__foot">
+            <span class="custom-picker__count" id="pick-count">${customPick.size} selected</span>
+            <button class="btn btn--gold" id="build-route"${customPick.size < 2 ? " disabled" : ""}>Build My Route →</button>
+            ${customPick.size ? `<button class="linkish" id="clear-picks">Clear all</button>` : ""}
+          </div>
+        </div>`;
+      body.querySelectorAll("[data-ph]").forEach((el) => el.appendChild(media(el.dataset.ph, { width: 240 })));
+      body.querySelectorAll(".custom-site").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.site;
+          if (customPick.has(id)) { customPick.delete(id); btn.classList.remove("is-picked"); btn.setAttribute("aria-pressed", "false"); }
+          else { customPick.add(id); btn.classList.add("is-picked"); btn.setAttribute("aria-pressed", "true"); }
+          const cnt = body.querySelector("#pick-count");
+          const bb = body.querySelector("#build-route");
+          if (cnt) cnt.textContent = `${customPick.size} selected`;
+          if (bb) bb.disabled = customPick.size < 2;
+          const cl = body.querySelector("#clear-picks");
+          if (!cl && customPick.size) {
+            const f = body.querySelector(".custom-picker__foot");
+            const c = document.createElement("button");
+            c.className = "linkish"; c.id = "clear-picks"; c.textContent = "Clear all";
+            c.addEventListener("click", () => { customPick.clear(); drawCustomPicker(); });
+            if (f) f.appendChild(c);
+          } else if (cl && !customPick.size) cl.remove();
+        });
+      });
+      const buildBtn = body.querySelector("#build-route");
+      if (buildBtn) buildBtn.addEventListener("click", () => {
+        customBuilt = true; draw();
+        body.scrollIntoView({ behavior: LL.Motion.reduce() ? "auto" : "smooth", block: "start" });
+      });
+      const clearBtn = body.querySelector("#clear-picks");
+      if (clearBtn) clearBtn.addEventListener("click", () => { customPick.clear(); drawCustomPicker(); });
+      LL.Motion.reveal(body, ".custom-site");
+    }
 
     function tick(p, stops, i, b) {
       const on = LL.Progress.togglePlanStop(p.id, i);
@@ -1242,16 +1461,16 @@
           <div class="walkmode__card">
             <div class="walkmode__prog"><span>${t("stopOf", i + 1, stops.length)}</span><span class="bar"><i style="width:${(done().length / stops.length) * 100}%"></i></span></div>
             ${st.time ? `<p class="stop__time">${esc(st.time)}</p>` : ""}
-            <h2>${esc(st.name.en)} <span lang="ur">${esc(st.name.ur)}</span></h2>
-            <p class="walkmode__note" ${U()}>${fx(pick(st.note))}</p>
+            <h2>${esc(st.name.en)}</h2>
+            ${cblk(fx(st.note && st.note.en || ""), st.note && st.note.ur ? fx(st.note.ur) : null, "walkmode__note")}
             ${st.leg && i > 0 ? `<p class="hint">${ico("foot")} ${t("walkMin", st.leg)} ${t("fromLast")}</p>` : ""}
-            <a class="btn btn--ghost walkmode__nav" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} ${t("navigate")}</a>
             <button class="btn btn--gold walkmode__here" id="here">${ico("check")} ${isDone ? (last ? t("finishWalk") : t("nextStop")) : last ? t("hereFinish") : t("hereNext")}</button>
             <div class="walkmode__nav2">
               <button class="linkish" id="prev" ${i === 0 ? "disabled" : ""}>← ${t("prevStop")}</button>
               ${st.id ? `<a class="linkish" href="#/site/${st.id}">${t("aboutPlace")}</a>` : ""}
               <button class="linkish" id="skip" ${last ? "disabled" : ""}>${t("skip")} →</button>
             </div>
+            <a class="walkmode__gmaps" href="${stopUrl(st, mode)}" target="_blank" rel="noopener">${ico("pin")} Get directions on Google Maps ↗</a>
           </div>`;
         const ph = overlay.querySelector("[data-ph]");
         if (ph) ph.appendChild(media(ph.dataset.ph, { width: innerWidth > 900 ? 1280 : 960, eager: true }));
@@ -1403,6 +1622,7 @@
     if (r.page === "plan") return set("Plan a Visit to Lahore's Heritage Sites | Lahore Legacy", "Ready-made tour plans for Lahore's heritage sites, from 2 hours to a full day, with directions and tips.");
     if (r.page === "map") return set("Map of Lahore's Heritage Sites | Lahore Legacy", "An interactive map of Lahore's 24 heritage places, sorted by what's nearest you.");
     if (r.page === "quiz") return set("Lahore Heritage Quiz — How Well Do You Know Lahore? | Lahore Legacy", "A 60-second quiz on Lahore's heritage. Answer what you can, then share your score.");
+    if (r.page === "learn") { const s = site(r.param); if (s) return set(`${s.name.en} — Full History, Facts & Story | Lahore Legacy`, `Deep read: the full story, key facts, what to look for, photo spots and historical comparison for ${s.name.en}, Lahore.`); }
     if (r.page === "myths") return set("Myth or Truth? — Lahore Heritage Facts & Legends | Lahore Legacy", "15 claims about Lahore's heritage — test yourself on myths, truths and legends.");
     if (r.page === "persona") return set("Which Lahore Monument Are You? — Personality Quiz | Lahore Legacy", "Take a 7-question quiz to discover which Lahore monument matches your personality.");
     if (r.page === "1947") return set("Lahore 1947 — Stories from the Partition | Lahore Legacy", "Three quiet stories from 1947: personal accounts from the year Lahore became two cities.");
@@ -1421,6 +1641,7 @@
     else if (r.page === "plan") cleanup = planPage(r.param);
     else if (r.page === "map") cleanup = mapPage(r.param);
     else if (r.page === "quiz") cleanup = quizPage();
+    else if (r.page === "learn") learnPage(r.param);
     else if (r.page === "myths") mythsPage();
     else if (r.page === "persona") personaPage();
     else if (r.page === "1947") page1947();
@@ -1439,133 +1660,43 @@
     overlay.id = "ll-intro";
     overlay.setAttribute("role", "presentation");
     overlay.innerHTML =
-      '<canvas id="ll-intro-cv" aria-hidden="true"></canvas>' +
+      '<img class="ll-intro__globe" src="assets/globe.gif" alt="" aria-hidden="true">' +
       '<div class="ll-intro__copy">' +
-        '<div class="ll-intro__city">LAHORE</div>' +
+        '<div class="ll-intro__brand">Lahore Legacy</div>' +
         '<div class="ll-intro__ur">لاہور کی وراثت</div>' +
-        '<div class="ll-intro__tag">A&nbsp;LIVING&nbsp;MUSEUM</div>' +
       '</div>' +
       '<div class="ll-intro__tap">tap to enter ›</div>';
     document.body.appendChild(overlay);
-    const cv = document.getElementById("ll-intro-cv");
-    const ctx = cv.getContext("2d");
-    let W, H, R, cx, cy;
-    const stars = [];
-    function resize() {
-      W = cv.width = window.innerWidth;
-      H = cv.height = window.innerHeight;
-      R = Math.min(W, H) * 0.38;
-      cx = W / 2; cy = H / 2;
-      stars.length = 0;
-      for (let i = 0; i < 200; i++) {
-        let sx, sy;
-        do { sx = Math.random(); sy = Math.random(); }
-        while (Math.hypot(sx * W - cx, sy * H - cy) < R + 24);
-        stars.push({ x: sx, y: sy, r: Math.random() * 1.2 + 0.2, a: Math.random() * 0.55 + 0.3, ph: Math.random() * Math.PI * 2 });
-      }
-    }
-    resize();
-    window.addEventListener("resize", resize);
-    let rot = 0, fN = 0, exited = false, raf;
-    const DUR = 160;
-    function globe() {
-      ctx.clearRect(0, 0, W, H);
-      // Stars
-      stars.forEach(s => {
-        ctx.globalAlpha = s.a * (0.45 + 0.55 * (Math.sin(fN * 0.04 + s.ph) * 0.5 + 0.5));
-        ctx.fillStyle = "#fff";
-        ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2); ctx.fill();
-      });
-      ctx.globalAlpha = 1;
-      // Atmosphere outer glow
-      for (let i = 10; i >= 1; i--) {
-        ctx.beginPath(); ctx.arc(cx, cy, R + i * 3.5, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(50,130,220," + (0.1 / i) + ")"; ctx.lineWidth = 2.5; ctx.stroke();
-      }
-      // 3-D sphere base (radial gradient with offset highlight)
-      const sph = ctx.createRadialGradient(cx - R * 0.28, cy - R * 0.3, R * 0.08, cx, cy, R);
-      sph.addColorStop(0, "rgba(60,88,160,0.95)");
-      sph.addColorStop(0.3, "rgba(22,36,88,0.97)");
-      sph.addColorStop(0.7, "rgba(8,14,42,0.98)");
-      sph.addColorStop(1, "rgba(2,4,14,1)");
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = sph; ctx.fill();
-      // Grid lines clipped to sphere
-      ctx.save();
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
-      for (let lat = -75; lat <= 75; lat += 15) {
-        const phi = lat * Math.PI / 180;
-        const cosP = Math.cos(phi), sinP = Math.sin(phi);
-        const ey = cy - sinP * R, rx = cosP * R;
-        if (rx < 2) continue;
-        ctx.beginPath(); ctx.ellipse(cx, ey, rx, rx * 0.28, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(70,155,255,0.22)"; ctx.lineWidth = 0.5; ctx.stroke();
-      }
-      ctx.beginPath(); ctx.ellipse(cx, cy, R, R * 0.28, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(90,180,255,0.5)"; ctx.lineWidth = 1; ctx.stroke();
-      for (let lon = 0; lon < 180; lon += 20) {
-        const a = (lon + rot) * Math.PI / 180;
-        const cosA = Math.cos(a), rx = Math.abs(cosA) * R;
-        ctx.beginPath(); ctx.ellipse(cx, cy, rx, R, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = cosA > 0 ? "rgba(70,155,255,0.42)" : "rgba(70,155,255,0.08)";
-        ctx.lineWidth = cosA > 0 ? 0.65 : 0.25; ctx.stroke();
-      }
-      ctx.restore();
-      // Sphere outline
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(80,170,255,0.55)"; ctx.lineWidth = 1.3; ctx.stroke();
-      // Specular highlight
-      const spec = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.32, 0, cx - R * 0.2, cy - R * 0.2, R * 0.55);
-      spec.addColorStop(0, "rgba(255,255,255,0.14)"); spec.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = spec; ctx.fill();
-      // Lahore marker (lat 31.5°N, lon 74.3°E)
-      const lPhi = 31.5 * Math.PI / 180;
-      const lTheta = (74.3 + rot) * Math.PI / 180;
-      const lz = Math.cos(lPhi) * Math.cos(lTheta);
-      const lx = cx + Math.cos(lPhi) * Math.sin(lTheta) * R;
-      const ly = cy - Math.sin(lPhi) * R;
-      if (lz > -0.1) {
-        const aa = Math.max(0.1, (lz + 0.1) / 1.1);
-        const pulse = (Math.sin(fN * 0.09) + 1) * 0.5;
-        for (let i = 1; i <= 3; i++) {
-          ctx.beginPath(); ctx.arc(lx, ly, 5 + i * (8 + pulse * 4), 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(255,100,40," + (aa * 0.2 / i) + ")"; ctx.lineWidth = 1; ctx.stroke();
-        }
-        ctx.beginPath(); ctx.arc(lx, ly, 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,100,40," + aa + ")"; ctx.fill();
-        ctx.beginPath(); ctx.arc(lx, ly, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,220,170," + aa + ")"; ctx.fill();
-      }
+    let exited = false;
+    function exit() {
+      if (exited) return; exited = true;
+      overlay.classList.add("ll-intro--out");
+      setTimeout(() => { overlay.remove(); onDone(); }, 450);
     }
     function setOp(sel, op) {
       const e = overlay.querySelector(sel);
       if (e) e.style.opacity = op;
     }
-    function tick() {
-      if (exited) return;
-      rot += 0.3; fN++;
-      globe();
-      const p = Math.min(1, fN / DUR);
-      if (p > 0.14) setOp(".ll-intro__city", Math.min(1, (p - 0.14) * 9));
-      if (p > 0.30) setOp(".ll-intro__ur", Math.min(1, (p - 0.30) * 9));
-      if (p > 0.46) setOp(".ll-intro__tag", Math.min(1, (p - 0.46) * 9));
-      if (p > 0.72) setOp(".ll-intro__tap", Math.min(1, (p - 0.72) * 12));
-      if (fN >= DUR) { exit(); return; }
-      raf = requestAnimationFrame(tick);
-    }
-    function exit() {
-      if (exited) return; exited = true;
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-      overlay.classList.add("ll-intro--out");
-      setTimeout(() => { overlay.remove(); onDone(); }, 850);
-    }
+    setTimeout(() => setOp(".ll-intro__brand", 1), 350);
+    setTimeout(() => setOp(".ll-intro__ur", 1), 850);
+    setTimeout(() => setOp(".ll-intro__tap", 1), 1400);
+    setTimeout(exit, 4200);
     overlay.addEventListener("click", exit);
-    raf = requestAnimationFrame(tick);
   }
 
   function boot() {
+    // content-block language toggle (EN ↔ اردو per block)
+    document.addEventListener("click", (e) => {
+      const tog = e.target.closest(".cblk__tog");
+      if (!tog) return;
+      const cb = tog.closest(".cblk");
+      if (!cb) return;
+      const toEn = cb.dataset.l === "ur";
+      cb.dataset.l = toEn ? "en" : "ur";
+      cb.querySelector(".cblk__ur").hidden = toEn;
+      cb.querySelector(".cblk__en").hidden = !toEn;
+      tog.textContent = toEn ? "اردو" : "EN";
+    });
     // language choice (on the Me page)
     document.addEventListener("click", (e) => {
       const b = e.target.closest("[data-lang]");
