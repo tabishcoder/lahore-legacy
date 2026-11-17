@@ -434,11 +434,12 @@ LL.AREAS = [
 
   /* A sensible order (also the order of the virtual tour). */
   const ORDER = [
-    "lahore-fort", "hazuri-bagh", "badshahi-mosque", "iqbal-tomb", "ranjit-samadhi", "iqbal-park", "minar-e-pakistan",
-    "delhi-gate", "shahi-hammam", "wazir-khan-mosque", "sunehri-masjid", "nau-nihal-haveli", "data-darbar",
-    "jahangir-tomb", "asif-khan-tomb", "nur-jahan-tomb",
-    "anarkali-tomb", "lahore-museum", "gcu", "quaid-library", "railway-station",
-    "shalimar-gardens", "gulabi-bagh", "chauburji",
+    "badshahi-mosque", "lahore-fort", "wazir-khan-mosque", "shalimar-gardens", "minar-e-pakistan", "iqbal-park",
+    "jahangir-tomb", "lahore-museum", "shahi-hammam", "delhi-gate", "anarkali-tomb",
+    "data-darbar", "iqbal-tomb", "hazuri-bagh",
+    "sunehri-masjid", "asif-khan-tomb", "nur-jahan-tomb", "nau-nihal-haveli",
+    "railway-station", "quaid-library", "gulabi-bagh", "gcu", "chauburji",
+    "ranjit-samadhi",
   ];
   LL.SITES.sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 
