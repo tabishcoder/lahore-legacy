@@ -134,6 +134,7 @@ LL.ASSETS = {
       name: "Shahi Hammam",
       photo: { src: "", by: "" },
       gallery: [
+        { file: "Outside wall of Shahi Hammam (Wazir Khan's hammam).jpg", caption: "Shahi Hammam exterior", ur: "شاہی حمام کا بیرونی حصہ" },
         { file: "Central dome and fresco painting of Wazir Khan Hammam.jpg", caption: "Frescoes in the central dome", ur: "بیچ والے گنبد کی تصویریں" },
         { file: "@Shahi Hamma Lahore (51).jpg", caption: "Inside the hammam", ur: "حمام کے اندر" },
         { file: "Hypocaust system discovered inside Wazir Khan Hammam.jpg", caption: "The old underfloor heating", ur: "فرش کے نیچے گرم کرنے کا نظام" },

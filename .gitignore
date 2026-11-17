@@ -3,3 +3,4 @@ tools/node_modules/
 .DS_Store
 *.log
 lahore-legacy.zip
+package-lock.json
