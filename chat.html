@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lahore Guide — Chat</title>
+  <meta name="description" content="Ask anything about Lahore's heritage — places, history, trip planning, ticket prices and food." />
+  <link rel="icon" href="assets/icons/favicon-64.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #F5EDD8;
+      --bg2:      #EDE0C4;
+      --bg3:      #9A3A1F;
+      --fg:       #2B1D14;
+      --fg2:      #6B4C38;
+      --accent:   #9A3A1F;
+      --accent-h: #7B2D16;
+      --gold:     #C4922A;
+      --bot-bg:   #FFFAF3;
+      --bot-bd:   #E8D9BF;
+      --user-bg:  #9A3A1F;
+      --in-bg:    #FFFAF3;
+      --sh:       rgba(43,29,20,.14);
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:       #1C120A;
+        --bg2:      #251810;
+        --bg3:      #7B2D16;
+        --fg:       #F5EDD8;
+        --fg2:      #C4A882;
+        --accent:   #C0502A;
+        --accent-h: #D0602A;
+        --gold:     #C4922A;
+        --bot-bg:   #2B1D14;
+        --bot-bd:   #3D2A1A;
+        --user-bg:  #9A3A1F;
+        --in-bg:    #231610;
+        --sh:       rgba(0,0,0,.35);
+        color-scheme: dark;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { height: 100%; }
+    body {
+      height: 100%; height: 100dvh;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'EB Garamond', Georgia, serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+      height: calc(56px + env(safe-area-inset-top, 0px));
+      flex-shrink: 0;
+    }
+    .back-link {
+      display: flex; align-items: center; gap: 5px;
+      color: rgba(255,255,255,.85); text-decoration: none;
+      font-size: 14px; padding: 8px 0; flex-shrink: 0;
+      transition: color .15s;
+    }
+    .back-link:hover { color: #fff; }
+    .back-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .topbar-info { flex: 1; min-width: 0; }
+    .topbar-name {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: 19px; line-height: 1.1; letter-spacing: .01em;
+    }
+    .topbar-sub { font-size: 11.5px; opacity: .78; font-style: italic; margin-top: 1px; }
+    .topbar-full-link {
+      font-size: 12px; color: rgba(255,255,255,.8);
+      text-decoration: none; border: 1px solid rgba(255,255,255,.4);
+      border-radius: 999px; padding: 5px 12px; white-space: nowrap;
+      flex-shrink: 0; transition: background .15s, color .15s;
+    }
+    .topbar-full-link:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+    /* ── Main layout ── */
+    .layout {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar (desktop only) ── */
+    .sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--bot-bd);
+      display: none;
+      flex-direction: column;
+      padding: 28px 24px;
+      gap: 24px;
+      overflow-y: auto;
+    }
+    @media (min-width: 768px) { .sidebar { display: flex; } }
+
+    .sidebar-logo {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: 22px; color: var(--accent); line-height: 1.2;
+    }
+    .sidebar-logo small {
+      display: block; font-family: 'EB Garamond', Georgia, serif;
+      font-size: 13px; color: var(--fg2); font-style: italic;
+      margin-top: 2px; font-weight: 400;
+    }
+    .sidebar-desc {
+      font-size: 14.5px; color: var(--fg2); line-height: 1.6;
+    }
+    .sidebar-topics h3 {
+      font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+      color: var(--fg2); margin-bottom: 10px;
+    }
+    .sidebar-topics ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-topics li {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; color: var(--fg); cursor: pointer;
+      padding: 6px 10px; border-radius: 8px; transition: background .15s;
+    }
+    .sidebar-topics li:hover { background: var(--bot-bg); }
+    .sidebar-topics li span { font-size: 18px; }
+    .sidebar-tips {
+      margin-top: auto;
+      font-size: 12.5px; color: var(--fg2); line-height: 1.6;
+      padding: 12px 14px;
+      background: var(--bot-bg);
+      border-radius: 10px;
+      border: 1px solid var(--bot-bd);
+    }
+
+    /* ── Chat panel ── */
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    /* Messages */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px));
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overscroll-behavior: contain;
+      scroll-behavior: smooth;
+    }
+    .msg {
+      max-width: min(78%, 500px);
+      padding: 10px 15px;
+      border-radius: 18px;
+      font-size: 15.5px;
+      line-height: 1.55;
+      word-wrap: break-word;
+    }
+    .msg.bot {
+      align-self: flex-start;
+      background: var(--bot-bg);
+      color: var(--fg);
+      border: 1px solid var(--bot-bd);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 3px var(--sh);
+    }
+    .msg.user {
+      align-self: flex-end;
+      background: var(--user-bg);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.bot ul { margin: 6px 0 2px 18px; }
+    .msg.bot li { margin-bottom: 4px; }
+    .msg.bot b { font-weight: 600; }
+
+    /* Typing dots */
+    .typing { display: inline-flex; gap: 5px; padding: 4px 2px; align-items: center; }
+    .typing span {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--fg2); opacity: .7;
+      animation: tdot 1s infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: .18s; }
+    .typing span:nth-child(3) { animation-delay: .36s; }
+    @keyframes tdot {
+      0%, 60%, 100% { transform: translateY(0); opacity: .7; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    /* Suggestions strip */
+    .sugs-wrap {
+      padding: 4px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .sug {
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      background: var(--bot-bg);
+      border-radius: 999px;
+      padding: 7px 15px;
+      font-size: 14px;
+      font-family: 'EB Garamond', Georgia, serif;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
+    }
+    .sug:hover, .sug:focus-visible { background: var(--accent); color: #fff; outline: none; }
+
+    /* Input bar */
+    .input-bar {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      padding: 10px max(16px, env(safe-area-inset-right, 0px)) max(14px, calc(env(safe-area-inset-bottom, 0px) + 10px)) max(16px, env(safe-area-inset-left, 0px));
+      border-top: 1px solid var(--bot-bd);
+      background: var(--in-bg);
+      flex-shrink: 0;
+    }
+    .msg-textarea {
+      flex: 1;
+      min-width: 0;
+      border: 1.5px solid var(--bot-bd);
+      border-radius: 22px;
+      padding: 11px 16px;
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 15.5px;
+      line-height: 1.4;
+      resize: none;
+      outline: none;
+      background: var(--bg);
+      color: var(--fg);
+      max-height: 130px;
+      overflow-y: auto;
+      transition: border-color .15s;
+    }
+    .msg-textarea:focus { border-color: var(--accent); }
+    .msg-textarea::placeholder { color: var(--fg2); opacity: .55; }
+    .send-btn {
+      width: 46px; height: 46px; border-radius: 50%;
+      border: none; background: var(--accent); color: #fff;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .15s, transform .1s;
+    }
+    .send-btn:hover { background: var(--accent-h); }
+    .send-btn:active { transform: scale(.9); }
+    .send-btn:disabled { opacity: .4; cursor: default; transform: none; }
+    .send-btn svg { width: 20px; height: 20px; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="back-link" aria-label="Back to Lahore Legacy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Back
+    </a>
+    <div class="topbar-info">
+      <div class="topbar-name">Lahore Guide</div>
+      <div class="topbar-sub">Ask anything about Lahore's heritage</div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        Lahore Legacy
+        <small>لاہور کی وراثت</small>
+      </div>
+      <p class="sidebar-desc">
+        Ask me about Lahore's heritage places, history, ticket prices, what to eat, and how to plan your trip.
+      </p>
+      <nav class="sidebar-topics">
+        <h3>Quick topics</h3>
+        <ul id="sidebar-topics">
+          <li data-q="Plan a 1-day trip in Lahore"><span>🗺️</span> Plan my trip</li>
+          <li data-q="Tell me about Lahore Fort"><span>🏰</span> Lahore Fort</li>
+          <li data-q="Tell me about Badshahi Mosque"><span>🕌</span> Badshahi Mosque</li>
+          <li data-q="What are the ticket prices?"><span>🎫</span> Ticket prices</li>
+          <li data-q="What food should I try near the Walled City?"><span>🍛</span> What to eat</li>
+          <li data-q="What is the best time to visit Lahore?"><span>🌤️</span> Best season</li>
+          <li data-q="Tell me about the Walled City heritage walk"><span>🚶</span> Walled City walk</li>
+          <li data-q="Tell me about Shalimar Gardens"><span>🌿</span> Shalimar Gardens</li>
+        </ul>
+      </nav>
+      <div class="sidebar-tips">
+        💡 <strong>Tip:</strong> Ask in English, Urdu or Roman Urdu — I'll reply in the same language.
+      </div>
+    </aside>
+
+    <div class="chat-panel">
+      <div class="messages" id="messages"></div>
+
+      <div class="sugs-wrap" id="sugs-wrap">
+        <button class="sug" type="button">Plan a 1-day trip</button>
+        <button class="sug" type="button">Lahore Fort tickets?</button>
+        <button class="sug" type="button">What to eat near Badshahi Mosque?</button>
+        <button class="sug" type="button">Walled City walk</button>
+      </div>
+
+      <div class="input-bar">
+        <textarea class="msg-textarea" id="msg-in" rows="1"
+          placeholder="Ask about Lahore…" maxlength="1000" autocomplete="off"></textarea>
+        <button class="send-btn" id="send-btn" type="button" aria-label="Send message" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  var API = '/api/chat';
+  var GREETING = "Assalam o Alaikum! 👋 I'm your Lahore heritage guide. Ask me about any place, its history, ticket prices, what to eat, or let me plan your trip.";
+  var msgs = document.getElementById('messages');
+  var sugsWrap = document.getElementById('sugs-wrap');
+  var input = document.getElementById('msg-in');
+  var sendBtn = document.getElementById('send-btn');
+  var history = [], busy = false;
+
+  /* helpers */
+  function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function fmt(text) {
+    var lines = esc(text).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').split('\n');
+    var out = '', inList = false;
+    lines.forEach(function(l) {
+      var m = l.match(/^\s*[-*•]\s+(.*)/);
+      if (m) { if (!inList) { out += '<ul>'; inList = true; } out += '<li>' + m[1] + '</li>'; }
+      else { if (inList) { out += '</ul>'; inList = false; } out += l.trim() ? l + '<br>' : '<br>'; }
+    });
+    if (inList) out += '</ul>';
+    return out.replace(/(<br>)+$/, '');
+  }
+  function addMsg(content, who, isHtml) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + who;
+    if (isHtml) d.innerHTML = content; else d.textContent = content;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  function autoResize() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 130) + 'px';
+    sendBtn.disabled = !input.value.trim();
+  }
+
+  /* greeting */
+  addMsg(fmt(GREETING), 'bot', true);
+
+  /* suggestion chips */
+  sugsWrap.querySelectorAll('.sug').forEach(function(b) {
+    b.addEventListener('click', function() { ask(b.textContent); });
+  });
+
+  /* sidebar topic links */
+  var topicItems = document.querySelectorAll('#sidebar-topics li[data-q]');
+  topicItems.forEach(function(li) {
+    li.addEventListener('click', function() { ask(li.getAttribute('data-q')); });
+  });
+
+  /* input events */
+  input.addEventListener('input', autoResize);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(input.value); }
+  });
+  sendBtn.addEventListener('click', function() { ask(input.value); });
+
+  async function ask(text) {
+    text = (text || '').trim();
+    if (!text || busy) return;
+    busy = true; sendBtn.disabled = true;
+    sugsWrap.style.display = 'none';
+    addMsg(text, 'user', false);
+    history.push({ role: 'user', content: text });
+    var typingEl = addMsg('<div class="typing"><span></span><span></span><span></span></div>', 'bot', true);
+    input.value = ''; input.style.height = 'auto';
+    input.focus();
+    try {
+      var res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history.slice(-8) })
+      });
+      var data = await res.json();
+      var reply = data.reply || 'Sorry, something went wrong. Please try again.';
+      typingEl.innerHTML = fmt(reply);
+      if (res.ok) history.push({ role: 'assistant', content: reply });
+      else history.pop();
+    } catch (e) {
+      typingEl.textContent = 'Network error — please check your connection and try again.';
+      history.pop();
+    }
+    msgs.scrollTop = msgs.scrollHeight;
+    busy = false;
+    if (input.value.trim()) sendBtn.disabled = false;
+    input.focus();
+  }
+
+  /* auto-focus input on load */
+  setTimeout(function() { input.focus(); }, 300);
+})();
+</script>
+</body>
+</html>
