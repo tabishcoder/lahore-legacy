@@ -266,6 +266,40 @@
     .send-btn:active { transform: scale(.9); }
     .send-btn:disabled { opacity: .4; cursor: default; transform: none; }
     .send-btn svg { width: 20px; height: 20px; }
+
+    /* ── Mobile features strip (hidden on desktop) ── */
+    .mob-features {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px max(16px, env(safe-area-inset-right, 0px)) 4px max(16px, env(safe-area-inset-left, 0px));
+      scrollbar-width: none;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--bot-bd);
+    }
+    .mob-features::-webkit-scrollbar { display: none; }
+    @media (min-width: 768px) { .mob-features { display: none; } }
+    .mob-feat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      font-size: 12.5px;
+      color: var(--fg2);
+      background: var(--bot-bg);
+      border: 1px solid var(--bot-bd);
+      border-radius: 999px;
+      padding: 5px 12px;
+      flex-shrink: 0;
+    }
+    .mob-feat span { font-size: 14px; }
+
+    /* ── Mobile message width ── */
+    @media (max-width: 480px) {
+      .msg { max-width: 90%; font-size: 15px; }
+      .topbar-name { font-size: 17px; }
+      .sug { font-size: 13px; padding: 6px 13px; }
+    }
   </style>
 </head>
 <body>
@@ -282,6 +316,16 @@
       <div class="topbar-sub">Ask anything about Lahore's heritage</div>
     </div>
   </header>
+
+  <!-- Mobile-only features strip -->
+  <div class="mob-features" aria-label="What you can ask">
+    <div class="mob-feat"><span>🏛️</span> Heritage history</div>
+    <div class="mob-feat"><span>🎟️</span> Ticket prices</div>
+    <div class="mob-feat"><span>🗺️</span> Trip planning</div>
+    <div class="mob-feat"><span>🍛</span> Food spots</div>
+    <div class="mob-feat"><span>🕐</span> Visit timings</div>
+    <div class="mob-feat"><span>🚶</span> Walled City walk</div>
+  </div>
 
   <div class="layout">
 
@@ -337,7 +381,7 @@
 <script>
 (function () {
   var API = '/api/chat';
-  var GREETING = "Assalam o Alaikum! 👋 I'm your Lahore heritage guide. Ask me about any place, its history, ticket prices, what to eat, or let me plan your trip.";
+  var GREETING = "Hi! 👋 I'm your Lahore heritage guide. Ask me about any place, its history, ticket prices, what to eat, or let me plan your trip.";
   var msgs = document.getElementById('messages');
   var sugsWrap = document.getElementById('sugs-wrap');
   var input = document.getElementById('msg-in');
@@ -423,8 +467,7 @@
     input.focus();
   }
 
-  /* auto-focus input on load */
-  setTimeout(function() { input.focus(); }, 300);
+  /* no auto-focus on load — prevents keyboard popping up on mobile */
 })();
 </script>
 </body>
