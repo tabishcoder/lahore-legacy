@@ -14,7 +14,7 @@ const GRAPH_URL = "https://graph.facebook.com/v19.0";
 /* Thin in-memory history per user (resets on cold start — fine for demo) */
 const history = {};
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   /* ── GET: webhook verification ─────────────────────────── */
   if (req.method === "GET") {
     const mode      = req.query["hub.mode"];
