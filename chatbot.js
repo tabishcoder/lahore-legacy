@@ -26,9 +26,51 @@
     box-shadow: 0 6px 20px rgba(0,0,0,.28); z-index: 9999;
     transition: transform .2s, box-shadow .2s;
     display: flex; align-items: center; justify-content: center;
+    animation: lgBounce 1s ease 2s 3;
   }
   #lg-btn:hover { transform: scale(1.08); box-shadow: 0 8px 24px rgba(0,0,0,.34); }
   #lg-btn:active { transform: scale(.94); }
+  @keyframes lgBounce {
+    0%,100% { transform: translateY(0); }
+    30% { transform: translateY(-10px) scale(1.08); }
+    60% { transform: translateY(-4px) scale(1.04); }
+  }
+
+  /* pulse ring */
+  #lg-btn::before {
+    content: ""; position: absolute; inset: -6px; border-radius: 50%;
+    border: 3px solid ${COLOR}; opacity: 0;
+    animation: lgPulse 2s ease 1s 4;
+  }
+  @keyframes lgPulse {
+    0% { transform: scale(.85); opacity: .7; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  /* tooltip bubble */
+  #lg-bubble {
+    position: fixed;
+    bottom: calc(max(20px, env(safe-area-inset-bottom, 20px)) + 68px);
+    right: max(20px, env(safe-area-inset-right, 20px));
+    background: #fff; color: #1c1917;
+    border-radius: 14px 14px 4px 14px;
+    padding: 10px 14px; font-size: 13.5px; line-height: 1.45;
+    box-shadow: 0 6px 24px rgba(0,0,0,.18);
+    z-index: 9998; max-width: 220px;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    animation: lgBubbleIn .3s ease;
+    cursor: pointer;
+  }
+  #lg-bubble strong { display: block; color: ${COLOR}; font-size: 13px; margin-bottom: 2px; }
+  @keyframes lgBubbleIn {
+    from { opacity: 0; transform: translateY(8px) scale(.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  #lg-bubble-close {
+    position: absolute; top: 6px; right: 8px;
+    background: none; border: none; color: #9a8070;
+    font-size: 15px; cursor: pointer; line-height: 1; padding: 0;
+  }
 
   #lg-box {
     position: fixed; bottom: 90px; right: 20px;
@@ -141,6 +183,19 @@
   style.textContent = css;
   document.head.appendChild(style);
 
+  function showBubble(onClickFn) {
+    var bbl = document.createElement("div");
+    bbl.id = "lg-bubble";
+    bbl.innerHTML =
+      '<button id="lg-bubble-close" aria-label="Dismiss">×</button>' +
+      '<strong>🏛️ Lahore Guide</strong>' +
+      'Ask me about any heritage place, ticket prices, or let me plan your trip!';
+    bbl.addEventListener("click", function () { bbl.remove(); onClickFn(); });
+    document.getElementById("lg-bubble-close").addEventListener("click", function (e) { e.stopPropagation(); bbl.remove(); });
+    document.body.appendChild(bbl);
+    setTimeout(function () { if (bbl.parentNode) bbl.remove(); }, 8000);
+  }
+
   /* On mobile: just the floating button that links to /chat */
   if (onMobile()) {
     var btn = document.createElement("button");
@@ -149,6 +204,7 @@
     btn.innerHTML = "💬";
     btn.onclick = function () { window.location.href = CHAT_PAGE; };
     document.body.appendChild(btn);
+    setTimeout(function () { showBubble(function () { window.location.href = CHAT_PAGE; }); }, 4000);
     return; /* no popup on mobile */
   }
 
@@ -208,9 +264,19 @@
   });
 
   document.getElementById("lg-btn").onclick=function(){
+    var bbl=document.getElementById("lg-bubble"); if(bbl)bbl.remove();
     box.classList.toggle("open");
     if(box.classList.contains("open"))input.focus();
   };
+
+  /* show bubble after 4 s if popup hasn't been opened yet */
+  setTimeout(function(){
+    if(!box.classList.contains("open")){
+      showBubble(function(){
+        box.classList.add("open"); input.focus();
+      });
+    }
+  }, 4000);
   document.getElementById("lg-close").onclick=function(){box.classList.remove("open");};
 
   async function ask(text){

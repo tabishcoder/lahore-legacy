@@ -5,7 +5,7 @@
 window.LL = window.LL || {};
 
 LL.UI = (function () {
-  const cap = (it) => (LL.I18N && LL.I18N.lang === "ur" && it.ur ? it.ur : it.caption || "");
+  const cap = (it) => it.caption || "";
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   const lazyIO = "IntersectionObserver" in window ? new IntersectionObserver((list) => list.forEach((e) => {
