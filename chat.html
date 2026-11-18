@@ -11,36 +11,40 @@
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:       #F5EDD8;
-      --bg2:      #EDE0C4;
+      --bg:       #F4EFE8;
+      --bg2:      #EAE3D8;
       --bg3:      #9A3A1F;
-      --fg:       #2B1D14;
-      --fg2:      #6B4C38;
+      --fg:       #18100A;
+      --fg2:      #5A4535;
       --accent:   #9A3A1F;
       --accent-h: #7B2D16;
       --gold:     #C4922A;
-      --bot-bg:   #FFFAF3;
-      --bot-bd:   #E8D9BF;
+      --bot-bg:   #FFFFFF;
+      --bot-bd:   #C8BBAA;
       --user-bg:  #9A3A1F;
-      --in-bg:    #FFFAF3;
-      --sh:       rgba(43,29,20,.14);
+      --in-bg:    #FFFFFF;
+      --in-bd:    #B8A898;
+      --msgs-bg:  #EDE7DC;
+      --sh:       rgba(0,0,0,.12);
       color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --bg:       #1C120A;
-        --bg2:      #251810;
+        --bg:       #1A110A;
+        --bg2:      #231710;
         --bg3:      #7B2D16;
-        --fg:       #F5EDD8;
-        --fg2:      #C4A882;
+        --fg:       #F0E6D4;
+        --fg2:      #B8977C;
         --accent:   #C0502A;
         --accent-h: #D0602A;
         --gold:     #C4922A;
-        --bot-bg:   #2B1D14;
-        --bot-bd:   #3D2A1A;
+        --bot-bg:   #2A1C12;
+        --bot-bd:   #4A3220;
         --user-bg:  #9A3A1F;
-        --in-bg:    #231610;
-        --sh:       rgba(0,0,0,.35);
+        --in-bg:    #221510;
+        --in-bd:    #5A3D28;
+        --msgs-bg:  #1E1308;
+        --sh:       rgba(0,0,0,.4);
         color-scheme: dark;
       }
     }
@@ -165,6 +169,7 @@
       gap: 12px;
       overscroll-behavior: contain;
       scroll-behavior: smooth;
+      background: var(--msgs-bg);
     }
     .msg {
       max-width: min(78%, 500px);
@@ -208,22 +213,25 @@
 
     /* Suggestions strip */
     .sugs-wrap {
-      padding: 4px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+      padding: 8px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      background: var(--bg);
+      border-top: 1px solid var(--bot-bd);
     }
     .sug {
-      border: 1.5px solid var(--accent);
+      border: 2px solid var(--accent);
       color: var(--accent);
-      background: var(--bot-bg);
+      background: #fff;
       border-radius: 999px;
-      padding: 7px 15px;
+      padding: 7px 16px;
       font-size: 14px;
       font-family: 'EB Garamond', Georgia, serif;
       cursor: pointer;
       transition: background .15s, color .15s;
       white-space: nowrap;
+      font-weight: 600;
     }
     .sug:hover, .sug:focus-visible { background: var(--accent); color: #fff; outline: none; }
 
@@ -232,15 +240,15 @@
       display: flex;
       align-items: flex-end;
       gap: 10px;
-      padding: 10px max(16px, env(safe-area-inset-right, 0px)) max(14px, calc(env(safe-area-inset-bottom, 0px) + 10px)) max(16px, env(safe-area-inset-left, 0px));
-      border-top: 1px solid var(--bot-bd);
-      background: var(--in-bg);
+      padding: 12px max(16px, env(safe-area-inset-right, 0px)) max(14px, calc(env(safe-area-inset-bottom, 0px) + 10px)) max(16px, env(safe-area-inset-left, 0px));
+      border-top: 2px solid var(--bot-bd);
+      background: var(--bg);
       flex-shrink: 0;
     }
     .msg-textarea {
       flex: 1;
       min-width: 0;
-      border: 1.5px solid var(--bot-bd);
+      border: 2px solid var(--in-bd);
       border-radius: 22px;
       padding: 11px 16px;
       font-family: 'EB Garamond', Georgia, serif;
@@ -248,14 +256,18 @@
       line-height: 1.4;
       resize: none;
       outline: none;
-      background: var(--bg);
+      background: var(--in-bg);
       color: var(--fg);
       max-height: 130px;
       overflow-y: auto;
-      transition: border-color .15s;
+      transition: border-color .18s, box-shadow .18s;
+      box-shadow: 0 1px 4px var(--sh);
     }
-    .msg-textarea:focus { border-color: var(--accent); }
-    .msg-textarea::placeholder { color: var(--fg2); opacity: .55; }
+    .msg-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(154,58,31,.15), 0 1px 4px var(--sh);
+    }
+    .msg-textarea::placeholder { color: var(--fg2); opacity: .7; }
     .send-btn {
       width: 46px; height: 46px; border-radius: 50%;
       border: none; background: var(--accent); color: #fff;
