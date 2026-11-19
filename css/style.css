@@ -1040,8 +1040,8 @@ body.on-map .foot { display: none; }
   .stop__ph { grid-column: 2; grid-row: 1; width: 100%; height: 140px; }
   .stop__body { grid-column: 2; }
   .choices { grid-template-columns: 1fr; }
-  .choice { min-height: 64px; grid-template-columns: 1fr auto; align-items: center; }
-  .choice em { position: static; grid-row: 1 / 3; grid-column: 2; }
+  .choice { min-height: 64px; grid-template-columns: 1fr; align-items: start; }
+  .choice em { position: absolute; top: -9px; right: 10px; }
   .actions { grid-template-columns: 1fr 1fr; }
   .action:first-child { grid-column: 1 / -1; grid-template-columns: auto 1fr; column-gap: 0.8rem; align-items: center; }
   .action:first-child .action__icon { grid-row: 1 / 3; margin: 0; }
