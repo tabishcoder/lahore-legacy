@@ -177,6 +177,10 @@
   }
   #lg-send:hover { background: #7B2D16; }
   #lg-send:disabled { opacity: .45; cursor: default; }
+  @media (max-width: 640px) {
+    #lg-btn { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+    #lg-bubble { bottom: calc(144px + env(safe-area-inset-bottom, 0px)); }
+  }
   `;
 
   var style = document.createElement("style");

@@ -57,6 +57,7 @@
     camera: '<rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="3"/><path d="M15 3l-1.5 3h-3L9 3"/>',
     book: '<path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4h16v13H6.5A2.5 2.5 0 004 19.5V4z"/>',
     sound: '<path d="M11 5L6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14"/>',
+    chat: '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
   };
   const ico = (n) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
   /* content block: starts in English (follows global mode) */
@@ -87,6 +88,7 @@
     [["places", "#/"], ["plan", "#/plan"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
       const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
+    const chatNav = $("#nav-chat"); if (chatNav) chatNav.innerHTML = `${ico("chat")}<span>Chat</span>`;
     $("#footer-lang").textContent = "";
     const n = LL.Progress.stampCount(), rk = LL.Game.rank();
     const pct = Math.round(rk.pct * 100);
@@ -154,6 +156,10 @@
       </section>
 
       <section class="all-sites wrap" id="all-sites">
+        <div class="all-sites__group">
+          <h3 class="all-sites__area rv">Must Visit <small>Top picks</small></h3>
+          <div class="sites-grid" data-ids="badshahi-mosque,lahore-fort,wazir-khan-mosque,minar-e-pakistan,shalimar-gardens,data-darbar,jahangir-tomb,shahi-hammam"></div>
+        </div>
         ${LL.AREAS.map((a) => {
           const areaSites = LL.SITES.filter((s) => s.area === a.id);
           if (!areaSites.length) return "";
@@ -318,7 +324,7 @@
     const a = document.createElement("a");
     a.className = "hc";
     a.href = `#/site/${s.id}`;
-    a.appendChild(media(s.id, { width: 700, start: 1 }));
+    a.appendChild(media(s.id, { width: 700, start: 0 }));
     const seen = LL.Game.level(s.id) !== "new";
     a.insertAdjacentHTML("beforeend", `
       <div class="hc__overlay" aria-hidden="true"></div>

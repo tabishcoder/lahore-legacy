@@ -896,19 +896,19 @@ small, .hint { font-size: max(0.82rem, 13px); }
 .all-sites__area { font-size: max(0.78rem, 12px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); font-weight: 700; margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 0.6rem; }
 .all-sites__area span[lang="ur"] { font-size: 1rem; letter-spacing: 0; text-transform: none; color: var(--sand); font-weight: 400; }
 .all-sites__area small { margin-inline-start: auto; font-size: max(0.72rem, 11px); color: var(--dim); font-weight: 400; letter-spacing: 0; text-transform: none; }
-.sites-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-@media (min-width: 500px) { .sites-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 860px) { .sites-grid { grid-template-columns: repeat(3, 1fr); } }
+.sites-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+@media (min-width: 600px) { .sites-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .sites-grid { grid-template-columns: repeat(4, 1fr); } }
 
 /* Home card — large photo card for the 24-sites grid */
-.hc { position: relative; display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 3/2; background: var(--navy-2); text-decoration: none !important; color: var(--ink); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); border-top: 2px solid rgba(212,154,42,0.5); }
+.hc { position: relative; display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 2/3; background: var(--navy-2); text-decoration: none !important; color: var(--ink); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); border-top: 2px solid rgba(212,154,42,0.5); }
 .hc:hover { transform: translateY(-4px); box-shadow: 0 20px 44px -10px rgba(20,8,2,0.7), 0 0 0 1.5px var(--gold); }
 .hc .media { position: absolute; inset: 0; }
-.hc .media img { object-position: center 25%; }
+.hc .media img { object-position: center center; }
 .hc__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(28,10,0,0.93) 0%, rgba(20,8,0,0.18) 50%, transparent 100%); pointer-events: none; }
-.hc__body { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.2rem 1.2rem 1.1rem; }
+.hc__body { position: absolute; bottom: 0; left: 0; right: 0; padding: 0.9rem 0.9rem 1rem; }
 .hc__gem { display: block; color: var(--gold); font-size: 0.55rem; letter-spacing: 0.25em; margin: 0 0 0.35rem; opacity: 0.8; }
-.hc__name { display: block; font-family: var(--serif); font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 400; font-style: italic; color: #F1E6D0; line-height: 1.2; margin: 0; }
+.hc__name { display: block; font-family: var(--serif); font-size: clamp(1rem, 2.5vw, 1.4rem); font-weight: 400; font-style: italic; color: #F1E6D0; line-height: 1.2; margin: 0; }
 .hc__cta { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.55rem; font-size: max(0.75rem, 11.5px); color: rgba(241,230,208,0.6); font-weight: 500; letter-spacing: 0.03em; transition: color 0.2s, gap 0.2s; }
 .hc__cta .ico { width: 13px; height: 13px; transition: transform 0.2s var(--ease); }
 .hc:hover .hc__cta { color: var(--gold); gap: 0.5rem; }
