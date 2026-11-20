@@ -796,10 +796,25 @@
         const btn = e.target.closest(".lang-btn");
         if (!btn) return;
         const lang = btn.dataset.lang;
+        const isUr = lang === "ur";
         langTog.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("lang-btn--active", b === btn));
         const info = $("#site-info");
         if (!info) return;
-        info.classList.toggle("is-ur", lang === "ur");
+        info.classList.toggle("is-ur", isUr);
+        // global rule `html:not(.mode-mix) [lang="ur"] { display:none !important }` hides
+        // all lang="ur" elements; override it directly for site-info context
+        info.querySelectorAll('[lang="ur"]').forEach(el => {
+          if (isUr) {
+            const t = el.tagName.toLowerCase();
+            el.style.setProperty("display", t === "li" ? "list-item" : t === "p" ? "block" : "inline", "important");
+          } else {
+            el.style.removeProperty("display");
+          }
+        });
+        info.querySelectorAll(".si-en").forEach(el => {
+          if (isUr) el.style.setProperty("display", "none", "important");
+          else el.style.removeProperty("display");
+        });
       });
     }
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
@@ -1764,7 +1779,7 @@
     // language choice (on the Me page)
     document.addEventListener("click", (e) => {
       const b = e.target.closest("[data-lang]");
-      if (!b || b.dataset.lang === LL.I18N.mode) return;
+      if (!b || b.classList.contains("lang-btn") || b.dataset.lang === LL.I18N.mode) return;
       LL.I18N.set(b.dataset.lang);
       LL.Analytics && LL.Analytics.event("language", { mode: LL.I18N.mode });
     });
