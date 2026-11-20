@@ -463,7 +463,6 @@
 
           <div class="learn__back-cta">
             <a class="btn btn--gold" href="#/site/${id}">${ico("back")} Back to ${esc(s.name.en)}</a>
-            <a class="btn btn--ghost" href="#/tour/${id}">${ico("tour")} 360° view</a>
           </div>
         </div>
       </div>`;
@@ -686,12 +685,12 @@
         </header>
 
         <div class="site__body wrap-narrow">
-          <section class="site__photo-first">
-            <div class="strip" id="strip"></div>
-            <div class="site__actions">
-              <button class="btn btn--gold btn--sm" id="see-photos">${ico("eye")} ${t("seePhotos")}</button>
-              <a class="btn btn--ghost btn--sm" href="#/tour/${id}">${ico("tour")} ${t("virtualView")}</a>
+          <section class="site__gallery">
+            <div class="gallery-head">
+              <h2 class="gallery-h">Photos <span class="gallery-count" id="photo-count"></span></h2>
+              <button class="btn btn--ghost btn--sm" id="see-photos">${ico("eye")} View all</button>
             </div>
+            <div class="strip" id="strip"></div>
           </section>
 
           <dl class="quick">${(LL.QUICK[id] || []).map(([k, v]) => `<div><dt>${t("quick")[k]}</dt><dd>${fx(v && typeof v === "object" ? v.en : v || "")}</dd></div>`).join("")}</dl>
@@ -699,15 +698,6 @@
           <section class="been" id="been"></section>
 
           ${trailCard(id)}
-
-          <a class="deepread rv" href="#/learn/${id}">
-            <span class="deepread__icon">${ico("book")}</span>
-            <span class="deepread__body">
-              <strong>Full history &amp; story</strong>
-              <span>Deep read: facts, what to look for, photo spots, sources &amp; more</span>
-            </span>
-            <span class="deepread__arrow">→</span>
-          </a>
 
           <section class="block visit">
             <h2>${t("visit")}</h2>
@@ -717,6 +707,15 @@
           </section>
 
           <section class="block nearby" id="nearby" hidden><h2>${t("nearbyTitle")}</h2><div class="row__scroll" id="nearby-row"></div></section>
+
+          <a class="deepread deepread--cta rv" href="#/learn/${id}">
+            <span class="deepread__icon">${ico("book")}</span>
+            <span class="deepread__body">
+              <strong>Dig deeper — Full history &amp; story</strong>
+              <span>Architecture, key facts, what to look for, photo spots &amp; sources</span>
+            </span>
+            <span class="deepread__arrow">→</span>
+          </a>
 
           <a class="next" href="#/site/${next.id}">
             <span class="next__label">${t("next")} →</span>
@@ -737,11 +736,14 @@
     LL.Motion.parallax(sp);
     const sfxAudio = null;
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
-    LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .strip, .visit dl > div, .next");
+    LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .site__gallery, .visit dl > div, .next");
     $("#next-media").appendChild(media(next.id, { width: 500 }));
 
     const strip = $("#strip");
-    LL.Photos.candidates(id, 500).forEach((g, i) => {
+    const photos = LL.Photos.candidates(id, 500);
+    const countEl = $("#photo-count");
+    if (countEl && photos.length) countEl.textContent = `(${photos.length})`;
+    photos.forEach((g, i) => {
       const b = document.createElement("button");
       b.className = "strip__item";
       b.setAttribute("aria-label", cap(g));
@@ -1647,7 +1649,10 @@
     main().classList.remove("is-in"); void main().offsetWidth; main().classList.add("is-in");
     if (r.page === "site") cleanup = sitePage(r.param);
     else if (r.page === "me") mePage();
-    else if (r.page === "tour") cleanup = r.param === "done" ? tourIntro(true) : r.param ? tourPage(r.param) : tourIntro();
+    else if (r.page === "tour") {
+      if (r.param && r.param !== "done") { go(`#/site/${r.param}`); return; }
+      cleanup = r.param === "done" ? tourIntro(true) : tourIntro();
+    }
     else if (r.page === "plan") cleanup = planPage(r.param);
     else if (r.page === "map") cleanup = mapPage(r.param);
     else if (r.page === "quiz") cleanup = quizPage();
