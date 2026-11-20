@@ -21,7 +21,7 @@
   const CERT_AT = 6;
   const maps = (q) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(q)}`;
   const ICON = {
-    places: '<path d="M4 20h16M6 20v-7h12v7M6 13c0-4 3-6 6-8 3 2 6 4 6 8M12 5V2"/>',
+    places: '<path d="M3 20h18M5 20V11M19 20V11M2 11l10-9 10 9M10 20v-5h4v5"/>',
     tour: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
     plan: '<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
     quiz: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
@@ -85,8 +85,8 @@
 
   /* ---------------- header ---------------- */
   function header() {
-    [["places", "#/"], ["plan", "#/plan"], ["quiz", "#/quiz"], ["myths", "#/myths"], ["me", "#/me"]].forEach(([k]) => {
-      const a = $(`#nav-${k}`); a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
+    [["places", "#/"], ["plan", "#/plan"], ["me", "#/me"]].forEach(([k]) => {
+      const a = $(`#nav-${k}`); if (a) a.innerHTML = `${ico(k)}<span>${t(k)}</span>`;
     });
     const chatNav = $("#nav-chat"); if (chatNav) chatNav.innerHTML = `${ico("chat")}<span>Chat</span>`;
     $("#footer-lang").textContent = "";
