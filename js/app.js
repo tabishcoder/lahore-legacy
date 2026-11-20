@@ -96,7 +96,7 @@
     $("#progress-pill").innerHTML = `<span class="pill__seal">${ico("crown")}</span><span class="pill__score"><b>${rk.points}</b><small class="pill__pts-label">pts</small></span><span class="pill__rank">${esc(rk.en)}</span><span class="pill__bar" style="--pct:${pct}%"></span>`;
     $("#progress-pill").title = `${rk.en} · ${rk.points} pts${toNextTxt} · ` + t("progressLine", LL.Progress.seenCount(), n, TOTAL());
     $("#progress-pill").classList.toggle("pill--near-rank", pct > 80 && !!rk.next);
-    $("#footer-text").textContent = t("footer");
+    const ft = $("#footer-text"); if (ft) ft.textContent = t("footer");
     const r = route();
     document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("is-active", a.dataset.r === (r.page === "site" ? "home" : r.page)));
   }
