@@ -11,198 +11,195 @@
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:       #F4EFE8;
-      --bg2:      #EAE3D8;
-      --bg3:      #9A3A1F;
-      --fg:       #18100A;
-      --fg2:      #5A4535;
-      --accent:   #9A3A1F;
-      --accent-h: #7B2D16;
-      --gold:     #C4922A;
-      --bot-bg:   #FFFFFF;
-      --bot-bd:   #C8BBAA;
-      --user-bg:  #9A3A1F;
-      --in-bg:    #FFFFFF;
-      --in-bd:    #B8A898;
-      --msgs-bg:  #EDE7DC;
-      --sh:       rgba(0,0,0,.12);
+      --bg: #F8F3EC;
+      --bg2: #EEE6D8;
+      --fg: #18100A;
+      --fg2: #6A4F3A;
+      --accent: #9A3A1F;
+      --accent2: #7B2416;
+      --gold: #C4922A;
+      --bot-bg: #FFFFFF;
+      --bot-bd: #D4C4B0;
+      --user-bg: #9A3A1F;
+      --in-bg: #FFFFFF;
+      --in-bd: #C4B4A0;
+      --msgs-bg: #EDE6DB;
+      --sh: rgba(60,20,10,.10);
       color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --bg:       #1A110A;
-        --bg2:      #231710;
-        --bg3:      #7B2D16;
-        --fg:       #F0E6D4;
-        --fg2:      #B8977C;
-        --accent:   #C0502A;
-        --accent-h: #D0602A;
-        --gold:     #C4922A;
-        --bot-bg:   #2A1C12;
-        --bot-bd:   #4A3220;
-        --user-bg:  #9A3A1F;
-        --in-bg:    #221510;
-        --in-bd:    #5A3D28;
-        --msgs-bg:  #1E1308;
-        --sh:       rgba(0,0,0,.4);
+        --bg: #1A110A;
+        --bg2: #221610;
+        --fg: #F0E6D4;
+        --fg2: #B8977C;
+        --accent: #C0502A;
+        --accent2: #D0602A;
+        --gold: #C4922A;
+        --bot-bg: #2A1C12;
+        --bot-bd: #4A3220;
+        --user-bg: #9A3A1F;
+        --in-bg: #221510;
+        --in-bd: #5A3D28;
+        --msgs-bg: #1C1208;
+        --sh: rgba(0,0,0,.35);
         color-scheme: dark;
       }
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { height: 100%; }
     body {
       height: 100%; height: 100dvh;
-      background: var(--bg);
-      color: var(--fg);
+      background: var(--bg); color: var(--fg);
       font-family: 'EB Garamond', Georgia, serif;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      display: flex; flex-direction: column; overflow: hidden;
     }
 
     /* ── Top bar ── */
     .topbar {
-      background: var(--accent);
+      background: linear-gradient(135deg, #9A3A1F 0%, #5E1A0A 100%);
       color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      display: flex; align-items: center; gap: 12px;
       padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
-      height: calc(56px + env(safe-area-inset-top, 0px));
-      flex-shrink: 0;
+      height: calc(62px + env(safe-area-inset-top, 0px));
+      flex-shrink: 0; box-shadow: 0 2px 14px rgba(0,0,0,.22);
     }
-    .back-link {
-      display: flex; align-items: center; gap: 5px;
+    .back-btn {
+      display: flex; align-items: center; gap: 4px;
       color: rgba(255,255,255,.85); text-decoration: none;
-      font-size: 14px; padding: 8px 0; flex-shrink: 0;
-      transition: color .15s;
+      font-size: 14px; padding: 8px 0; flex-shrink: 0; transition: color .15s;
     }
-    .back-link:hover { color: #fff; }
-    .back-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .back-btn:hover { color: #fff; }
+    .back-btn svg { width: 18px; height: 18px; }
+    .bot-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 21px; flex-shrink: 0;
+    }
     .topbar-info { flex: 1; min-width: 0; }
     .topbar-name {
       font-family: 'IM Fell English', Georgia, serif;
-      font-size: 19px; line-height: 1.1; letter-spacing: .01em;
+      font-size: 18px; line-height: 1.1;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .online-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #4ade80; flex-shrink: 0;
+      animation: pulse-dot 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(.8); }
     }
     .topbar-sub { font-size: 11.5px; opacity: .78; font-style: italic; margin-top: 1px; }
-    .topbar-full-link {
-      font-size: 12px; color: rgba(255,255,255,.8);
-      text-decoration: none; border: 1px solid rgba(255,255,255,.4);
-      border-radius: 999px; padding: 5px 12px; white-space: nowrap;
-      flex-shrink: 0; transition: background .15s, color .15s;
+    .home-link {
+      font-size: 12px; color: rgba(255,255,255,.8); text-decoration: none;
+      border: 1px solid rgba(255,255,255,.35); border-radius: 999px;
+      padding: 5px 12px; white-space: nowrap; flex-shrink: 0; transition: background .15s;
     }
-    .topbar-full-link:hover { background: rgba(255,255,255,.15); color: #fff; }
+    .home-link:hover { background: rgba(255,255,255,.18); color: #fff; }
 
-    /* ── Main layout ── */
-    .layout {
-      flex: 1;
-      display: flex;
-      min-height: 0;
-      overflow: hidden;
-    }
+    /* ── Layout ── */
+    .layout { flex: 1; display: flex; min-height: 0; overflow: hidden; }
 
-    /* ── Sidebar (desktop only) ── */
+    /* ── Sidebar ── */
     .sidebar {
-      width: 300px;
-      flex-shrink: 0;
-      background: var(--bg2);
+      width: 290px; flex-shrink: 0; background: var(--bg2);
       border-right: 1px solid var(--bot-bd);
-      display: none;
-      flex-direction: column;
-      padding: 28px 24px;
-      gap: 24px;
-      overflow-y: auto;
+      display: none; flex-direction: column;
+      padding: 24px 20px; gap: 20px; overflow-y: auto;
     }
     @media (min-width: 768px) { .sidebar { display: flex; } }
-
-    .sidebar-logo {
+    .sidebar-title {
       font-family: 'IM Fell English', Georgia, serif;
-      font-size: 22px; color: var(--accent); line-height: 1.2;
+      font-size: 20px; color: var(--accent); line-height: 1.2;
     }
-    .sidebar-logo small {
-      display: block; font-family: 'EB Garamond', Georgia, serif;
-      font-size: 13px; color: var(--fg2); font-style: italic;
-      margin-top: 2px; font-weight: 400;
+    .sidebar-title span {
+      display: block; font-family: 'EB Garamond'; font-size: 13px;
+      color: var(--fg2); font-style: italic; margin-top: 2px;
     }
-    .sidebar-desc {
-      font-size: 14.5px; color: var(--fg2); line-height: 1.6;
+    .sidebar-blurb {
+      font-size: 14px; color: var(--fg2); line-height: 1.65;
+      border-left: 3px solid var(--gold); padding-left: 12px;
     }
-    .sidebar-topics h3 {
-      font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
-      color: var(--fg2); margin-bottom: 10px;
+    .topics-label {
+      font-size: 10.5px; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--fg2); margin-bottom: 8px;
     }
-    .sidebar-topics ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .sidebar-topics li {
-      display: flex; align-items: center; gap: 8px;
+    .topics-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .topics-list li {
+      display: flex; align-items: center; gap: 10px;
       font-size: 14px; color: var(--fg); cursor: pointer;
-      padding: 6px 10px; border-radius: 8px; transition: background .15s;
+      padding: 8px 10px; border-radius: 10px;
+      transition: background .15s, color .15s; border: 1px solid transparent;
     }
-    .sidebar-topics li:hover { background: var(--bot-bg); }
-    .sidebar-topics li span { font-size: 18px; }
-    .sidebar-tips {
-      margin-top: auto;
-      font-size: 12.5px; color: var(--fg2); line-height: 1.6;
-      padding: 12px 14px;
-      background: var(--bot-bg);
-      border-radius: 10px;
-      border: 1px solid var(--bot-bd);
+    .topics-list li:hover { background: var(--bot-bg); border-color: var(--bot-bd); color: var(--accent); }
+    .topics-list li .ico { font-size: 16px; width: 22px; text-align: center; }
+    .sidebar-tip {
+      margin-top: auto; font-size: 12.5px; color: var(--fg2); line-height: 1.6;
+      padding: 12px 14px; background: var(--bot-bg);
+      border-radius: 10px; border: 1px solid var(--bot-bd);
     }
 
     /* ── Chat panel ── */
-    .chat-panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      overflow: hidden;
-    }
+    .chat-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
 
     /* Messages */
     .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px));
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      overscroll-behavior: contain;
-      scroll-behavior: smooth;
+      flex: 1; overflow-y: auto;
+      padding: 18px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+      display: flex; flex-direction: column; gap: 14px;
       background: var(--msgs-bg);
+      overscroll-behavior: contain; scroll-behavior: smooth;
+    }
+    .msg-row { display: flex; align-items: flex-end; gap: 8px; }
+    .msg-row.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--bot-bd);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0; align-self: flex-end;
     }
     .msg {
-      max-width: min(78%, 500px);
-      padding: 10px 15px;
-      border-radius: 18px;
-      font-size: 15.5px;
-      line-height: 1.55;
-      word-wrap: break-word;
+      max-width: min(76%, 480px); padding: 11px 16px; border-radius: 20px;
+      font-size: 15.5px; line-height: 1.6; word-wrap: break-word;
     }
     .msg.bot {
-      align-self: flex-start;
-      background: var(--bot-bg);
-      color: var(--fg);
-      border: 1px solid var(--bot-bd);
-      border-bottom-left-radius: 4px;
-      box-shadow: 0 1px 3px var(--sh);
+      background: var(--bot-bg); color: var(--fg);
+      border: 1px solid var(--bot-bd); border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 10px var(--sh);
     }
     .msg.user {
-      align-self: flex-end;
-      background: var(--user-bg);
-      color: #fff;
-      border-bottom-right-radius: 4px;
+      background: linear-gradient(135deg, #9A3A1F, #6A2010); color: #fff;
+      border-bottom-right-radius: 4px; box-shadow: 0 2px 10px var(--sh);
     }
-    .msg.bot ul { margin: 6px 0 2px 18px; }
-    .msg.bot li { margin-bottom: 4px; }
-    .msg.bot b { font-weight: 600; }
+    .msg.bot ul { margin: 8px 0 4px 18px; }
+    .msg.bot li { margin-bottom: 5px; }
+    .msg.bot b { font-weight: 700; color: var(--accent); }
+
+    /* Welcome card */
+    .welcome-card {
+      background: linear-gradient(135deg, #9A3A1F 0%, #4A1A08 100%);
+      color: #fff; border-radius: 20px; padding: 20px 22px;
+      max-width: 420px; align-self: flex-start;
+      box-shadow: 0 4px 20px rgba(100,20,10,.25);
+    }
+    .welcome-card h2 {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: 21px; margin-bottom: 8px; line-height: 1.25;
+    }
+    .welcome-card p { font-size: 14.5px; opacity: .92; line-height: 1.65; }
+    .welcome-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .welcome-tag {
+      font-size: 12px; padding: 3px 10px; border-radius: 999px;
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28);
+    }
 
     /* Typing dots */
     .typing { display: inline-flex; gap: 5px; padding: 4px 2px; align-items: center; }
     .typing span {
       width: 7px; height: 7px; border-radius: 50%;
-      background: var(--fg2); opacity: .7;
-      animation: tdot 1s infinite;
+      background: var(--fg2); opacity: .7; animation: tdot 1s infinite;
     }
     .typing span:nth-child(2) { animation-delay: .18s; }
     .typing span:nth-child(3) { animation-delay: .36s; }
@@ -211,159 +208,120 @@
       30% { transform: translateY(-5px); opacity: 1; }
     }
 
-    /* Suggestions strip */
+    /* Suggestions */
     .sugs-wrap {
-      padding: 8px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      background: var(--bg);
-      border-top: 1px solid var(--bot-bd);
+      padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+      display: flex; flex-wrap: wrap; gap: 7px;
+      background: var(--bg); border-top: 1px solid var(--bot-bd);
     }
     .sug {
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      background: #fff;
-      border-radius: 999px;
-      padding: 7px 16px;
-      font-size: 14px;
-      font-family: 'EB Garamond', Georgia, serif;
-      cursor: pointer;
-      transition: background .15s, color .15s;
-      white-space: nowrap;
-      font-weight: 600;
+      border: 1.5px solid var(--accent); color: var(--accent); background: transparent;
+      border-radius: 999px; padding: 7px 15px; font-size: 14px;
+      font-family: 'EB Garamond', Georgia, serif; cursor: pointer;
+      transition: all .15s; white-space: nowrap; font-weight: 600;
     }
-    .sug:hover, .sug:focus-visible { background: var(--accent); color: #fff; outline: none; }
+    .sug:hover { background: var(--accent); color: #fff; }
 
     /* Input bar */
     .input-bar {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
+      display: flex; align-items: flex-end; gap: 10px;
       padding: 12px max(16px, env(safe-area-inset-right, 0px)) max(14px, calc(env(safe-area-inset-bottom, 0px) + 10px)) max(16px, env(safe-area-inset-left, 0px));
-      border-top: 2px solid var(--bot-bd);
-      background: var(--bg);
-      flex-shrink: 0;
+      border-top: 1.5px solid var(--bot-bd); background: var(--bg); flex-shrink: 0;
     }
-    .msg-textarea {
-      flex: 1;
-      min-width: 0;
-      border: 2px solid var(--in-bd);
-      border-radius: 22px;
-      padding: 11px 16px;
-      font-family: 'EB Garamond', Georgia, serif;
-      font-size: 15.5px;
-      line-height: 1.4;
-      resize: none;
-      outline: none;
-      background: var(--in-bg);
-      color: var(--fg);
-      max-height: 130px;
-      overflow-y: auto;
+    .msg-input {
+      flex: 1; min-width: 0; border: 1.5px solid var(--in-bd); border-radius: 24px;
+      padding: 11px 16px; font-family: 'EB Garamond', Georgia, serif; font-size: 15.5px;
+      line-height: 1.4; resize: none; outline: none;
+      background: var(--in-bg); color: var(--fg); max-height: 130px;
       transition: border-color .18s, box-shadow .18s;
-      box-shadow: 0 1px 4px var(--sh);
+      box-shadow: 0 1px 5px rgba(60,20,10,.08);
     }
-    .msg-textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(154,58,31,.15), 0 1px 4px var(--sh);
-    }
-    .msg-textarea::placeholder { color: var(--fg2); opacity: .7; }
+    .msg-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(154,58,31,.12); }
+    .msg-input::placeholder { color: var(--fg2); opacity: .65; }
     .send-btn {
-      width: 46px; height: 46px; border-radius: 50%;
-      border: none; background: var(--accent); color: #fff;
+      width: 46px; height: 46px; border-radius: 50%; border: none;
+      background: linear-gradient(135deg, #9A3A1F, #6A2010); color: #fff;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: background .15s, transform .1s;
+      flex-shrink: 0; transition: transform .1s, box-shadow .1s;
+      box-shadow: 0 3px 12px rgba(154,58,31,.4);
     }
-    .send-btn:hover { background: var(--accent-h); }
+    .send-btn:hover { transform: scale(1.07); box-shadow: 0 4px 16px rgba(154,58,31,.5); }
     .send-btn:active { transform: scale(.9); }
-    .send-btn:disabled { opacity: .4; cursor: default; transform: none; }
+    .send-btn:disabled { opacity: .4; cursor: default; transform: none; box-shadow: none; }
     .send-btn svg { width: 20px; height: 20px; }
 
-    /* ── Mobile features strip (hidden on desktop) ── */
-    .mob-features {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 10px max(16px, env(safe-area-inset-right, 0px)) 4px max(16px, env(safe-area-inset-left, 0px));
-      scrollbar-width: none;
-      flex-shrink: 0;
+    /* Mobile features strip */
+    .mob-feat-strip {
+      display: flex; gap: 7px; overflow-x: auto;
+      padding: 10px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px));
+      scrollbar-width: none; flex-shrink: 0;
       border-bottom: 1px solid var(--bot-bd);
     }
-    .mob-features::-webkit-scrollbar { display: none; }
-    @media (min-width: 768px) { .mob-features { display: none; } }
+    .mob-feat-strip::-webkit-scrollbar { display: none; }
+    @media (min-width: 768px) { .mob-feat-strip { display: none; } }
     .mob-feat {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      white-space: nowrap;
-      font-size: 12.5px;
-      color: var(--fg2);
-      background: var(--bot-bg);
-      border: 1px solid var(--bot-bd);
-      border-radius: 999px;
-      padding: 5px 12px;
-      flex-shrink: 0;
+      display: flex; align-items: center; gap: 5px; white-space: nowrap;
+      font-size: 12.5px; color: var(--fg2); background: var(--bot-bg);
+      border: 1px solid var(--bot-bd); border-radius: 999px;
+      padding: 5px 12px; flex-shrink: 0;
     }
-    .mob-feat span { font-size: 14px; }
 
-    /* ── Mobile message width ── */
     @media (max-width: 480px) {
-      .msg { max-width: 90%; font-size: 15px; }
+      .msg { max-width: 88%; font-size: 15px; }
       .topbar-name { font-size: 17px; }
-      .sug { font-size: 13px; padding: 6px 13px; }
+      .sug { font-size: 13px; padding: 6px 12px; }
     }
   </style>
 </head>
 <body>
 
   <header class="topbar">
-    <a href="/" class="back-link" aria-label="Back to Lahore Legacy">
+    <a href="/" class="back-btn" aria-label="Back to Lahore Legacy">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6"/>
       </svg>
-      Back
     </a>
+    <div class="bot-avatar">🏛️</div>
     <div class="topbar-info">
-      <div class="topbar-name">Lahore Guide</div>
-      <div class="topbar-sub">Ask anything about Lahore's heritage</div>
+      <div class="topbar-name">Lahore Guide <span class="online-dot"></span></div>
+      <div class="topbar-sub">Your personal heritage expert</div>
     </div>
+    <a href="/" class="home-link">← Home</a>
   </header>
 
-  <!-- Mobile-only features strip -->
-  <div class="mob-features" aria-label="What you can ask">
-    <div class="mob-feat"><span>🏛️</span> Heritage history</div>
-    <div class="mob-feat"><span>🎟️</span> Ticket prices</div>
-    <div class="mob-feat"><span>🗺️</span> Trip planning</div>
-    <div class="mob-feat"><span>🍛</span> Food spots</div>
-    <div class="mob-feat"><span>🕐</span> Visit timings</div>
-    <div class="mob-feat"><span>🚶</span> Walled City walk</div>
+  <div class="mob-feat-strip" aria-label="Topics">
+    <div class="mob-feat">🏰 Heritage history</div>
+    <div class="mob-feat">🎟️ Ticket prices</div>
+    <div class="mob-feat">🗺️ Trip planning</div>
+    <div class="mob-feat">🍛 Food spots</div>
+    <div class="mob-feat">🕐 Visit timings</div>
+    <div class="mob-feat">🚶 Walled City walk</div>
   </div>
 
   <div class="layout">
-
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-logo">
-        Lahore Legacy
-        <small>لاہور کی وراثت</small>
+    <aside class="sidebar" aria-label="Topics and tips">
+      <div class="sidebar-title">
+        Lahore Guide
+        <span>لاہور کا ماہر گائیڈ</span>
       </div>
-      <p class="sidebar-desc">
-        Ask me about Lahore's heritage places, history, ticket prices, what to eat, and how to plan your trip.
+      <p class="sidebar-blurb">
+        I know every lane of the Walled City, every Emperor's story, and the best place to get halwa puri at 7 am. Ask me anything!
       </p>
-      <nav class="sidebar-topics">
-        <h3>Quick topics</h3>
-        <ul id="sidebar-topics">
-          <li data-q="Plan a 1-day trip in Lahore"><span>🗺️</span> Plan my trip</li>
-          <li data-q="Tell me about Lahore Fort"><span>🏰</span> Lahore Fort</li>
-          <li data-q="Tell me about Badshahi Mosque"><span>🕌</span> Badshahi Mosque</li>
-          <li data-q="What are the ticket prices?"><span>🎫</span> Ticket prices</li>
-          <li data-q="What food should I try near the Walled City?"><span>🍛</span> What to eat</li>
-          <li data-q="What is the best time to visit Lahore?"><span>🌤️</span> Best season</li>
-          <li data-q="Tell me about the Walled City heritage walk"><span>🚶</span> Walled City walk</li>
-          <li data-q="Tell me about Shalimar Gardens"><span>🌿</span> Shalimar Gardens</li>
+      <div>
+        <p class="topics-label">Quick topics</p>
+        <ul class="topics-list" id="sidebar-topics">
+          <li data-q="Plan a perfect 1-day trip in Lahore for me"><span class="ico">🗺️</span> Plan my trip</li>
+          <li data-q="What are the best things to see inside Lahore Fort?"><span class="ico">🏰</span> Lahore Fort</li>
+          <li data-q="Tell me about Badshahi Mosque — history and visiting tips"><span class="ico">🕌</span> Badshahi Mosque</li>
+          <li data-q="What are the ticket prices at all major heritage sites?"><span class="ico">🎫</span> Ticket prices</li>
+          <li data-q="What food should I absolutely try in Lahore? Give me the insider list."><span class="ico">🍛</span> Must-eat food</li>
+          <li data-q="What is the best time of year to visit Lahore and why?"><span class="ico">🌤️</span> Best season</li>
+          <li data-q="Walk me through the Walled City heritage route step by step"><span class="ico">🚶</span> Walled City walk</li>
+          <li data-q="Tell me a surprising or little-known fact about Lahore's history"><span class="ico">✨</span> Surprise me!</li>
         </ul>
-      </nav>
-      <div class="sidebar-tips">
-        💡 <strong>Tip:</strong> Ask in English, Urdu or Roman Urdu — I'll reply in the same language.
+      </div>
+      <div class="sidebar-tip">
+        💡 Ask in <b>English</b>, <b>Urdu</b> or <b>Roman Urdu</b> — I'll reply in the same language.
       </div>
     </aside>
 
@@ -371,16 +329,16 @@
       <div class="messages" id="messages"></div>
 
       <div class="sugs-wrap" id="sugs-wrap">
-        <button class="sug" type="button">Plan a 1-day trip</button>
-        <button class="sug" type="button">Lahore Fort tickets?</button>
-        <button class="sug" type="button">What to eat near Badshahi Mosque?</button>
-        <button class="sug" type="button">Walled City walk</button>
+        <button class="sug" type="button">🗺️ Plan a 1-day trip</button>
+        <button class="sug" type="button">🏰 Best of Lahore Fort</button>
+        <button class="sug" type="button">🍛 What to eat?</button>
+        <button class="sug" type="button">✨ Surprise me!</button>
       </div>
 
       <div class="input-bar">
-        <textarea class="msg-textarea" id="msg-in" rows="1"
-          placeholder="Ask about Lahore…" maxlength="1000" autocomplete="off"></textarea>
-        <button class="send-btn" id="send-btn" type="button" aria-label="Send message" disabled>
+        <textarea class="msg-input" id="msg-in" rows="1"
+          placeholder="Ask anything about Lahore…" maxlength="1000" autocomplete="off"></textarea>
+        <button class="send-btn" id="send-btn" type="button" aria-label="Send" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"/>
             <polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -393,14 +351,12 @@
 <script>
 (function () {
   var API = '/api/chat';
-  var GREETING = "Hi! 👋 I'm your Lahore heritage guide. Ask me about any place, its history, ticket prices, what to eat, or let me plan your trip.";
   var msgs = document.getElementById('messages');
   var sugsWrap = document.getElementById('sugs-wrap');
   var input = document.getElementById('msg-in');
   var sendBtn = document.getElementById('send-btn');
   var history = [], busy = false;
 
-  /* helpers */
   function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function fmt(text) {
     var lines = esc(text).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').split('\n');
@@ -413,11 +369,19 @@
     if (inList) out += '</ul>';
     return out.replace(/(<br>)+$/, '');
   }
-  function addMsg(content, who, isHtml) {
+  function addMsg(html, who) {
+    var row = document.createElement('div');
+    row.className = 'msg-row ' + who;
+    if (who === 'bot') {
+      var av = document.createElement('div');
+      av.className = 'msg-avatar'; av.textContent = '🏛️';
+      row.appendChild(av);
+    }
     var d = document.createElement('div');
     d.className = 'msg ' + who;
-    if (isHtml) d.innerHTML = content; else d.textContent = content;
-    msgs.appendChild(d);
+    d.innerHTML = html;
+    row.appendChild(d);
+    msgs.appendChild(row);
     msgs.scrollTop = msgs.scrollHeight;
     return d;
   }
@@ -427,21 +391,32 @@
     sendBtn.disabled = !input.value.trim();
   }
 
-  /* greeting */
-  addMsg(fmt(GREETING), 'bot', true);
+  /* Welcome card */
+  var wc = document.createElement('div');
+  wc.className = 'welcome-card';
+  wc.innerHTML =
+    '<h2>🏛️ Assalam o Alaikum!</h2>' +
+    '<p>Main hun aapka Lahore Guide — thoda Wikipedia, thoda woh knowledgeable uncle jo Walled City mein pala bada hua ho. ' +
+    'Lahore ke kisi bhi heritage place ke baare mein poochein!</p>' +
+    '<div class="welcome-tags">' +
+    '<span class="welcome-tag">🏰 Lahore Fort</span>' +
+    '<span class="welcome-tag">🕌 Badshahi Mosque</span>' +
+    '<span class="welcome-tag">🍛 Best food spots</span>' +
+    '<span class="welcome-tag">🎟️ Ticket prices</span>' +
+    '<span class="welcome-tag">✨ Hidden stories</span>' +
+    '</div>';
+  msgs.appendChild(wc);
 
-  /* suggestion chips */
   sugsWrap.querySelectorAll('.sug').forEach(function(b) {
-    b.addEventListener('click', function() { ask(b.textContent); });
+    b.addEventListener('click', function() {
+      var txt = b.textContent.replace(/^[\s🗺️🏰🍛✨]+/, '').trim();
+      ask(txt);
+    });
   });
-
-  /* sidebar topic links */
-  var topicItems = document.querySelectorAll('#sidebar-topics li[data-q]');
-  topicItems.forEach(function(li) {
+  document.querySelectorAll('#sidebar-topics li[data-q]').forEach(function(li) {
     li.addEventListener('click', function() { ask(li.getAttribute('data-q')); });
   });
 
-  /* input events */
   input.addEventListener('input', autoResize);
   input.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(input.value); }
@@ -453,24 +428,23 @@
     if (!text || busy) return;
     busy = true; sendBtn.disabled = true;
     sugsWrap.style.display = 'none';
-    addMsg(text, 'user', false);
+    addMsg(esc(text), 'user');
     history.push({ role: 'user', content: text });
-    var typingEl = addMsg('<div class="typing"><span></span><span></span><span></span></div>', 'bot', true);
-    input.value = ''; input.style.height = 'auto';
-    input.focus();
+    var typingEl = addMsg('<div class="typing"><span></span><span></span><span></span></div>', 'bot');
+    input.value = ''; input.style.height = 'auto'; input.focus();
     try {
       var res = await fetch(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history.slice(-8) })
+        body: JSON.stringify({ messages: history.slice(-10) })
       });
       var data = await res.json();
-      var reply = data.reply || 'Sorry, something went wrong. Please try again.';
+      var reply = data.reply || 'Maafi chahta hun, kuch galat ho gaya. Dobara try karein!';
       typingEl.innerHTML = fmt(reply);
       if (res.ok) history.push({ role: 'assistant', content: reply });
       else history.pop();
     } catch (e) {
-      typingEl.textContent = 'Network error — please check your connection and try again.';
+      typingEl.textContent = 'Connection issue — check your internet and try again.';
       history.pop();
     }
     msgs.scrollTop = msgs.scrollHeight;
@@ -478,8 +452,6 @@
     if (input.value.trim()) sendBtn.disabled = false;
     input.focus();
   }
-
-  /* no auto-focus on load — prevents keyboard popping up on mobile */
 })();
 </script>
 </body>
