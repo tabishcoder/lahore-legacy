@@ -366,6 +366,27 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(23, 25,
 .gallery-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.9rem; }
 .gallery-h { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin: 0; color: var(--ink); }
 .gallery-h .gallery-count { font-size: 0.82rem; color: var(--dim); font-weight: 400; }
+/* ── Site info section ─────────────────────────────────────────────────── */
+.site-info { margin: 1.4rem 0 2rem; }
+.si-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1.1rem; flex-wrap: wrap; }
+.si-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin: 0; color: var(--ink); }
+.lang-tog { display: flex; gap: 2px; background: var(--navy-2); border-radius: 20px; padding: 3px; flex-shrink: 0; }
+.lang-btn { border: none; background: none; padding: 4px 14px; border-radius: 18px; font-size: 0.8rem; font-weight: 600; color: var(--faint); cursor: pointer; transition: background 0.18s, color 0.18s; }
+.lang-btn--active { background: var(--charcoal); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+.si-story { margin-bottom: 1.4rem; }
+.si-text--ur { font-family: var(--urdu); font-size: 1.08rem; line-height: 2.1; color: var(--ink); direction: rtl; text-align: right; margin: 0; }
+.si-text--en { font-size: 0.94rem; line-height: 1.72; color: var(--ink); margin: 0; }
+.si-block { margin-bottom: 1.2rem; }
+.si-label { display: flex; align-items: center; gap: 0.45rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-2); margin: 0 0 0.55rem; }
+.si-icon { font-style: normal; }
+.si-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+.si-item--ur { font-family: var(--urdu); font-size: 0.98rem; line-height: 1.95; direction: rtl; text-align: right; color: var(--ink-soft); padding: 0.45rem 0.8rem 0.45rem 0; border-right: 2px solid var(--gold); }
+.si-item--en { font-size: 0.88rem; line-height: 1.6; color: var(--ink-soft); padding: 0.4rem 0 0.4rem 0.8rem; border-left: 2px solid var(--gold); }
+.si-block--secrets { background: linear-gradient(135deg, rgba(154,58,31,0.07) 0%, rgba(212,154,42,0.08) 100%); border-radius: 10px; padding: 0.9rem 1rem; border: 1px solid rgba(154,58,31,0.18); }
+.si-block--secrets .si-label { color: var(--brick); }
+.si-block--secrets .si-item--ur { border-right-color: var(--brick); }
+.si-block--secrets .si-item--en { border-left-color: var(--brick); }
+/* ───────────────────────────────────────────────────────────────────────── */
 .btn--sm { min-height: 40px; padding: 0 1.1em; font-size: 0.72rem; }
 .quick { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 0 2.4rem; border: 1px solid var(--line); border-radius: 8px; background: var(--navy); }
 .quick div { padding: 0.9rem 1rem; }

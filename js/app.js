@@ -658,6 +658,39 @@
     LL.Motion.reveal(main(), ".story-1947");
   }
 
+  /* ---------------- site info section (story / facts / secrets / look) ---------------- */
+  function siteInfoSection(s) {
+    if (!s || !s.story) return "";
+    const urStory = s.story.ur ? `<p class="si-text si-text--ur" lang="ur" dir="rtl">${esc(s.story.ur)}</p>` : "";
+    const enStory = s.story.en ? `<p class="si-text si-text--en" hidden>${esc(s.story.en)}</p>` : "";
+
+    function block(icon, labelUr, labelEn, itemsUr, itemsEn, extra) {
+      if (!itemsUr.length && !itemsEn.length) return "";
+      const liUr = itemsUr.map(f => `<li class="si-item--ur" lang="ur" dir="rtl">${esc(f)}</li>`).join("");
+      const liEn = itemsEn.map(f => `<li class="si-item--en" hidden>${esc(f)}</li>`).join("");
+      return `<div class="si-block${extra ? " " + extra : ""}">
+        <h3 class="si-label"><span class="si-icon">${icon}</span><span class="si-lbl--ur" lang="ur" dir="rtl">${labelUr}</span><span class="si-lbl--en" hidden>${labelEn}</span></h3>
+        <ul class="si-list">${liUr}${liEn}</ul>
+      </div>`;
+    }
+
+    const factsHtml = s.facts ? block("✦", "اہم باتیں", "Key Facts", (s.facts.ur || []).slice(0, 4), (s.facts.en || []).slice(0, 4)) : "";
+    const secretsHtml = s.secrets ? block("◈", "چھپے راز", "Hidden Secrets", (s.secrets.ur || []).slice(0, 2), (s.secrets.en || []).slice(0, 2), "si-block--secrets") : "";
+    const lookHtml = s.look ? block("◎", "کیا دیکھیں", "What to See", (s.look.ur || []).slice(0, 3), (s.look.en || []).slice(0, 3)) : "";
+
+    return `<section class="site-info rv" id="site-info">
+      <div class="si-head">
+        <h2 class="si-title"><span class="si-lbl--ur" lang="ur" dir="rtl">اس جگہ کے بارے میں</span><span class="si-lbl--en" hidden>About This Place</span></h2>
+        <div class="lang-tog" id="lang-tog">
+          <button class="lang-btn lang-btn--active" data-lang="ur">اردو</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </div>
+      <div class="si-story">${urStory}${enStory}</div>
+      ${factsHtml}${secretsHtml}${lookHtml}
+    </section>`;
+  }
+
   /* ---------------- place page ---------------- */
   function sitePage(id) {
     const s = site(id);
@@ -699,6 +732,8 @@
 
           ${trailCard(id)}
 
+          ${siteInfoSection(s)}
+
           <section class="block visit">
             <h2>${t("visit")}</h2>
             <dl>${(s.visit && s.visit.en ? s.visit.en : (s.visit || [])).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
@@ -736,7 +771,7 @@
     LL.Motion.parallax(sp);
     const sfxAudio = null;
     document.body.insertAdjacentHTML("beforeend", '<div id="readbar" class="readbar"></div>');
-    LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .site__gallery, .visit dl > div, .next");
+    LL.Motion.reveal(main(), ".quick > div, .been, .deepread, .site__gallery, .site-info, .visit dl > div, .next");
     $("#next-media").appendChild(media(next.id, { width: 500 }));
 
     const strip = $("#strip");
@@ -753,6 +788,19 @@
       strip.appendChild(b);
     });
 
+    const langTog = $("#lang-tog");
+    if (langTog) {
+      langTog.addEventListener("click", (e) => {
+        const btn = e.target.closest(".lang-btn");
+        if (!btn) return;
+        const lang = btn.dataset.lang;
+        langTog.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("lang-btn--active", b === btn));
+        const info = $("#site-info");
+        if (!info) return;
+        info.querySelectorAll(".si-text--ur, .si-item--ur, .si-lbl--ur").forEach(el => { el.hidden = lang === "en"; });
+        info.querySelectorAll(".si-text--en, .si-item--en, .si-lbl--en").forEach(el => { el.hidden = lang === "ur"; });
+      });
+    }
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
     $("#see-photos").addEventListener("click", () => lightbox(id, 0));
     beenBox(id);
