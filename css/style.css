@@ -204,10 +204,10 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(23, 25,
 .compare__tag--then { left: 12px; } .compare__tag--now { right: 12px; }
 .compare input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; direction: ltr; }
 
-.strip { display: flex; gap: 0.6rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.6rem; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
-.strip__item { flex: 0 0 min(72%, 300px); scroll-snap-align: start; padding: 0; border: 0; background: none; text-align: start; }
-.strip__item .media { aspect-ratio: 4 / 3; border-radius: 4px; }
-.strip__item span { display: block; font-size: 0.78rem; color: var(--dim); margin-top: 0.35rem; }
+.strip { display: flex; gap: 0.75rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.75rem; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.strip__item { flex: 0 0 min(60%, 340px); scroll-snap-align: start; padding: 0; border: 0; background: none; text-align: start; cursor: pointer; }
+.strip__item .media { aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden; }
+.strip__item span { display: block; font-size: 0.78rem; color: var(--dim); margin-top: 0.4rem; }
 .strip__item:hover img { transform: scale(1.04); }
 
 .visit dl { margin: 0; display: grid; gap: 0; }
@@ -362,9 +362,10 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(23, 25,
 /* Place page */
 .site__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
 .site__utils { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.9rem; }
-.site__photo-first { margin-bottom: 2rem; }
-.site__photo-first .strip { margin-bottom: 1rem; }
-.site__photo-first .site__actions { margin-top: 0; }
+.site__gallery { margin-bottom: 2rem; }
+.gallery-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.9rem; }
+.gallery-h { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin: 0; color: var(--ink); }
+.gallery-h .gallery-count { font-size: 0.82rem; color: var(--dim); font-weight: 400; }
 .btn--sm { min-height: 40px; padding: 0 1.1em; font-size: 0.72rem; }
 .quick { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 0 2.4rem; border: 1px solid var(--line); border-radius: 8px; background: var(--navy); }
 .quick div { padding: 0.9rem 1rem; }
@@ -1445,8 +1446,8 @@ h1, h2, h3, h4, p, li, dd, b, a { overflow-wrap: break-word; }
   /* place page */
   .site__hero { padding-inline: 16px; min-height: 72svh; }
   .site__title h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
-  .site__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-  .site__actions .btn { width: 100%; padding-inline: 0.5rem; }
+  .site__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .site__actions .btn { padding-inline: 0.5rem; }
   .site__credit, .site__vcap { max-width: calc(100% - 32px); }
   .story { font-size: 1.25rem; }
   .facts li { grid-template-columns: 2rem 1fr; }
@@ -2197,6 +2198,11 @@ h1.is-split .w { display: inline-block; animation: wordIn 0.7s var(--ease) backw
 .deepread__body strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; color: var(--ink); }
 .deepread__body span { font-size: 0.82rem; color: var(--dim); line-height: 1.4; }
 .deepread__arrow { font-size: 1.3rem; color: var(--gold); flex-shrink: 0; }
+/* Bottom CTA variant — more prominent */
+.deepread--cta { margin-top: 2rem; padding: 1.4rem 1.4rem; border-color: var(--gold); border-width: 2px; background: linear-gradient(135deg, rgba(212,154,42,0.08) 0%, var(--navy) 100%); }
+.deepread--cta .deepread__icon { width: 52px; height: 52px; }
+.deepread--cta .deepread__body strong { font-size: 1.05rem; color: var(--gold-2); }
+.deepread--cta .deepread__arrow { font-size: 1.5rem; }
 
 /* ===== LEARN PAGE (deep-read / Wikipedia-style) ===== */
 .learn-page { min-height: 100vh; }
@@ -2390,7 +2396,7 @@ p, li, dd, .story, .lead { max-width: 72ch; }
   .cards { grid-template-columns: 1fr; }
   .quick { grid-template-columns: 1fr; }
   .quick div + div { border-inline-start: 0; border-top: 1px solid var(--line); }
-  .site__actions { grid-template-columns: 1fr; }
+  .strip__item { flex-basis: 85%; }
   .site__utils .btn { flex: 1 1 auto; }
   .answers { grid-template-columns: 1fr; }
   .lightbox img { max-height: calc(100dvh - 100px); }
