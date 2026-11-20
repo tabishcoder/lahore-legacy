@@ -195,8 +195,8 @@
       '<strong>🏛️ Lahore Guide</strong>' +
       'Ask me about any heritage place, ticket prices, or let me plan your trip!';
     bbl.addEventListener("click", function () { bbl.remove(); onClickFn(); });
-    document.getElementById("lg-bubble-close").addEventListener("click", function (e) { e.stopPropagation(); bbl.remove(); });
     document.body.appendChild(bbl);
+    document.getElementById("lg-bubble-close").addEventListener("click", function (e) { e.stopPropagation(); bbl.remove(); });
     setTimeout(function () { if (bbl.parentNode) bbl.remove(); }, 8000);
   }
 

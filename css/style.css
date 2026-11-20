@@ -375,10 +375,8 @@ html[dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(23, 25,
 .lang-btn { border: none; background: none; padding: 4px 14px; border-radius: 18px; font-size: 0.8rem; font-weight: 600; color: var(--faint); cursor: pointer; transition: background 0.18s, color 0.18s; }
 .lang-btn--active { background: var(--charcoal); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
 .si-story { margin-bottom: 1.4rem; }
-/* English default: show .si-en, hide .si-ur */
-.site-info .si-ur { display: none; }
-/* Urdu mode: show .si-ur, hide .si-en */
-.site-info.is-ur .si-ur { display: revert; }
+/* English default: hide Urdu; Urdu mode: hide English */
+.site-info:not(.is-ur) .si-ur { display: none; }
 .site-info.is-ur .si-en { display: none; }
 /* Urdu text styles */
 .si-text.si-ur { font-family: var(--urdu); font-size: 1.08rem; line-height: 2.1; color: var(--ink); direction: rtl; text-align: right; margin: 0; }
