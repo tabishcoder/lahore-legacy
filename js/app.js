@@ -661,15 +661,17 @@
   /* ---------------- site info section (story / facts / secrets / look) ---------------- */
   function siteInfoSection(s) {
     if (!s || !s.story) return "";
-    const urStory = s.story.ur ? `<p class="si-text si-text--ur" lang="ur" dir="rtl">${esc(s.story.ur)}</p>` : "";
-    const enStory = s.story.en ? `<p class="si-text si-text--en" hidden>${esc(s.story.en)}</p>` : "";
+    // si-ur = Urdu variant (hidden by default, shown when section has .is-ur class)
+    // si-en = English variant (shown by default)
+    const urStory = s.story.ur ? `<p class="si-text si-ur" lang="ur" dir="rtl">${esc(s.story.ur)}</p>` : "";
+    const enStory = s.story.en ? `<p class="si-text si-en">${esc(s.story.en)}</p>` : "";
 
     function block(icon, labelUr, labelEn, itemsUr, itemsEn, extra) {
       if (!itemsUr.length && !itemsEn.length) return "";
-      const liUr = itemsUr.map(f => `<li class="si-item--ur" lang="ur" dir="rtl">${esc(f)}</li>`).join("");
-      const liEn = itemsEn.map(f => `<li class="si-item--en" hidden>${esc(f)}</li>`).join("");
+      const liUr = itemsUr.map(f => `<li class="si-item si-ur" lang="ur" dir="rtl">${esc(f)}</li>`).join("");
+      const liEn = itemsEn.map(f => `<li class="si-item si-en">${esc(f)}</li>`).join("");
       return `<div class="si-block${extra ? " " + extra : ""}">
-        <h3 class="si-label"><span class="si-icon">${icon}</span><span class="si-lbl--ur" lang="ur" dir="rtl">${labelUr}</span><span class="si-lbl--en" hidden>${labelEn}</span></h3>
+        <h3 class="si-label"><span class="si-icon">${icon}</span><span class="si-ur" lang="ur" dir="rtl">${labelUr}</span><span class="si-en">${labelEn}</span></h3>
         <ul class="si-list">${liUr}${liEn}</ul>
       </div>`;
     }
@@ -680,10 +682,10 @@
 
     return `<section class="site-info rv" id="site-info">
       <div class="si-head">
-        <h2 class="si-title"><span class="si-lbl--ur" lang="ur" dir="rtl">اس جگہ کے بارے میں</span><span class="si-lbl--en" hidden>About This Place</span></h2>
+        <h2 class="si-title"><span class="si-ur" lang="ur" dir="rtl">اس جگہ کے بارے میں</span><span class="si-en">About This Place</span></h2>
         <div class="lang-tog" id="lang-tog">
-          <button class="lang-btn lang-btn--active" data-lang="ur">اردو</button>
-          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn lang-btn--active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="ur">اردو</button>
         </div>
       </div>
       <div class="si-story">${urStory}${enStory}</div>
@@ -732,14 +734,14 @@
 
           ${trailCard(id)}
 
-          ${siteInfoSection(s)}
-
           <section class="block visit">
             <h2>${t("visit")}</h2>
             <dl>${(s.visit && s.visit.en ? s.visit.en : (s.visit || [])).map(([k, v]) => `<div><dt>${fx(k)}</dt><dd>${fx(v)}</dd></div>`).join("")}</dl>
             <p><a class="btn btn--ghost btn--sm" href="${maps(s.name.en + ", Lahore")}" target="_blank" rel="noopener">${ico("pin")} ${t("directions")} ↗</a></p>
             <p class="hint">${t("directionsNote")}. ${t("visitNote")}</p>
           </section>
+
+          ${siteInfoSection(s)}
 
           <section class="block nearby" id="nearby" hidden><h2>${t("nearbyTitle")}</h2><div class="row__scroll" id="nearby-row"></div></section>
 
@@ -797,8 +799,7 @@
         langTog.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("lang-btn--active", b === btn));
         const info = $("#site-info");
         if (!info) return;
-        info.querySelectorAll(".si-text--ur, .si-item--ur, .si-lbl--ur").forEach(el => { el.hidden = lang === "en"; });
-        info.querySelectorAll(".si-text--en, .si-item--en, .si-lbl--en").forEach(el => { el.hidden = lang === "ur"; });
+        info.classList.toggle("is-ur", lang === "ur");
       });
     }
     $("#share-place").addEventListener("click", () => shareText(s.name.en, `${s.name.en} — ${s.line.en}\n${t("directions")}: ${maps(s.name.en + ", Lahore")}`, location.href));
