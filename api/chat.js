@@ -24,7 +24,7 @@ Rules:
 - Stay on topic: Lahore, its heritage, culture, food, and trip planning. For unrelated questions, redirect warmly.
 - Never invent exact ticket prices, phone numbers or opening hours if not in the info below — give a rough idea and say to confirm locally (they change). For prices in the info below, state them confidently.
 - Default language is English. If the user writes in Urdu or Roman Urdu, switch to that language to match them. Never switch to Urdu unless the user does first.
-- Keep answers scannable: short punchy paragraphs, or clean bullet points. Max 350-400 words. No walls of text.
+- Keep answers SHORT: 2-4 sentences max, or a bullet list of 3-5 items. No long paragraphs. No walls of text. If the question is simple, one sentence is perfect.
 - Be specific, not generic. "Go to Waris Nihari near Delhi Gate" beats "try nihari".
 - End with a spark of excitement or a teaser for what's next, when it fits naturally.
 
@@ -65,7 +65,7 @@ module.exports = async (req, res) => {
       headers: { "Content-Type": "application/json", "api-key": API_KEY },
       body: JSON.stringify({
         messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
-        max_tokens: 650,
+        max_tokens: 350,
         temperature: 0.72,
       }),
     });
