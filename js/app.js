@@ -1738,28 +1738,37 @@
     const overlay = document.createElement("div");
     overlay.id = "ll-intro";
     overlay.setAttribute("role", "presentation");
+
+    /* ── CSS 3D Photo Globe ── */
+    /* 15 heritage photo patches: [latitude, longitude, pano-node] */
+    const FACES = [
+      [ 65,   0,  1],
+      [ 30,   0,  2], [ 30,  72,  3], [ 30, 144,  4], [ 30, 216,  5], [ 30, 288,  6],
+      [  0,  36,  7], [  0, 108,  8], [  0, 180,  9], [  0, 252, 10], [  0, 324, 11],
+      [-30,  18, 12], [-30,  90, 13], [-30, 162, 14],
+      [-65, 216, 15],
+    ];
+    const facesHTML = FACES.map(([lat, lon, n]) =>
+      `<div class="ll-intro__face" style="transform:rotateY(${lon}deg) rotateX(${-lat}deg) translateZ(130px)">` +
+      `<img src="assets/pano360/node${n}/thumb.webp" alt="" loading="eager" decoding="async"></div>`
+    ).join("");
+
     overlay.innerHTML =
-      '<img class="ll-intro__globe" src="assets/globe.gif" alt="" aria-hidden="true">' +
-      '<div class="ll-intro__copy">' +
-        '<div class="ll-intro__brand">Lahore Legacy</div>' +
-        '<div class="ll-intro__ur">لاہور کی وراثت</div>' +
-      '</div>' +
+      '<div class="ll-intro__globe-wrap"><div class="ll-intro__sphere" aria-hidden="true">' + facesHTML + '</div></div>' +
+      '<div class="ll-intro__copy"><div class="ll-intro__brand">Lahore Legacy</div></div>' +
       '<div class="ll-intro__tap">tap to enter ›</div>';
     document.body.appendChild(overlay);
+
     let exited = false;
     function exit() {
       if (exited) return; exited = true;
       overlay.classList.add("ll-intro--out");
       setTimeout(() => { overlay.remove(); onDone(); }, 450);
     }
-    function setOp(sel, op) {
-      const e = overlay.querySelector(sel);
-      if (e) e.style.opacity = op;
-    }
-    setTimeout(() => setOp(".ll-intro__brand", 1), 350);
-    setTimeout(() => setOp(".ll-intro__ur", 1), 850);
+    function setOp(sel, op) { const e = overlay.querySelector(sel); if (e) e.style.opacity = op; }
+    setTimeout(() => setOp(".ll-intro__brand", 1), 500);
     setTimeout(() => setOp(".ll-intro__tap", 1), 1400);
-    setTimeout(exit, 4200);
+    setTimeout(exit, 6000);
     overlay.addEventListener("click", exit);
   }
 
