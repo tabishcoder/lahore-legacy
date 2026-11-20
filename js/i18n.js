@@ -87,7 +87,7 @@ LL.I18N = (function () {
     sources: "Sources",
     credits: "Photo & video credits",
     stampsOf: (n, t) => `${n}/${t} stamps`,
-    footer: "Put together from documented history and public archives. Timings and tickets change, so check before you go.",
+    footer: "",
     oldArchive: "Previous version",
     placeholder: "Photo unavailable right now",
     map: "Map",
